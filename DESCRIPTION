@@ -16,4 +16,9 @@ RoxygenNote: 7.1.1
 Imports: 
     dplyr,
     methods,
-    purrr
+    purrr,
+    tibble
+Suggests: 
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr

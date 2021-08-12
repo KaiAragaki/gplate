@@ -1,0 +1,95 @@
+---
+title: "using_Plate"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{using_Plate}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(Plate)
+```
+
+# Overview
+
+Microplates are incredibly common tools used in the lab. Their rectangular nature often causes the data they yield to be rectangular, such as in absorbance data retrieved from protein quantification or MTT assays. Despite being being fundamental building blocks of labwork, there lacks a suitable set of tools to work with plate data.
+
+Plates make for interesting data structures. Despite their rectangular physical form, the data they yield are NOT tidy: a column does not refer to a variable, and row does not refer to a case, unless you are very specific about your plating strategies. Therefore, working with these data is a computational manner is somewhat difficult for almost all modern workflows, which expect tidy data. 
+
+Moving from 'plate form' to 'tidy form' isn't particularly difficult, but it is awkward, and it is a task that has to be repeated for a variety of applications - a prime example of when a dash of code often helps. 
+
+Data entry using R often isn't recommended, in large part because it is not built for such an application. R is even more poorly equipped for plate data: sample layouts on a plate make great sense to a researcher, but make no sense in a tidy dataframe, which essentially 'unravels' all the wells of a plate. Either way, the researcher loses: Either they enter data in elsewhere and then have to context-switch to write and read in a file from elsewhere (in which data becomes fragmented, essentially 'out of version control'), the researcher enters in the data in a tidy format (which is slow and error-prone), or the researcher enters in the data in a plate format, and has to tidy it later.
+
+`Plate` provides a set of tools that make plates a valuable data structure, rather than a frustrating intermediary. It allows for easy transformation from a 'plate form' to a 'tidy form'.  Additionally, it provides a framework that other scripts and packages can build upon to work with plate data.
+
+# Making a Plate
+
+Plates can be made by supplying a matrix-like object or a list of matrix-like objects to the `Plate` function:
+
+```{r}
+set.seed(1)
+tomatoes <- matrix(sample(2:5, 6, replace = TRUE), 2, 3)
+artichokes <- matrix(sample(0:1, 6, replace = TRUE), 2, 3)
+leaves <- matrix(sample(10:20, 6, replace = TRUE), 2, 3)
+
+salad <- Plate(list(tomatoes = tomatoes,
+                    artichokes = artichokes, 
+                    leaves = leaves))
+salad
+```
+
+To convert a `Plate` to a tidy format, the are `serve`d
+
+```{r}
+serve(salad)
+```
+
+To access the layers of the `Plate` object, you can `spill` the plate:
+
+```{r}
+spill(salad)
+```
+```{r}
+spill(salad, 2)
+```
+```{r}
+spill(salad, "tomatoes")
+```
+
+To add layers to an existing plate, we do:
+
+```{r}
+set.seed(3)
+layers(salad) <- matrix(sample(1:2, 6, replace = TRUE), 2, 3)
+salad
+```
+
+Plates are quite picky about what input they allow. For instance, all of the following matrices will cause errors: 
+
+```{r error=TRUE}
+layers(salad) <- matrix(1:6, 3, 2)
+```
+```{r error=TRUE}
+layers(salad) <- matrix(1:24, 4, 6)
+```
+```{r error=TRUE}
+layers(salad) <- matrix(1:4, 2, 2)
+```
+
+This is because Plate objects have a `wells` slot that either can be given by the user, or is pulled from layer data when it is added. Regardless, these data must agree:
+
+```{r error=TRUE}
+twelve_well <- Plate(wells = 12)
+layers(twelve_well) <- matrix(1:6, 2, 3)
+```
+
+This strict framework helps prevent mistakes. 
+
