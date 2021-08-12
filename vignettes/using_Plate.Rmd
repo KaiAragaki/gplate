@@ -54,6 +54,8 @@ serve(salad)
 
 To access the layers of the `Plate` object, you can `spill` the plate:
 
+
+
 ```{r}
 spill(salad)
 ```
@@ -101,4 +103,3 @@ layers(twelve_well) <- matrix(1:6, 2, 3)
 ```
 
 This strict framework helps prevent mistakes. 
-

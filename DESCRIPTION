@@ -1,13 +1,13 @@
 Package: Plate
-Title: What the Package Does (One Line, Title Case)
+Title: Object-Oriented Framework for Microwell Plates
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Kai",
+           family = "Aragaki",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+           email = "aaragak1@jhmi.edu",
+           comment = c(ORCID = "0000-0002-9458-0426"))
+Description: While microwell plate are ubiquitous in the lab, they are unrecognized in the R landscape. `Plate` seeks to make working with data in a plate format easier and more rigorous by implementing Plate objects.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -17,8 +17,17 @@ Imports:
     dplyr,
     methods,
     purrr,
+    stats,
     tibble
 Suggests: 
     rmarkdown,
     knitr
 VignetteBuilder: knitr
+Collate: 
+    'zzz.R'
+    'Plate-class.R'
+    'Plate.R'
+    'layers.R'
+    'scrape.R'
+    'serve.R'
+    'wells.R'

@@ -23,3 +23,13 @@ would ideally be named branching from the base name:
 ```{r}
 list(leafy_greens = values, leafy_greens_colnames = cols, leafy_greens_rownames = rows)
 ```
+
+# Allow conversion BACK to plate form
+
+Should be required to have position columns so things don't get mixed up, but theoretically you should be able to plate what you just served to undo it
+
+This would require `Plate` to have a method for data.frames. No big deal and kinda fun.
+
+# Serve metadata with the rest of data
+
+# Spill should allow for numeric and character vectors, not just individual
