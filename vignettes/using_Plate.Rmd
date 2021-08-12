@@ -68,9 +68,18 @@ To add layers to an existing plate, we do:
 
 ```{r}
 set.seed(3)
-layers(salad) <- matrix(sample(1:2, 6, replace = TRUE), 2, 3)
+onions <- matrix(sample(1:2, 6, replace = TRUE), 2, 3)
+layers(salad, 4) <- onions
 salad
 ```
+
+And if we want to remove a layer, we can do it either by index or name by using the `scrape` command:
+
+```{r}
+scrape(salad, "onions")
+```
+
+
 
 Plates are quite picky about what input they allow. For instance, all of the following matrices will cause errors: 
 

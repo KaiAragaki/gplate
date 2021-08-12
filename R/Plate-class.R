@@ -187,10 +187,16 @@ setMethod("layers<-", "Plate", function(x, value, position = NULL) {
   if(!has_layers(x)) {
     wells(x) <- nrow(value) * ncol(value)
   }
+
+  name <- deparse(substitute(value))
+
   if(is.null(position)) {
+    curr_names <- names(x@layers)
     x@layers[[length(x@layers) + 1]] <- value
+    names(x@layers) <- c(curr_names, name)
   } else {
     x@layers[[position]] <- value
+    names(x@layers)[position] <- name
   }
   validObject(x)
   x
@@ -199,6 +205,7 @@ setMethod("layers<-", "Plate", function(x, value, position = NULL) {
 
 # User Facing Functions --------------------------------------------------------
 
+## serve -----------------------------------------------------------------------
 setGeneric("serve", function(x) standardGeneric("serve"))
 
 setMethod("serve", "Plate", function(x) {
@@ -209,16 +216,25 @@ setMethod("serve", "Plate", function(x) {
     setNames(names(x@layers))
 })
 
-# Need to be able to get dims from a layer entry
+## scrape ----------------------------------------------------------------------
+setGeneric("scrape", function(x, ...) standardGeneric("scrape"))
+
+setMethod("scrape", "Plate", function(x, positions, negate = FALSE) {
+
+  if (class(positions) == "character") {
+    positions <- which(names(x@layers) == positions)
+  }
+
+  if (negate) {
+    x@layers <- x@layers[positions]
+  } else {
+    x@layers <- x@layers[-positions]
+  }
+  x
+})
+
+
 # Should it check to see if the dims are of a normal form factor? Might be difficult with portioning
 # That also raises the question is well# should be limited by a list
 # Maybe a 'side-dish' class should be added that allows for either nonstandard wells/dims
 # Or one that strips those attributes altogether (though that seems less useful)
-
-# Need to check that if dims pulled from wells are incompatible with the layer wells
-# That is don't allow for arbitrary setting of well numbers if it isn't correct
-# One way to do this:
-# Pull number of wells, dims from layer
-# If you initialized an empty plate, fine
-# If you initialize an empty plate and specify wells, either then or later, that should determine the layers that can go in
-# Wells can only be set on plates that have no layers
