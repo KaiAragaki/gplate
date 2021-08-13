@@ -41,3 +41,45 @@ get_wells_from_layers <- function(plate) {
   layer <- plate@layers[[1]]
   wells(plate) <- nrow(layer) * ncol(layer)
 }
+
+make_layers_from_names <- function(x, names = NULL) {
+
+  if (!is.null(names)){
+    arg_name <- names
+  } else {
+    arg_name <- deparse(substitute(x))
+  }
+
+  rows <- NULL
+  cols <- NULL
+
+  values <- x |>
+    as.matrix() |>
+    unname()
+
+  # Check if rownames are default
+  if (!is.null(rownames(x)) && !any(rownames(x) == as.character(1:nrow(x)))) {
+    rows <-
+      rep(rownames(x), times = ncol(x)) |>
+      matrix(nrow(x), ncol(x))
+  }
+
+  # Check if colnames exist
+  if (!is.null(colnames(x))) {
+    cols <-
+      rep(colnames(x), each = nrow(x)) |>
+      matrix(nrow(x), ncol(x))
+  }
+
+  out <- list(values, rows, cols)
+  names(out) <- c(arg_name, paste0(arg_name, "_rows"), paste0(arg_name, "_cols"))
+
+  # Remove NULLs
+  null_list <- out |>
+    lapply(is.null) |>
+    unlist()
+
+  out <- out[!null_list]
+
+  out
+}
