@@ -32,4 +32,6 @@ This would require `Plate` to have a method for data.frames. No big deal and kin
 
 # Serve metadata with the rest of data
 
+Done
+
 # Spill should allow for numeric and character vectors, not just individual
