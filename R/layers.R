@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-setGeneric("layers", function(x, n) standardGeneric("layers"))
+setGeneric("layers", function(x, n = NULL) standardGeneric("layers"))
 
 #' @describeIn Plate accessor for plate layers
 #' @param n optional, layer position to access. If ommited, returns all layers
@@ -29,7 +29,7 @@ setMethod("layers", "Plate", function(x, n = NULL) {
 #' @export
 #'
 #' @examples
-setGeneric("layers<-", function(x, position, value) standardGeneric("layers<-"))
+setGeneric("layers<-", function(x, position = NULL, value) standardGeneric("layers<-"))
 
 #' @describeIn Plate add/overwrite a plate layer
 #' @param position layer position to add or modify
