@@ -13,10 +13,16 @@
 Plate <- function(layers = list(), wells = NULL, meta = NULL) {
 
   if (any(class(layers) %in% c("matrix", "data.frame"))) {
-    name <- deparse(substitute(layers))
-    layers <- list(layers)
-    names(layers) <- name
+    layer_name <- deparse(substitute(layers))
+    layers <- make_layers_from_names(layers, layer_name)
   }
+
+  if (class(layers) == "list") {
+    layers <- layers |>
+      purrr::map2(names(layers), make_layers_from_names) |>
+      purrr::flatten()
+  }
+
   rows <- NULL
   cols <- NULL
   if (length(layers) > 0) {
