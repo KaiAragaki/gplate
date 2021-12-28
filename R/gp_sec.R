@@ -31,31 +31,48 @@ gp_sec <- function(gp, name,
                    padding = 0, margin = 0,
                    wrap = FALSE) {
 
+  # Checks ---------------------------------------------------------------------
   flow <- rlang::arg_match(flow)
   start_corner <- rlang::arg_match(start_corner)
 
   if (is.null(nrow)) nrow <- gp$cur_sec_nrow
   if (is.null(ncol)) ncol <- gp$cur_sec_ncol
 
-  gp_sec_fits(gp, nrow, ncol, wrap)
   gp$cur_sec_ncol <- ncol
   gp$cur_sec_nrow <- nrow
 
+
+  # Section demarcation --------------------------------------------------------
   wd <- gp$well_data
 
+  # Make previous section data parent data
   wd <- wd |>
     dplyr::mutate(row_sec_par = row_sec,
                   row_sec_par_rel = row_sec_rel,
                   col_sec_par = col_sec,
                   col_sec_par_rel = col_sec_rel)
 
+  # Make rel axes
   wd <- gp_make_rel_ax(wd, start_corner, flow)
+
+  # Make sec_par axes, but relative to the CHILD's orientation
   wd <- gp_make_child_rel_sec_par_ax(wd, start_corner, flow)
+
+  # Make sec_rel axes
   wd <- wd |>
     dplyr::mutate(row_sec_rel = ((.data$temp_row_sec_par - 1) %% nrow) + 1,
-                  col_sec_rel = ((.data$temp_col_sec_par - 1) %% ncol) + 1,
-                  lane_h = ((.data$temp_col_sec_par - 1) %/% ncol) + 1,
-                  lane_v = ((.data$temp_row_sec_par - 1) %/% nrow) + 1)
+                  col_sec_rel = ((.data$temp_col_sec_par - 1) %% ncol) + 1)
+
+  # Define lanes
+  wd <- gp_define_lanes(wd, flow, wrap, nrow, ncol)
+
+  if (wrap) {
+    gp$well_data <- wd
+    return(gp)
+  }
+
+  # Arrange by sec, then calculate lane_h (if flow = row), then arrange by
+  # lane_h, arrange by temp_rel_sec row and col, then rep sec by n_wells?
 
   if (start_corner == "tl") {
     wd$col_sec <- wd$col_sec_rel
@@ -149,4 +166,33 @@ gp_arrange_for_rel_ax <- function(wd, start_corner, flow) {
     if (flow == "row") return(dplyr::arrange(wd, dplyr::desc(.data$row), dplyr::desc(.data$col)))
     else return(dplyr::arrange(wd, dplyr::desc(.data$col), dplyr::desc(.data$row)))
   }
+}
+
+gp_define_lanes <- function(wd, flow, wrap, nrow, ncol) {
+
+  if (wrap) {
+    if (flow == "row") {
+      wd <- wd |>
+        dplyr::mutate(lane_h = ((.data$temp_row_sec_par - 1) %/% nrow) + 1,
+                      lane_v = 1) |>
+        dplyr::arrange(row_sec_rel) |>
+        dplyr::group_by(row_sec_rel) |>
+        dplyr::mutate(sec = rep(1:99, each = ncol, length.out = n()))
+      return(wd)
+    }
+
+    if (flow == "col") {
+      wd <- wd |>
+        dplyr::mutate(lane_h = 1,
+                      lane_v = ((.data$temp_col_sec_par - 1) %/% ncol) + 1) |>
+        dplyr::arrange(col_sec_rel) |>
+        dplyr::group_by(col_sec_rel) |>
+        dplyr::mutate(sec = rep(1:99, each = nrow, length.out = n()))
+      return(wd)
+    }
+  }
+
+  wd <- wd |>
+    dplyr::mutate(lane_h = ((.data$temp_col_sec_par - 1) %/% ncol) + 1,
+                  lane_v = ((.data$temp_row_sec_par - 1) %/% nrow) + 1)
 }

@@ -79,11 +79,12 @@ These axes can have modifier(s) appended to their name, like:
     [section](#sections).
 -   `rel`: relative. This flips the axes such that the starting corner
     is now (1, 1)
+-   `par`: parent. This indicates whether the `sec` refers to the
+    current section or the parent section.
 
-These modifiers are not mutually exclusive or necessary - `row_sec`,
-`col_sec_rel`, and `row` are all possible columns. However, order is
-important: `sec` will always come before `row` if present.
-KAINOTE(columns where?)
+`par` will not appear without `sec`, but `sec` can appear without `par`.
+Order is important. A fully loaded column will look like
+`row_sec_par_rel`. KAINOTE(columns where?)
 
 ## Sections
 
@@ -93,3 +94,21 @@ child sections. All sections except the plate have parent sections.
 Sections must be - at most - the same size as their parent section. **As
 of writing, sections must all be the same size, but this will likely
 change**. **Wrapping is not yet implemented**.
+
+Sections can have attributes:
+
+-   `padding`
+-   `margin`
+
+## Lanes
+
+A lane is used to define a grid of sections, and is usually more than
+one well wide (otherwise it is just a row or column). Both lanes are
+only used to define sections if `wrap = FALSE`. If `wrap = TRUE`, then
+sections are allowed to `flow` off an edge in the specified direction
+(`flow = "row"` or `flow = "col"`) and continue on the next line.
+KAINOTE(wrapping is actually a general solution - may be good just do
+this always?) KAINOTE(Wrong. Wrapping is only equal to a section based
+solution when the remainder of lane width division of the given section
+is 0. Otherwise, a new section will be started and not continued on the
+next lane, ergo not wrapping)

@@ -83,6 +83,6 @@ Sections can have attributes:
 * `padding`
 * `margin`
 
+## Lanes
 
-# Lanes
-
+A lane is used to define a grid of sections, and is usually more than one well wide (otherwise it is just a row or column). Both lanes are only used to define sections if `wrap = FALSE`. If `wrap = TRUE`, then sections are allowed to `flow` off an edge in the specified direction (`flow = "row"` or `flow = "col"`) and continue on the next line.  KAINOTE(wrapping is actually a general solution - may be good just do this always?) KAINOTE(Wrong. Wrapping is only equal to a section based solution when the remainder of lane width division of the given section is 0. Otherwise, a new section will be started and not continued on the next lane, ergo not wrapping)

@@ -9,31 +9,26 @@ dev_plot_gp <- function(gp, name) {
     scale_y_reverse()
 
 }
+
+dev_plot_wd <- function(wd, name) {
+
+  ggplot(wd, aes(x = col, y = row, color = as.factor({{ name }}))) +
+    geom_point(size = 10) +
+    scale_y_reverse()
+}
 #
 # a <- new_gp(rows = 8L, cols = 12L) |>
 #   gp_sec("hi", start_corner = "bl", flow = "col",  nrow = 3, ncol = 3) |>
 #   gp_sec("bye", start_corner = "tl", flow = "row")
 #
 
-## Current problem:
 
-# Suppose we have this:
+w96 <- new_gp(rows = 8L, cols = 12L)
 
 new_gp(rows = 8L, cols = 12L) |>
-  gp_sec(name = "my_section", start_corner = "bl", flow = "col", nrow = 3, ncol = 3) |>
+  gp_sec(name = "my_section", start_corner = "br", flow = "row", wrap = TRUE, nrow = 5, ncol = 5) |>
   dev_plot_gp(sec)
 
-# If we want to add an additional layer that starts from, say, tl, how do we
-# inform - generally - this layer that there are missing rows?
-
-# One solution: Always let the sections bleed out to a full integer and keep
-# those data, then crop to size whenever presented.
-
-# Another: Swap coordinate systems. At the tail end of producing one section,
-# define (from ul corner, regardless of start_corner) rows and cols.
-
-# Frankly unsure how to implement (haven't thought about it yet) but it seems
-# possible and the best option
 
 a <- new_gp(rows = 8L, cols = 12L) |>
   gp_sec(name = "my_sec1", start_corner = "br", flow = "col", nrow = 3, ncol = 5) |>
