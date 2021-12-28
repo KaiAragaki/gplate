@@ -4,7 +4,7 @@
 \alias{layers}
 \title{Layer accessor generic}
 \usage{
-layers(x, n)
+layers(x, n = NULL)
 }
 \arguments{
 \item{x}{Object to access layers of}

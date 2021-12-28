@@ -4,7 +4,7 @@
 \alias{layers<-}
 \title{Layer setter generic}
 \usage{
-layers(x, position) <- value
+layers(x, position = NULL) <- value
 }
 \arguments{
 \item{x}{Object to set layers of}
