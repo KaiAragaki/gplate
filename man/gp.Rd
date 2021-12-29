@@ -4,7 +4,7 @@
 \alias{gp}
 \title{Make a gp object}
 \usage{
-gp(wells = NULL, cols = NULL, rows = NULL)
+gp(rows = NULL, cols = NULL, wells = NULL)
 }
 \arguments{
 \item{rows}{}

@@ -25,10 +25,36 @@ devtools::install_github("KaiAragaki/gp")
 
 ## Creating plates with gp
 
+Creating a plate plot is simple:
+
 ``` r
 library(gp)
-## basic example code
+gp(rows = 8, cols = 16) |>
+  gp_plot(row)
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" /> We can add
+rectangular ‘sections’ to our plates:
+
+``` r
+gp(rows = 16, cols = 24) |> 
+  gp_sec("my_section", nrow = 12, ncol = 6, start_corner = "tl", flow = "row") |> 
+  gp_plot(my_section)
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+
+These sections can have sections as well. KAINOTE(Easier to understand
+example here)
+
+``` r
+gp(rows = 16, cols = 24) |> 
+  gp_sec("my_section", nrow = 12, ncol = 6, start_corner = "tl", flow = "row") |> 
+  gp_sec("secsec", nrow = 3, ncol = 3, start_corner = "tl", flow = "col") |> 
+  gp_plot(secsec)
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 # Vocabulary
 

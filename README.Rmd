@@ -30,10 +30,30 @@ devtools::install_github("KaiAragaki/gp")
 ```
 ## Creating plates with gp
 
-```{r example}
+Creating a plate plot is simple:
+
+```{r example, dpi=500}
 library(gp)
-## basic example code
+gp(rows = 8, cols = 16) |>
+  gp_plot(row)
 ```
+We can add rectangular 'sections' to our plates:
+
+```{r dpi=500}
+gp(rows = 16, cols = 24) |> 
+  gp_sec("my_section", nrow = 12, ncol = 6, start_corner = "tl", flow = "row") |> 
+  gp_plot(my_section)
+```
+
+These sections can have sections as well. KAINOTE(Easier to understand example here)
+
+```{r dpi=500}
+gp(rows = 16, cols = 24) |> 
+  gp_sec("my_section", nrow = 12, ncol = 6, start_corner = "tl", flow = "row") |> 
+  gp_sec("secsec", nrow = 3, ncol = 3, start_corner = "tl", flow = "col") |> 
+  gp_plot(secsec)
+```
+
 
 
 # Vocabulary
