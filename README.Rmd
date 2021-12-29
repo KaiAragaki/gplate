@@ -78,7 +78,7 @@ ggplot2::ggsave(filename = "./man/figures/mini-plot.png",
                 scale = 3.5)
 ```
 
-> You should align your primers in columns <span style="display:inline-block;vertical-align:middle;line-height:100px;">![](man/figures/mini-plot.png){width=50px}</span> 
+> You should align your primers in columns <span>![](man/figures/mini-plot.png){width=75px}</span> 
 
 
 # Vocabulary
@@ -117,9 +117,11 @@ A lane is used to define a grid of sections, and is usually more than one well w
 
 # TODO
 
-- [ ] Break Sections: Be able to specify if only 'whole integer' sections should be allowed to appear
+- [x] Break Sections: Be able to specify if only 'whole integer' sections should be allowed to appear
+  - wrap = TRUE needs to be put through this stuff too.
 - [ ] Margin/Padding
-- [ ] Real plotting functions. Also a miniplotting function for inline plotting (a la sparklines)
+  - Should probably JUST do margin for simplicity sake.
+- [x] Real plotting functions. Also a miniplotting function for inline plotting (a la sparklines)
 - [x] pkgdown
 - [ ] update hex
 - [ ] Allow user to supply a vector for rows/cols for section definition

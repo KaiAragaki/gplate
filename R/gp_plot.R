@@ -30,5 +30,4 @@ gp_mini_theme <- function() {
                  axis.text = ggplot2::element_blank(),
                  axis.title = ggplot2::element_blank(),
                  axis.ticks = ggplot2::element_blank())
-
 }

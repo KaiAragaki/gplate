@@ -29,7 +29,8 @@ gp_sec <- function(gp, name,
                    start_corner = c("tl", "tr", "bl", "br"),
                    flow = c("row", "col"),
                    padding = 0, margin = 0,
-                   wrap = FALSE) {
+                   wrap = FALSE,
+                   break_sections = TRUE) {
 
   # Checks ---------------------------------------------------------------------
   flow <- rlang::arg_match(flow)
@@ -38,7 +39,6 @@ gp_sec <- function(gp, name,
             is.numeric(ncol) | is.null(ncol))
 
   # Child becomes parent -------------------------------------------------------
-
   gp$nrow_sec_par  <- gp$nrow_sec
   gp$ncol_sec_par  <- gp$ncol_sec
   gp$wells_sec_par <- gp$wells_sec
@@ -60,6 +60,8 @@ gp_sec <- function(gp, name,
     gp$ncol_sec <- ncol
   }
 
+  # Update metadata for child --------------------------------------------------
+  gp$wells_sec <- gp$nrow_sec * gp$ncol_sec
 
   # Section demarcation --------------------------------------------------------
 
@@ -90,6 +92,14 @@ gp_sec <- function(gp, name,
     dplyr::ungroup() |>
     dplyr::mutate(sec = as.integer(.data$sec),
                   {{name}} := sec)
+
+  if (!break_sections) {
+    wd <- wd |>
+      dplyr::group_by(sec) |>
+      dplyr::mutate(n = dplyr::n()) |>
+      dplyr::mutate(sec = ifelse(n < gp$wells_sec, NA_integer_, sec),
+                    {{name}} := sec)
+  }
 
   gp$well_data <- wd
 
