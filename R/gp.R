@@ -1,13 +1,14 @@
 #' A constructor for a gp object
 #'
-#' @param data
-#' @param wells
-#' @param dimensions
+#' @param nrow Integer. Number of rows of the plate.
+#' @param ncol Integer. Number of columns of the plate.
 #'
-#' @return
+#' @return a `gp` object
+#'
 #' @export
 #'
 #' @examples
+#' new_gp(nrow = 8L, ncol = 16L)
 new_gp <- function(nrow = 1L, ncol = 1L){
 
   stopifnot(is.integer(nrow), is.integer(ncol))
@@ -51,47 +52,115 @@ new_gp <- function(nrow = 1L, ncol = 1L){
             class = "gp")
 }
 
-# if any two of the arguments (rows, cols, wells) are supplied, should be able
-# to calculate the third
-
-#' Make gp
+#' Make a gp object
 #'
-#' @param data
 #' @param wells
 #' @param cols
 #' @param rows
 #'
-#' @return
+#' @return a `gp` object
+#'
+#' @details
+#'
+#' A `gp` object has the following components:
+#'
+#' - `nrow`/`ncol`: Number of plate rows/cols. This is static and will not be
+#' changed by adding layers.
+#'
+#' - `wells`: Number of plate wells. Static.
+#'
+#' - `wells_sec`: Number of wells in the given section. When creating a plate,
+#' the section refers to the whole plate.
+#'
+#' - `wells_sec_par`: Number of wells in the section of the parent layer. When
+#' creating a plate, there is no parent layer, so the plate acts as its own
+#' parent.
+#'
+#' - `well_data`: Somewhat transient data used to define plotting coordinates
+#' for layers. See below for more information.
+#'
+#' - `nrow_sec`/`ncols_sec`: The number of rows/cols of the current section.
+#' When creating a plate, that number is the number of rows/cols of the plate
+#' (the plate is the section).
+#'
+#' - `nrow_sec_par`/`ncol_sec_par`: The number of rows/cols of the parent
+#' section. When creating a plate, it has no parent, so defaults to being its
+#' own parent.
+#'
+#' `well_data` consists of many columns. The variable names can be broken down
+#' as follows:
+#'
+#' - `row`/`col`: `row` is always the y axis, `col` is always the x axis. By
+#' convention, plates start at 1, 1 in the top left corner.
+#'
+#' - `sec`: Short for 'section'. A section is a rectangular field of wells.
+#' `sec` alone refers to the number of the section itself. `sec` combined with
+#' `row` or `col` (eg `row_sec`) refers to the coordinates of a given well
+#' relative to it's section corners, with the top left corner of a given section
+#' always being (1, 1).
+#'
+#' - `rel`: Short for 'relative'. This means that the numbering is relative to
+#' the `starting_corner` argument used to create the given section. For
+#' instance, a section created with a `starting_corner` of `br` (bottom right)
+#' will have a `row_sec_rel` and `col_sec_rel` of 1 in each of its bottom right
+#' corners. A column labelled `row_rel` in this example would refer to the
+#' bottom right of the _plate_ as 1, but not necessarily the bottom right of
+#' each section.
+#'
+#' - `par`: Short for 'parent'. These columns are all the data from the previous
+#' layer.
+#'
+#' - `lane`: These specify (usually) multiwell strips only defined in one
+#' direction. `lane_h` and `lane_v` in tandem from checkerboard-like patterns,
+#' where each intersection is a section. This is a bit more complicated when
+#' `wrap = TRUE`, so the simile does not hold for all cases.
+#'
+#' - `col/row_rel_child_sec_par`: These are odd columns. They represent the axes
+#' of parental sections, but using the child's relative coordinate system. For
+#' example, if a parent defined sections starting in the upper left, and the
+#' child defined sections starting in the upper right, `col_rel_child_sec_par`
+#' would be a reversed `col_sec_par_rel`, while `row_rel_child_sec_par` would be
+#' identical to `row_sec_par_rel`
+#'
 #' @export
 #'
 #' @examples
-gp <- function(data = data.frame(), wells = NULL, cols = NULL, rows = NULL){
+#'
+#' # If you specify wells, rows and columns are derived from a standard plate sizes:
+#'
+#' gp(wells = 96)
+#'
+#' # As such, you cannot use the wells argument if you want to create more exotic plates:
+#'
+#' try(gp(wells = 102))
+#'
+#' # For that, you'll need to specify wells and cols:
+#'
+#' gp(rows = 6, cols = 17)
+#'
+gp <- function(wells = NULL, cols = NULL, rows = NULL){
 
-  if (all(missing(wells), missing(cols), missing(rows))) {
+  if (all(is.null(wells), is.null(cols), is.null(rows))) {
     stop("Either wells or cols + rows must be set")
   }
 
-  if (!missing(wells) && (!missing(rows) || !missing(cols))) {
+  if (!is.null(wells) && (!is.null(rows) || !is.null(cols))) {
     stop("wells or cols + rows can be set, not both")
   }
 
-  if (!missing(wells) && !wells %in% plate_formats$wells) {
+  if (!is.null(wells) && !wells %in% plate_formats$wells) {
     stop("wells is not of a known format (6, 12, 24, 48, 96, 384, 1536, or 3456)")
   }
 
   # Calculate one set of arguments from the other
-  if (missing(wells)) {
+  if (is.null(wells)) {
     wells <- cols * rows
   } else {
     cols <- plate_formats[plate_formats$wells == wells,]$cols
     rows <- plate_formats[plate_formats$wells == wells,]$rows
   }
 
-  structure(list(data = data,
-                 rows = rows,
-                 cols = cols,
-                 wells = wells),
-            class = "gp")
+  new_gp(nrow = as.integer(rows), ncol = as.integer(cols))
 }
 
 #' Coerce object to gp

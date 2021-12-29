@@ -1,5 +1,5 @@
-Package: Plate
-Title: Object-Oriented Framework for Microwell Plates
+Package: gp
+Title: A Grammer of Plates
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Kai",
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "aaragak1@jhmi.edu",
            comment = c(ORCID = "0000-0002-9458-0426"))
-Description: While microwell plate are ubiquitous in the lab, they are unrecognized in the R landscape. `Plate` seeks to make working with data in a plate format easier and more rigorous by implementing Plate objects.
+Description: While microwell plate are ubiquitous in the lab, they are unrecognized in the R landscape. `gp` seeks to make working with data in a plate format easier and more rigorous by implementing gp objects.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -27,11 +27,12 @@ Collate:
     'zzz.R'
     'Plate-class.R'
     'Plate.R'
-    'gp_section.R'
-    'gplate.R'
+    'gp.R'
+    'gp_sec.R'
     'layers.R'
     'scrape.R'
     'serve.R'
+    'testplot.R'
     'wells.R'
 Depends: 
     R (>= 2.10)
