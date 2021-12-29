@@ -131,10 +131,12 @@ sections are allowed to `flow` off an edge in the specified direction
 
 # TODO
 
--   [ ] Break Sections: Be able to specify if only ‘whole integer’
+-   [x] Break Sections: Be able to specify if only ‘whole integer’
     sections should be allowed to appear
+    -   wrap = TRUE needs to be put through this stuff too.
 -   [ ] Margin/Padding
--   [ ] Real plotting functions. Also a miniplotting function for inline
+    -   Should probably JUST do margin for simplicity sake.
+-   [x] Real plotting functions. Also a miniplotting function for inline
     plotting (a la sparklines)
 -   [x] pkgdown
 -   [ ] update hex

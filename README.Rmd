@@ -124,5 +124,5 @@ A lane is used to define a grid of sections, and is usually more than one well w
 - [x] Real plotting functions. Also a miniplotting function for inline plotting (a la sparklines)
 - [x] pkgdown
 - [ ] update hex
-- [ ] Allow user to supply a vector for rows/cols for section definition
+- [ ] Allow user to supply a vector for rows/cols for  section definition
 - [ ] Data layering? Need to think about how to best do this.
