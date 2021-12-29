@@ -138,7 +138,7 @@ new_gp <- function(nrow = 1L, ncol = 1L){
 #'
 #' gp(rows = 6, cols = 17)
 #'
-gp <- function(wells = NULL, cols = NULL, rows = NULL){
+gp <- function(rows = NULL, cols = NULL, wells = NULL){
 
   if (all(is.null(wells), is.null(cols), is.null(rows))) {
     stop("Either wells or cols + rows must be set")
