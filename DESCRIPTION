@@ -37,3 +37,4 @@ Collate:
     'wells.R'
 Depends: 
     R (>= 2.10)
+URL: https://kaiaragaki.github.io/gp/
