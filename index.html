@@ -107,7 +107,7 @@
                 units <span class="op">=</span> <span class="st">"in"</span>, 
                 scale <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span></code></pre></div>
 <blockquote>
-<p>You should align your primers in columns <span style="display:inline-block;vertical-align:middle;line-height:100px;"><img src="reference/figures/mini-plot.png" width="50"></span></p>
+<p>You should align your primers in columns <img src="reference/figures/mini-plot.png" width="75"></p>
 </blockquote>
 </div>
 </div>
@@ -160,13 +160,19 @@
 </h1>
 <ul>
 <li>
-<input type="checkbox" disabled>
-Break Sections: Be able to specify if only ‘whole integer’ sections should be allowed to appear</li>
+<input type="checkbox" disabled checked>
+Break Sections: Be able to specify if only ‘whole integer’ sections should be allowed to appear<ul>
+<li>wrap = TRUE needs to be put through this stuff too.</li>
+</ul>
+</li>
 <li>
 <input type="checkbox" disabled>
-Margin/Padding</li>
+Margin/Padding<ul>
+<li>Should probably JUST do margin for simplicity sake.</li>
+</ul>
+</li>
 <li>
-<input type="checkbox" disabled>
+<input type="checkbox" disabled checked>
 Real plotting functions. Also a miniplotting function for inline plotting (a la sparklines)</li>
 <li>
 <input type="checkbox" disabled checked>
