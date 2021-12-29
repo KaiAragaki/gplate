@@ -78,7 +78,7 @@ ggplot2::ggsave(filename = "./man/figures/mini-plot.png",
 ```
 
 > You should align your primers in columns <span
-> style="display:inline-block;vertical-align:middle;line-height:100px;"><img src="./reference/figures/mini-plot.png" width="50" /></span>
+> style="display:inline-block;vertical-align:middle;line-height:100px;"><img src="man/figures/mini-plot.png" width="50" /></span>
 
 # Vocabulary
 
