@@ -1,4 +1,9 @@
 
+<style type="text/css">
+span > img {
+ float:left;
+}
+</style>
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # gp <img src='man/figures/logo.png' align="right" height="138" />
@@ -56,6 +61,25 @@ gp(rows = 16, cols = 24) |>
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
+`gp` also has a theme - `gp_mini_theme` - that lets you create
+sparkline-esque plates.
+
+``` r
+mini_plot <- gp(8, 12) |> 
+  gp_sec(name = "primers", ncol = 3) |> 
+  gp_plot(primers) + 
+  gp_mini_theme()
+ggplot2::ggsave(filename = "./readme-imgs/mini-plot.png", 
+                plot = mini_plot,
+                height = 0.5, 
+                width = 0.75, 
+                units = "in", 
+                scale = 3.5)
+```
+
+> You should align your primers in columns <span
+> style="display:inline-block;vertical-align:middle;line-height:100px;"><img src="./readme-imgs/mini-plot.png" width="50" /></span>
+
 # Vocabulary
 
 ## Axes
@@ -112,7 +136,7 @@ sections are allowed to `flow` off an edge in the specified direction
 -   [ ] Margin/Padding
 -   [ ] Real plotting functions. Also a miniplotting function for inline
     plotting (a la sparklines)
--   [ ] pkgdown
+-   [x] pkgdown
 -   [ ] update hex
 -   [ ] Allow user to supply a vector for rows/cols for section
     definition
