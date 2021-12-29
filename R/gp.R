@@ -1,4 +1,4 @@
-#' A constructor for gplates
+#' A constructor for a gp object
 #'
 #' @param data
 #' @param wells
@@ -8,32 +8,46 @@
 #' @export
 #'
 #' @examples
-new_gp <- function(rows = 1L, cols = 1L){
+new_gp <- function(nrow = 1L, ncol = 1L){
 
-  stopifnot(is.integer(rows), is.integer(cols))
+  stopifnot(is.integer(nrow), is.integer(ncol))
 
-  wells <- rows * cols
+  wells <- nrow * ncol
 
-  cur_sec_nrow <- rows
-  cur_sec_ncol <- cols
-  cur_sec_wells <- wells
+  nrow_sec      <- nrow
+  nrow_sec_par  <- nrow
+  ncol_sec      <- ncol
+  ncol_sec_par  <- ncol
+  wells_sec     <- wells
+  wells_sec_par <- wells
 
-  well_data <- tidyr::expand_grid(row = seq_len(rows), col = seq_len(cols))
-  well_data$sec <- 1L
-  well_data$row_sec <- well_data$row
-  well_data$col_sec <- well_data$col
-  well_data$row_rel <- well_data$row
-  well_data$col_rel <- well_data$col
-  well_data$row_sec_rel <- well_data$row
-  well_data$col_sec_rel <- well_data$col
+  well_data <- tidyr::expand_grid(row = seq_len(nrow), col = seq_len(ncol))
 
-  structure(list(rows = rows,
-                 cols = cols,
+  well_data$sec             <- 1L
+  well_data$sec_par         <- 1L
+
+  well_data$row_rel         <- well_data$row
+  well_data$row_sec         <- well_data$row
+  well_data$row_sec_rel     <- well_data$row
+  well_data$row_sec_par     <- well_data$row
+  well_data$row_sec_par_rel <- well_data$row
+
+  well_data$col_rel         <- well_data$col
+  well_data$col_sec         <- well_data$col
+  well_data$col_sec_rel     <- well_data$col
+  well_data$col_sec_par     <- well_data$col
+  well_data$col_sec_par_rel <- well_data$col
+
+  structure(list(nrow = nrow,
+                 ncol = ncol,
                  wells = wells,
                  well_data = well_data,
-                 cur_sec_nrow = cur_sec_nrow,
-                 cur_sec_ncol = cur_sec_ncol,
-                 cur_sec_wells = cur_sec_wells),
+                 nrow_sec = nrow_sec,
+                 nrow_sec_par = nrow_sec_par,
+                 ncol_sec = ncol_sec,
+                 ncol_sec_par = ncol_sec_par,
+                 wells_sec = wells_sec,
+                 wells_sec_par = wells_sec_par),
             class = "gp")
 }
 
