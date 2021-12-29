@@ -94,6 +94,21 @@
   <span class="fu"><a href="reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"secsec"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span>, start_corner <span class="op">=</span> <span class="st">"tl"</span>, flow <span class="op">=</span> <span class="st">"col"</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">secsec</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
+<p><code>gp</code> also has a theme - <code>gp_mini_theme</code> - that lets you create sparkline-esque plates.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mini_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="reference/gp_sec.html">gp_sec</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"primers"</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="reference/gp_mini_theme.html">gp_mini_theme</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ggsave</span><span class="op">(</span>filename <span class="op">=</span> <span class="st">"./readme-imgs/mini-plot.png"</span>, 
+                plot <span class="op">=</span> <span class="va">mini_plot</span>,
+                height <span class="op">=</span> <span class="fl">0.5</span>, 
+                width <span class="op">=</span> <span class="fl">0.75</span>, 
+                units <span class="op">=</span> <span class="st">"in"</span>, 
+                scale <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span></code></pre></div>
+<blockquote>
+<p>You should align your primers in columns <span style="display:inline-block;vertical-align:middle;line-height:100px;"><img src="./readme-imgs/mini-plot.png" width="50"></span></p>
+</blockquote>
 </div>
 </div>
 <div class="section level1">
@@ -154,7 +169,7 @@ Margin/Padding</li>
 <input type="checkbox" disabled>
 Real plotting functions. Also a miniplotting function for inline plotting (a la sparklines)</li>
 <li>
-<input type="checkbox" disabled>
+<input type="checkbox" disabled checked>
 pkgdown</li>
 <li>
 <input type="checkbox" disabled>
