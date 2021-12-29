@@ -13,7 +13,8 @@ gp_sec(
   flow = c("row", "col"),
   padding = 0,
   margin = 0,
-  wrap = FALSE
+  wrap = FALSE,
+  break_sections = TRUE
 )
 }
 \arguments{

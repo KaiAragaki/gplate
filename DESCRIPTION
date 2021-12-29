@@ -24,17 +24,10 @@ Suggests:
     knitr
 VignetteBuilder: knitr
 Collate: 
-    'zzz.R'
-    'Plate-class.R'
-    'Plate.R'
     'gp.R'
     'gp_plot.R'
     'gp_sec.R'
-    'layers.R'
-    'scrape.R'
-    'serve.R'
     'testplot.R'
-    'wells.R'
 Depends: 
     R (>= 2.10)
 URL: https://kaiaragaki.github.io/gp/
