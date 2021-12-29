@@ -69,7 +69,7 @@ mini_plot <- gp(8, 12) |>
   gp_sec(name = "primers", ncol = 3) |> 
   gp_plot(primers) + 
   gp_mini_theme()
-ggplot2::ggsave(filename = "./readme-imgs/mini-plot.png", 
+ggplot2::ggsave(filename = "./man/figures/mini-plot.png", 
                 plot = mini_plot,
                 height = 0.5, 
                 width = 0.75, 
@@ -78,7 +78,7 @@ ggplot2::ggsave(filename = "./readme-imgs/mini-plot.png",
 ```
 
 > You should align your primers in columns <span
-> style="display:inline-block;vertical-align:middle;line-height:100px;"><img src="./readme-imgs/mini-plot.png" width="50" /></span>
+> style="display:inline-block;vertical-align:middle;line-height:100px;"><img src="./reference/figures/mini-plot.png" width="50" /></span>
 
 # Vocabulary
 
