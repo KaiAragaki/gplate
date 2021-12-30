@@ -91,14 +91,14 @@ gp_sec <- function(gp, name,
     dplyr::mutate(sec = paste0(.data$lane_h, .data$lane_v) |> forcats::fct_inorder()) |>
     dplyr::ungroup() |>
     dplyr::mutate(sec = as.integer(.data$sec),
-                  {{name}} := sec)
+                  {{name}} := as.factor(sec))
 
   if (!break_sections) {
     wd <- wd |>
       dplyr::group_by(sec) |>
       dplyr::mutate(n = dplyr::n()) |>
       dplyr::mutate(sec = ifelse(n < gp$wells_sec, NA_integer_, sec),
-                    {{name}} := sec)
+                    {{name}} := as.factor(sec))
   }
 
   gp$well_data <- wd

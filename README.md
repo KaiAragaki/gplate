@@ -12,11 +12,13 @@ span > img {
 <!-- badges: end -->
 
 **gp** is a package meant to provide introduce a **g**rammar of
-**p**lates. Microwell plates are usually arranged in visually meaningful
-ways but are not tidy data, and their manipulation into a tidy form (or
-back) is uniquely cumbersome. This package is aimed at both developers
-that create packages that ingest and produce plate data as well as for
-interactive use.
+**p**lates.
+
+Microwell plates are usually arranged in visually meaningful ways but
+are not tidy data, and their manipulation to and from a tidy form is
+cumbersome. gp is aimed at both developers that create packages that
+ingest and produce plate data as well as for interactive operating on
+microwell data.
 
 ## Installation
 
@@ -35,7 +37,7 @@ Creating a plate plot is simple:
 ``` r
 library(gp)
 gp(rows = 8, cols = 16) |>
-  gp_plot(row)
+  gp_plot(as.factor(row))
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" /> We can add
@@ -49,8 +51,8 @@ gp(rows = 16, cols = 24) |>
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
-These sections can have sections as well. KAINOTE(Easier to understand
-example here)
+These sections can have sections of their own, just by layering one
+`gp_sec` on the other.
 
 ``` r
 gp(rows = 16, cols = 24) |> 
@@ -65,20 +67,34 @@ gp(rows = 16, cols = 24) |>
 sparkline-esque plates.
 
 ``` r
-mini_plot <- gp(8, 12) |> 
+mini_plot_cols <- gp(8, 12) |> 
   gp_sec(name = "primers", ncol = 3) |> 
   gp_plot(primers) + 
   gp_mini_theme()
-ggplot2::ggsave(filename = "./man/figures/mini-plot.png", 
-                plot = mini_plot,
+ggplot2::ggsave(filename = "./man/figures/mini-plot_cols.png", 
+                plot = mini_plot_cols,
+                height = 0.5, 
+                width = 0.75, 
+                units = "in", 
+                scale = 3.5)
+
+mini_plot_rows <- gp(8, 12) |> 
+  gp_sec(name = "primers", nrow = 3) |> 
+  gp_plot(primers) + 
+  gp_mini_theme()
+ggplot2::ggsave(filename = "./man/figures/mini-plot_rows.png", 
+                plot = mini_plot_rows,
                 height = 0.5, 
                 width = 0.75, 
                 units = "in", 
                 scale = 3.5)
 ```
 
+For instance:
+
 > You should align your primers in columns
-> <img src="man/figures/mini-plot.png" width="75" />
+> <img src="man/figures/mini-plot_cols.png" width="75" /> instead of in
+> rows <img src="man/figures/mini-plot_rows.png" width="75" />
 
 # Vocabulary
 
