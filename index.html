@@ -64,7 +64,8 @@
 </div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p><strong>gp</strong> is a package meant to provide introduce a <strong>g</strong>rammar of <strong>p</strong>lates. Microwell plates are usually arranged in visually meaningful ways but are not tidy data, and their manipulation into a tidy form (or back) is uniquely cumbersome. This package is aimed at both developers that create packages that ingest and produce plate data as well as for interactive use.</p>
+<p><strong>gp</strong> is a package meant to provide introduce a <strong>g</strong>rammar of <strong>p</strong>lates.</p>
+<p>Microwell plates are usually arranged in visually meaningful ways but are not tidy data, and their manipulation to and from a tidy form is cumbersome. gp is aimed at both developers that create packages that ingest and produce plate data as well as for interactive operating on microwell data.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -80,14 +81,14 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kaiaragaki.github.io/gp/">gp</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/gp.html">gp</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fl">8</span>, cols <span class="op">=</span> <span class="fl">16</span><span class="op">)</span> |&gt;
-  <span class="fu"><a href="reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">row</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">row</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"> We can add rectangular ‘sections’ to our plates:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/gp.html">gp</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fl">16</span>, cols <span class="op">=</span> <span class="fl">24</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"my_section"</span>, nrow <span class="op">=</span> <span class="fl">12</span>, ncol <span class="op">=</span> <span class="fl">6</span>, start_corner <span class="op">=</span> <span class="st">"tl"</span>, flow <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">my_section</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
-<p>These sections can have sections as well. KAINOTE(Easier to understand example here)</p>
+<p>These sections can have sections of their own, just by layering one <code>gp_sec</code> on the other.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/gp.html">gp</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fl">16</span>, cols <span class="op">=</span> <span class="fl">24</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"my_section"</span>, nrow <span class="op">=</span> <span class="fl">12</span>, ncol <span class="op">=</span> <span class="fl">6</span>, start_corner <span class="op">=</span> <span class="st">"tl"</span>, flow <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span> |&gt; 
@@ -96,18 +97,30 @@
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 <p><code>gp</code> also has a theme - <code>gp_mini_theme</code> - that lets you create sparkline-esque plates.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mini_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span> |&gt; 
+<code class="sourceCode R"><span class="va">mini_plot_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="reference/gp_sec.html">gp_sec</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"primers"</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="reference/gp_mini_theme.html">gp_mini_theme</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ggsave</span><span class="op">(</span>filename <span class="op">=</span> <span class="st">"./man/figures/mini-plot.png"</span>, 
-                plot <span class="op">=</span> <span class="va">mini_plot</span>,
+<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ggsave</span><span class="op">(</span>filename <span class="op">=</span> <span class="st">"./man/figures/mini-plot_cols.png"</span>, 
+                plot <span class="op">=</span> <span class="va">mini_plot_cols</span>,
+                height <span class="op">=</span> <span class="fl">0.5</span>, 
+                width <span class="op">=</span> <span class="fl">0.75</span>, 
+                units <span class="op">=</span> <span class="st">"in"</span>, 
+                scale <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span>
+
+<span class="va">mini_plot_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="reference/gp_sec.html">gp_sec</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"primers"</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="reference/gp_mini_theme.html">gp_mini_theme</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ggsave</span><span class="op">(</span>filename <span class="op">=</span> <span class="st">"./man/figures/mini-plot_rows.png"</span>, 
+                plot <span class="op">=</span> <span class="va">mini_plot_rows</span>,
                 height <span class="op">=</span> <span class="fl">0.5</span>, 
                 width <span class="op">=</span> <span class="fl">0.75</span>, 
                 units <span class="op">=</span> <span class="st">"in"</span>, 
                 scale <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span></code></pre></div>
+<p>For instance:</p>
 <blockquote>
-<p>You should align your primers in columns <img src="reference/figures/mini-plot.png" width="75"></p>
+<p>You should align your primers in columns <img src="reference/figures/mini-plot_cols.png" width="75"> instead of in rows <img src="reference/figures/mini-plot_rows.png" width="75"></p>
 </blockquote>
 </div>
 </div>
