@@ -54,9 +54,11 @@ new_gp <- function(nrow = 1L, ncol = 1L){
 
 #' Make a gp object
 #'
-#' @param wells
-#' @param cols
-#' @param rows
+#' @param rows Numeric. The number of rows the plate should have.
+#' @param cols Numeric. The number of columns the plate should have.
+#' @param wells Numeric. The number of wells the plate has. If this is
+#'   specified, rows and cols must be null - they are inferred from common form
+#'   factors of plates.
 #'
 #' @return a `gp` object
 #'

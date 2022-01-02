@@ -8,17 +8,11 @@
 #'   section.
 #' @param start_corner Corner of section to place first item.
 #' @param flow Direction that subsequent items should be placed relative to first corner.
-#' @param padding Border width INSIDE the section that will be unfilled. Can
+#' @param margin Border width outside the section that will be unfilled. Can
 #'   take an argument of one (same border all around), two (top/bottom,
 #'   left/right), three (top, left/right, bottom), or four (top, right, bottom,
-#'   left).
-#' @param margin Border width OUTSIDE the section that will remain unfilled. See
-#'   above for possible argument lengths.
-#' @param break_sections If a section would need to be wrapped around the edge
-#'   of the parent section (default parent section is the plate), should it
-#'   instead shift the flow direction far enough so that it can fit without
-#'   wrapping? Will error if either `nrow` or `ncol` exceeds the parent
-#'   dimension.
+#'   left). Sections 'share' margins: if two sections are next to each other and `margin = 1`, there will be one space between them, not two.
+#' @param break_sections Should partial sections be allowed?
 #'
 #' @return
 #' @export
@@ -28,7 +22,7 @@ gp_sec <- function(gp, name,
                    nrow = NULL, ncol = NULL,
                    start_corner = c("tl", "tr", "bl", "br"),
                    flow = c("row", "col"),
-                   padding = 0, margin = 0,
+                   margin = 0,
                    wrap = FALSE,
                    break_sections = TRUE) {
 

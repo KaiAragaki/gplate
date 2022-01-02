@@ -7,7 +7,13 @@
 gp(rows = NULL, cols = NULL, wells = NULL)
 }
 \arguments{
-\item{rows}{}
+\item{rows}{Numeric. The number of rows the plate should have.}
+
+\item{cols}{Numeric. The number of columns the plate should have.}
+
+\item{wells}{Numeric. The number of wells the plate has. If this is
+specified, rows and cols must be null - they are inferred from common form
+factors of plates.}
 }
 \value{
 a \code{gp} object
