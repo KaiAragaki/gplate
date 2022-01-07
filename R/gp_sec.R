@@ -11,7 +11,7 @@
 #' @param margin Border width outside the section that will be unfilled. Can
 #'   take an argument of one (same border all around), two (top/bottom,
 #'   left/right), three (top, left/right, bottom), or four (top, right, bottom,
-#'   left). Sections 'share' margins: if two sections are next to each other and `margin = 1`, there will be one space between them, not two.
+#'   left).
 #' @param break_sections Should partial sections be allowed?
 #'
 #' @return
