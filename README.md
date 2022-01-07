@@ -96,55 +96,6 @@ For instance:
 > <img src="man/figures/mini-plot_cols.png" width="75" /> instead of in
 > rows <img src="man/figures/mini-plot_rows.png" width="75" />
 
-# Vocabulary
-
-## Axes
-
-There are only two axes when defining plates: rows and columns
-
--   `row`: The absolute row of the plate, starting at the **top** of the
-    plate. This axis corresponds most closely with the physical plate.
--   `col`: The absolute column of the plate, starting at the **left** of
-    the plate. This axis corresponds most closely with the physical
-    plate.
-
-### Modifiers
-
-These axes can have modifier(s) appended to their name, like:
-
--   `sec`: section. This is the axis number of a given
-    [section](#sections).
--   `rel`: relative. This flips the axes such that the starting corner
-    is now (1, 1)
--   `par`: parent. This indicates whether the `sec` refers to the
-    current section or the parent section.
-
-`par` will not appear without `sec`, but `sec` can appear without `par`.
-Order is important. A fully loaded column will look like
-`row_sec_par_rel`. KAINOTE(columns where?)
-
-## Sections
-
-A section is a rectangular field of wells. A plate is section - the
-largest section. Sections can have sections of their own - these are
-child sections. All sections except the plate have parent sections.
-Sections must be - at most - the same size as their parent section. **As
-of writing, sections must all be the same size, but this will likely
-change**.
-
-Sections can have attributes:
-
--   `padding`
--   `margin`
-
-## Lanes
-
-A lane is used to define a grid of sections, and is usually more than
-one well wide (otherwise it is just a row or column). Both lanes are
-only used to define sections if `wrap = FALSE`. If `wrap = TRUE`, then
-sections are allowed to `flow` off an edge in the specified direction
-(`flow = "row"` or `flow = "col"`) and continue on the next line.
-
 # TODO
 
 -   [x] Break Sections: Be able to specify if only ‘whole integer’
