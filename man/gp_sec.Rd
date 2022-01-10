@@ -11,7 +11,6 @@ gp_sec(
   ncol = NULL,
   start_corner = c("tl", "tr", "bl", "br"),
   flow = c("row", "col"),
-  padding = 0,
   margin = 0,
   wrap = FALSE,
   break_sections = TRUE
@@ -32,19 +31,12 @@ section.}
 
 \item{flow}{Direction that subsequent items should be placed relative to first corner.}
 
-\item{padding}{Border width INSIDE the section that will be unfilled. Can
+\item{margin}{Border width outside the section that will be unfilled. Can
 take an argument of one (same border all around), two (top/bottom,
 left/right), three (top, left/right, bottom), or four (top, right, bottom,
 left).}
 
-\item{margin}{Border width OUTSIDE the section that will remain unfilled. See
-above for possible argument lengths.}
-
-\item{break_sections}{If a section would need to be wrapped around the edge
-of the parent section (default parent section is the plate), should it
-instead shift the flow direction far enough so that it can fit without
-wrapping? Will error if either \code{nrow} or \code{ncol} exceeds the parent
-dimension.}
+\item{break_sections}{Should partial sections be allowed?}
 }
 \value{
 
