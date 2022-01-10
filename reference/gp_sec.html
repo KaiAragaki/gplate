@@ -49,7 +49,6 @@
   ncol <span class="op">=</span> <span class="cn">NULL</span>,
   start_corner <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tl"</span>, <span class="st">"tr"</span>, <span class="st">"bl"</span>, <span class="st">"br"</span><span class="op">)</span>,
   flow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"row"</span>, <span class="st">"col"</span><span class="op">)</span>,
-  padding <span class="op">=</span> <span class="fl">0</span>,
   margin <span class="op">=</span> <span class="fl">0</span>,
   wrap <span class="op">=</span> <span class="cn">FALSE</span>,
   break_sections <span class="op">=</span> <span class="cn">TRUE</span>
@@ -72,20 +71,13 @@ section.</p></dd>
 <dd><p>Corner of section to place first item.</p></dd>
 <dt>flow</dt>
 <dd><p>Direction that subsequent items should be placed relative to first corner.</p></dd>
-<dt>padding</dt>
-<dd><p>Border width INSIDE the section that will be unfilled. Can
+<dt>margin</dt>
+<dd><p>Border width outside the section that will be unfilled. Can
 take an argument of one (same border all around), two (top/bottom,
 left/right), three (top, left/right, bottom), or four (top, right, bottom,
 left).</p></dd>
-<dt>margin</dt>
-<dd><p>Border width OUTSIDE the section that will remain unfilled. See
-above for possible argument lengths.</p></dd>
 <dt>break_sections</dt>
-<dd><p>If a section would need to be wrapped around the edge
-of the parent section (default parent section is the plate), should it
-instead shift the flow direction far enough so that it can fit without
-wrapping? Will error if either <code>nrow</code> or <code>ncol</code> exceeds the parent
-dimension.</p></dd>
+<dd><p>Should partial sections be allowed?</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>

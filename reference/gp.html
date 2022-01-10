@@ -48,7 +48,13 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>rows</dt>
-<dd></dd>
+<dd><p>Numeric. The number of rows the plate should have.</p></dd>
+<dt>cols</dt>
+<dd><p>Numeric. The number of columns the plate should have.</p></dd>
+<dt>wells</dt>
+<dd><p>Numeric. The number of wells the plate has. If this is
+specified, rows and cols must be null - they are inferred from common form
+factors of plates.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -60,7 +66,8 @@
 changed by adding layers.</p></li>
 <li><p><code>wells</code>: Number of plate wells. Static.</p></li>
 <li><p><code>wells_sec</code>: Number of wells in the given section. When creating a plate,
-the section refers to the whole plate.</p></li>
+the section refers to the whole plate. This refers to the number of wells
+without the margin.</p></li>
 <li><p><code>wells_sec_par</code>: Number of wells in the section of the parent layer. When
 creating a plate, there is no parent layer, so the plate acts as its own
 parent.</p></li>
