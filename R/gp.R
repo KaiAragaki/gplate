@@ -72,7 +72,8 @@ new_gp <- function(nrow = 1L, ncol = 1L){
 #' - `wells`: Number of plate wells. Static.
 #'
 #' - `wells_sec`: Number of wells in the given section. When creating a plate,
-#' the section refers to the whole plate.
+#' the section refers to the whole plate. This refers to the number of wells
+#' without the margin.
 #'
 #' - `wells_sec_par`: Number of wells in the section of the parent layer. When
 #' creating a plate, there is no parent layer, so the plate acts as its own

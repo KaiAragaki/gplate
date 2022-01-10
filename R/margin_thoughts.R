@@ -11,3 +11,10 @@
 # If you want to remove only 1 around each one, you can do c(1, 1, 0, 0) or whatever.
 
 # This is conceptually simpler as well as programatically simpler
+
+# Each section should keep track of what wells of it are margin or not
+
+# Unless this is automatically kept along the way, we don't have to remember if it is 'margin top' or not
+# That doesn't make sense anyway because corner wells can be both
+# It just makes sense to have an 'is_margin' col
+
