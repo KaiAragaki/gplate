@@ -101,7 +101,7 @@ For instance:
 -   [x] Break Sections: Be able to specify if only ‘whole integer’
     sections should be allowed to appear
     -   wrap = TRUE needs to be put through this stuff too.
--   [ ] Margin/Padding
+-   [x] Margin/Padding
     -   Should probably JUST do margin for simplicity sake.
 -   [x] Real plotting functions. Also a miniplotting function for inline
     plotting (a la sparklines)

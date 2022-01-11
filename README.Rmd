@@ -1,12 +1,12 @@
 ---
 output: github_document
 ---
+
 <style type="text/css">
 span > img {
  float:left;
 }
 </style>
-
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -96,10 +96,10 @@ For instance:
 
 - [x] Break Sections: Be able to specify if only 'whole integer' sections should be allowed to appear
   - wrap = TRUE needs to be put through this stuff too.
-- [ ] Margin/Padding
+- [x] Margin/Padding
   - Should probably JUST do margin for simplicity sake.
 - [x] Real plotting functions. Also a miniplotting function for inline plotting (a la sparklines)
 - [x] pkgdown
 - [ ] update hex
-- [ ] Allow user to supply a vector for rows/cols for  section definition
+- [ ] Allow user to supply a vector for rows/cols for section definition
 - [ ] Data layering? Need to think about how to best do this.
