@@ -9,9 +9,11 @@
 #'
 #' @examples
 #' new_gp(nrow = 8L, ncol = 16L)
-new_gp <- function(nrow = 1L, ncol = 1L){
+new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame()){
 
-  stopifnot(is.integer(nrow), is.integer(ncol))
+  stopifnot(is.integer(nrow), is.integer(ncol), is.data.frame(data)|is.matrix(data))
+
+  data <- gp_unravel(data)
 
   wells <- nrow * ncol
 
@@ -38,6 +40,7 @@ new_gp <- function(nrow = 1L, ncol = 1L){
   well_data$col_sec_rel     <- well_data$col
   well_data$col_sec_par     <- well_data$col
   well_data$col_sec_par_rel <- well_data$col
+  well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
 
   structure(list(nrow = nrow,
                  ncol = ncol,

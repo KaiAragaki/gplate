@@ -14,7 +14,8 @@ gp_unravel <- function(df) {
   df |>
     dplyr::as_tibble(.name_repair = "minimal") |>
     setNames(as.character(1:ncol(df))) |>
-    dplyr::mutate(row = 1:nrow(df)) |>
-    dplyr::relocate(row) |>
-    tidyr::pivot_longer(cols = -row, names_to = "col")
+    dplyr::mutate(.row = 1:nrow(df)) |>
+    dplyr::relocate(.row) |>
+    tidyr::pivot_longer(cols = -.row, names_to = ".col") |>
+    dplyr::mutate(.col = as.integer(.col))
 }
