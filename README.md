@@ -36,7 +36,7 @@ Creating a plate plot is simple:
 
 ``` r
 library(gp)
-gp(rows = 8, cols = 16) |>
+gp(rows = 16, cols = 24) |>
   gp_plot(as.factor(row))
 ```
 
@@ -45,7 +45,7 @@ rectangular ‘sections’ to our plates:
 
 ``` r
 gp(rows = 16, cols = 24) |> 
-  gp_sec("my_section", nrow = 12, ncol = 6, start_corner = "tl", flow = "row") |> 
+  gp_sec("my_section", nrow = 12, ncol = 6) |> 
   gp_plot(my_section)
 ```
 
@@ -56,8 +56,8 @@ These sections can have sections of their own, just by layering one
 
 ``` r
 gp(rows = 16, cols = 24) |> 
-  gp_sec("my_section", nrow = 12, ncol = 6, start_corner = "tl", flow = "row") |> 
-  gp_sec("secsec", nrow = 3, ncol = 3, start_corner = "tl", flow = "col") |> 
+  gp_sec("my_section", nrow = 12, ncol = 6) |> 
+  gp_sec("secsec", nrow = 3, ncol = 3) |> 
   gp_plot(secsec)
 ```
 
