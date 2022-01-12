@@ -13,7 +13,12 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame()){
 
   stopifnot(is.integer(nrow), is.integer(ncol), is.data.frame(data)|is.matrix(data))
 
-  data <- gp_unravel(data)
+  has_size <- nrow(data) > 0 & ncol(data) > 0
+
+  if (has_size) {
+    data <- gp_unravel(data)
+  }
+
 
   wells <- nrow * ncol
 
@@ -41,7 +46,9 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame()){
   well_data$.col_sec_par     <- well_data$.col
   well_data$.col_sec_par_rel <- well_data$.col
 
-  well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
+  if (has_size) {
+    well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
+  }
 
   structure(list(nrow = nrow,
                  ncol = ncol,
