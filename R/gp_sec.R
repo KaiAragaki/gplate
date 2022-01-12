@@ -138,6 +138,11 @@ gp_sec <- function(gp, name,
       dplyr::group_by(.sec) |>
       dplyr::mutate(.n = dplyr::n()) |>
       dplyr::mutate(.sec = ifelse(.n < gp$wells_sec, NA_integer_, .data$.sec) |> as.factor(),
+                    .sec = as.numeric(.sec), # No idea why this has to be a separate line to work, but it does
+                    {{name}} := as.factor(.sec)) |>
+      dplyr::ungroup() |>
+      dplyr::mutate(.row_sec = ifelse(is.na(.sec), NA_integer_, .row_sec),
+                    .col_sec = ifelse(is.na(.sec), NA_integer_, .col_sec))
   }
 
   gp$well_data <- wd
