@@ -13,8 +13,8 @@
 gp_unravel <- function(df) {
   df |>
     dplyr::as_tibble(.name_repair = "minimal") |>
-    setNames(as.character(1:ncol(df))) |>
-    dplyr::mutate(.row = 1:nrow(df)) |>
+    setNames(as.character(seq_len(ncol(df)))) |>
+    dplyr::mutate(.row = seq_len(nrow(df))) |>
     dplyr::relocate(.row) |>
     tidyr::pivot_longer(cols = -.row, names_to = ".col") |>
     dplyr::mutate(.col = as.integer(.col))
