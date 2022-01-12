@@ -24,22 +24,23 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame()){
   wells_sec     <- wells
   wells_sec_par <- wells
 
-  well_data <- tidyr::expand_grid(row = seq_len(nrow), col = seq_len(ncol))
+  well_data <- tidyr::expand_grid(.row = seq_len(nrow), .col = seq_len(ncol))
 
-  well_data$sec             <- 1L
-  well_data$sec_par         <- 1L
+  well_data$.sec             <- 1L
+  well_data$.sec_par         <- 1L
 
-  well_data$row_rel         <- well_data$row
-  well_data$row_sec         <- well_data$row
-  well_data$row_sec_rel     <- well_data$row
-  well_data$row_sec_par     <- well_data$row
-  well_data$row_sec_par_rel <- well_data$row
+  well_data$.row_rel         <- well_data$.row
+  well_data$.row_sec         <- well_data$.row
+  well_data$.row_sec_rel     <- well_data$.row
+  well_data$.row_sec_par     <- well_data$.row
+  well_data$.row_sec_par_rel <- well_data$.row
 
-  well_data$col_rel         <- well_data$col
-  well_data$col_sec         <- well_data$col
-  well_data$col_sec_rel     <- well_data$col
-  well_data$col_sec_par     <- well_data$col
-  well_data$col_sec_par_rel <- well_data$col
+  well_data$.col_rel         <- well_data$.col
+  well_data$.col_sec         <- well_data$.col
+  well_data$.col_sec_rel     <- well_data$.col
+  well_data$.col_sec_par     <- well_data$.col
+  well_data$.col_sec_par_rel <- well_data$.col
+
   well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
 
   structure(list(nrow = nrow,
