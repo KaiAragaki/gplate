@@ -18,7 +18,7 @@
 #' @export
 #'
 #' @examples
-gp_sec <- function(gp, name,
+gp_sec <- function(gp, name, labels = NULL,
                    nrow = NULL, ncol = NULL,
                    start_corner = c("tl", "tr", "bl", "br"),
                    flow = c("row", "col"),
@@ -35,49 +35,20 @@ gp_sec <- function(gp, name,
             is.logical(wrap),
             is.logical(break_sections))
 
-  # Get margin args ------------------------------------------------------------
-  if (length(margin) == 1) {
-    margin_bottom <- margin_top <- margin_left <- margin_right <- margin
-  }
-
-  if (length(margin) == 2) {
-    margin_bottom <- margin_top <- margin[1]
-    margin_left <- margin_right <- margin[2]
-  }
-
-  if (length(margin) == 3) {
-    margin_top <- margin[1]
-    margin_left <- margin_right <- margin[2]
-    margin_bottom <- margin[3]
-  }
-
-  if (length(margin) == 4) {
-    margin_top <- margin[1]
-    margin_right <- margin[2]
-    margin_bottom <- margin[3]
-    margin_left <- margin[4]
-  }
+  margin <- get_margin(margin)
 
   # Child becomes parent -------------------------------------------------------
-  gp$nrow_sec_par  <- gp$nrow_sec
-  gp$ncol_sec_par  <- gp$ncol_sec
-  gp$wells_sec_par <- gp$wells_sec
+  gp <- make_child_parent(gp)
 
   wd <- gp$well_data
 
-  wd$.sec_par         <- wd$.sec
-  wd$.row_sec_par     <- wd$.row_sec
-  wd$.col_sec_par     <- wd$.col_sec
-  wd$.row_sec_par_rel <- wd$.row_sec_rel
-  wd$.col_sec_par_rel <- wd$.col_sec_rel
-
   # If nrow/ncol not set, inherit parents --------------------------------------
   if (!is.null(nrow)) {
-    gp$nrow_sec <- nrow + margin_top + margin_bottom
+    gp$nrow_sec <- nrow + margin$top + margin$bottom
   }
 
   if (!is.null(ncol)) {
-    gp$ncol_sec <- ncol + margin_left + margin_right
+    gp$ncol_sec <- ncol + margin$left + margin$right
   }
 
   # Update metadata for child --------------------------------------------------
@@ -105,11 +76,15 @@ gp_sec <- function(gp, name,
   # Mark if something is a margin ----------------------------------------------
   wd <- wd |>
     dplyr::mutate(.is_margin = FALSE,
-                  .is_margin = .is_margin | .col_sec %in% 0:margin_left,
-                  .is_margin = .is_margin | .col_sec %in% (max(.col_sec, na.rm = TRUE) + 1):(max(.col_sec, na.rm = TRUE) + 1 - margin_right),
-                  .is_margin = .is_margin | .row_sec %in% 0:margin_top,
-                  .is_margin = .is_margin | .row_sec %in% (max(.row_sec, na.rm = TRUE) + 1):(max(.row_sec, na.rm = TRUE) + 1 - margin_bottom))
+                  .is_margin =
+                    .is_margin |
+                    .col_sec %in% 0:margin$left |
+                    .col_sec %in% (max(.col_sec, na.rm = TRUE) + 1):(max(.col_sec, na.rm = TRUE) + 1 - margin$right) |
+                    .row_sec %in% 0:margin$top |
+                    .row_sec %in% (max(.row_sec, na.rm = TRUE) + 1):(max(.row_sec, na.rm = TRUE) + 1 - margin$bottom))
 
+  # If you're a margin, you're not part of a section. The counter should only
+  # start at 1 with items that aren't margins.
   wd <- wd |>
     dplyr::mutate(.col_sec = dplyr::if_else(.is_margin, NA_integer_, as.integer(.col_sec))) |>
     dplyr::arrange(.col_sec) |>
@@ -117,6 +92,7 @@ gp_sec <- function(gp, name,
     dplyr::mutate(.row_sec = dplyr::if_else(.is_margin, NA_integer_, as.integer(.row_sec))) |>
     dplyr::arrange(.row_sec) |>
     dplyr::mutate(.row_sec = as.character(.row_sec) |> forcats::fct_inorder() |> as.numeric())
+
 
   if (wrap) {
     wd <- dplyr::mutate(wd, sec = dplyr::if_else(is.na(.col_sec) | is.na(.row_sec), NA_integer_, .sec))
@@ -143,6 +119,12 @@ gp_sec <- function(gp, name,
       dplyr::ungroup() |>
       dplyr::mutate(.row_sec = ifelse(is.na(.sec), NA_integer_, .row_sec),
                     .col_sec = ifelse(is.na(.sec), NA_integer_, .col_sec))
+  }
+
+  if (!is.null(labels)) {
+    length(labels) <- length(levels(wd[[name]]))
+    wd <- wd |>
+      dplyr::mutate({{name}} := factor(.data[[name]], levels = levels(.data[[name]]), labels = labels))
   }
 
   gp$well_data <- wd
@@ -242,4 +224,38 @@ gp_rel_sec_to_sec <- function(wd, start_corner, nrow, ncol) {
     wd$.row_sec <- -wd$.row_sec_rel + nrow + 1
   }
   wd
+}
+
+make_child_parent <- function(gp) {
+  gp$nrow_sec_par  <- gp$nrow_sec
+  gp$ncol_sec_par  <- gp$ncol_sec
+  gp$wells_sec_par <- gp$wells_sec
+
+  gp$well_data$.sec_par         <- gp$well_data$.sec
+  gp$well_data$.row_sec_par     <- gp$well_data$.row_sec
+  gp$well_data$.col_sec_par     <- gp$well_data$.col_sec
+  gp$well_data$.row_sec_par_rel <- gp$well_data$.row_sec_rel
+  gp$well_data$.col_sec_par_rel <- gp$well_data$.col_sec_rel
+
+  gp
+}
+
+get_margin <- function(m) {
+
+  if (length(m) == 1) {
+    return(list(top = m[1], right = m[1], bottom = m[1], left = m[1]))
+  }
+
+  if (length(m) == 2) {
+    return(list(top = m[1], right = m[2], bottom = m[1], left = m[2]))
+  }
+
+  if (length(m) == 3) {
+    return(list(top = m[1], right = m[2], bottom = m[3], left = m[2]))
+  }
+
+  if (length(m) == 4) {
+    return(list(top = m[1], right = m[2], bottom = m[3], left = m[4]))
+  }
+
 }
