@@ -74,7 +74,8 @@ gp_sec <- function(gp, name, labels = NULL,
     ## Mark if something is a margin -------------------------------------------
     add_is_margin(margin) |>
     ## Margins aren't part of sections. Nums should start with non-margins -----
-    exclude_margin_from_sec()
+    exclude_margin_from_sec() |>
+    define_sec(wrap, flow)
 
 
   # TODO: Make wrapping more integrated
@@ -83,15 +84,6 @@ gp_sec <- function(gp, name, labels = NULL,
     gp$well_data <- wd
     return(gp)
   }
-
-  wd <- wd |>
-    dplyr::group_by(.data$.lane_h, .data$.lane_v) |>
-    dplyr::rowwise() |>
-    dplyr::mutate(.sec = paste0(.data$.lane_h, .data$.lane_v) |> forcats::fct_inorder()) |>
-    dplyr::ungroup() |>
-    dplyr::mutate(.sec = as.integer(.data$.sec),
-                  .sec = dplyr::if_else(is.na(.col_sec) | is.na(.row_sec), NA_integer_, .sec),
-                  {{name}} := as.factor(.sec))
 
   if (!break_sections) {
     wd <- wd |>
@@ -152,8 +144,6 @@ gp_arrange_for_rel_ax <- function(wd, start_corner, flow) {
   }
 }
 
-
-
 gp_make_sec_rel_ax <- function(wd, gp) {
   wd |>
     dplyr::mutate(.row_sec_rel = ((.data$.row_rel_child_sec_par - 1) %% gp$nrow_sec) + 1,
@@ -167,10 +157,6 @@ gp_define_lanes <- function(wd, flow, wrap, nrow, ncol, wells) {
       wd <- wd |>
         dplyr::mutate(.lane_h = ((.data$.row_rel_child_sec_par - 1) %/% nrow) + 1,
                       .lane_v = 1) |>
-        dplyr::arrange(.row_sec_rel) |>
-        dplyr::group_by(.row_sec_rel) |>
-        dplyr::mutate(.sec = rep(1:99, each = ncol, length.out = dplyr::n())) |>
-        dplyr::ungroup() |>
         dplyr::arrange(.row_sec_rel, .lane_h) |>
         dplyr::group_by(.row_sec_rel) |>
         dplyr::mutate(.col_sec_rel = rep(1:ncol, length.out = max(.data$.col)*max(.data$.lane_h))) |>
@@ -182,9 +168,10 @@ gp_define_lanes <- function(wd, flow, wrap, nrow, ncol, wells) {
       wd <- wd |>
         dplyr::mutate(.lane_h = 1,
                       .lane_v = ((.data$.col_rel_child_sec_par - 1) %/% ncol) + 1) |>
-        dplyr::arrange(.data$.col_sec_rel) |>
-        dplyr::group_by(.data$.col_sec_rel) |>
-        dplyr::mutate(.sec = rep(1:99, each = nrow, length.out = dplyr::n()))
+        dplyr::arrange(.col_sec_rel, .lane_v) |>
+        dplyr::group_by(.col_sec_rel) |>
+        dplyr::mutate(.row_sec_rel = rep(1:nrow, length.out = max(.data$.row)*max(.data$.lane_v))) |>
+        dplyr::ungroup()
       return(wd)
     }
   }
@@ -237,6 +224,36 @@ exclude_margin_from_sec <- function(wd) {
     dplyr::arrange(.row_sec) |>
     dplyr::mutate(.row_sec = as.character(.row_sec) |> forcats::fct_inorder() |> as.numeric())
 
+}
+
+define_sec <- function(wd, wrap, flow) {
+  if (wrap) {
+    if (flow == "row") {
+      wd <- wd |>
+        dplyr::arrange(.data$.row_sec_rel) |>
+        dplyr::group_by(.data$.row_sec_rel) |>
+        dplyr::mutate(.sec = rep(1:99, each = ncol, length.out = dplyr::n())) |>
+        dplyr::ungroup()
+    }
+
+    if (flow == "col") {
+      wd <- wd |>
+        dplyr::arrange(.data$.col_sec_rel) |>
+        dplyr::group_by(.data$.col_sec_rel) |>
+        dplyr::mutate(.sec = rep(1:99, each = nrow, length.out = dplyr::n())) |>
+        dplyr::ungroup()
+    }
+  } else {
+    wd <- wd |>
+      dplyr::group_by(.data$.lane_h, .data$.lane_v) |>
+      dplyr::rowwise() |>
+      dplyr::mutate(.sec = paste0(.data$.lane_h, .data$.lane_v) |> forcats::fct_inorder()) |>
+      dplyr::ungroup()
+  }
+
+  wd |> dplyr::mutate(.sec = as.integer(.data$.sec),
+                      .sec = dplyr::if_else(is.na(.col_sec) | is.na(.row_sec), NA_integer_, .sec),
+                      {{name}} := as.factor(.sec))
 }
 
 make_child_parent <- function(gp) {
