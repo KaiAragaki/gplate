@@ -1,0 +1,53 @@
+---
+title: "Using gp to wrangle plate data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using gp to wrangle plate data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(gp)
+```
+
+# Introduction
+
+If you work in a lab or with lab data, you've probably had to deal with data that look like this:
+
+```{r}
+pcr_plate
+```
+
+Just looking at this sucks. You can use some `tidyverse` magic or use `plater` to help you at least make this matrix into a tidy data.frame, but annotating the wells as to which rows and which columns are what can be soul-rending (heavens forbid you have a non-standard plate layout). In this vignette, we'll not only tidy these data, but annotate them in a fairly painless process.
+
+
+# The data
+
+The data shown above represent the relative quantities (RQs) of a qPCR run with three primers:
+
+```{r, echo = FALSE}
+gp(16, 24) |> 
+  gp_sec("no_border", margin = 1) |> 
+  gp_sec("primers", nrow = 9, ncol = 3, c("Primer 1", "Primer 2", "Primer 3")) |> 
+  gp_plot(primers)
+
+```
+
+Four cell-lines, plus a non-targetting control (NTC):
+
+```{r}
+gp(16, 24) |> 
+  gp_sec("no_border", margin = 1) |> 
+  gp_sec("primers", nrow = 9, ncol = 3, c("Primer 1", "Primer 2", "Primer 3")) |> 
+  gp_sec("cell line", nrow = 2, c("1", "2", "3", "4")) |> 
+  gp_plot(`cell line`)
+```
+

@@ -29,11 +29,23 @@ gp_sec <- function(gp, name, labels = NULL,
   # Checks ---------------------------------------------------------------------
   flow <- rlang::arg_match(flow)
   start_corner <- rlang::arg_match(start_corner)
+
+  if (wrap & !break_sections) {
+    rlang::abort(message = c("`break_sections` must be TRUE if `wrap` is TRUE",
+                             i = "Wrapping requires breaking sections"))
+  }
+
+  if (missing(name)) {
+    rlang::abort(message = c("`name` must be supplied."))
+  }
+
   stopifnot(is.numeric(nrow) | is.null(nrow),
             is.numeric(ncol) | is.null(ncol),
             is.numeric(margin),
             is.logical(wrap),
             is.logical(break_sections))
+
+  stopifnot((flow == "row" & length(nrow) == 1) | (flow == "col" & length(ncol) == 1))
 
   # Get margin -----------------------------------------------------------------
   margin <- get_margin(margin)
@@ -58,8 +70,6 @@ gp_sec <- function(gp, name, labels = NULL,
   gp$wells_sec <- nrow * ncol
 
   # Section demarcation --------------------------------------------------------
-
-
   wd <- wd |>
     ## Make relative axes ------------------------------------------------------
     gp_make_rel_ax(start_corner, flow) |>
@@ -75,15 +85,7 @@ gp_sec <- function(gp, name, labels = NULL,
     add_is_margin(margin) |>
     ## Margins aren't part of sections. Nums should start with non-margins -----
     exclude_margin_from_sec() |>
-    define_sec(wrap, flow)
-
-
-  # TODO: Make wrapping more integrated
-  if (wrap) {
-    wd <- dplyr::mutate(wd, .sec = dplyr::if_else(is.na(.col_sec) | is.na(.row_sec), NA_integer_, .sec))
-    gp$well_data <- wd
-    return(gp)
-  }
+    define_sec(wrap, flow, arg_name = {{name}})
 
   if (!break_sections) {
     wd <- wd |>
@@ -226,7 +228,7 @@ exclude_margin_from_sec <- function(wd) {
 
 }
 
-define_sec <- function(wd, wrap, flow) {
+define_sec <- function(wd, wrap, flow, arg_name) {
   if (wrap) {
     if (flow == "row") {
       wd <- wd |>
@@ -251,9 +253,10 @@ define_sec <- function(wd, wrap, flow) {
       dplyr::ungroup()
   }
 
-  wd |> dplyr::mutate(.sec = as.integer(.data$.sec),
+  wd <- wd |> dplyr::mutate(.sec = as.integer(.data$.sec),
                       .sec = dplyr::if_else(is.na(.col_sec) | is.na(.row_sec), NA_integer_, .sec),
-                      {{name}} := as.factor(.sec))
+                      {{arg_name}} := as.factor(.sec))
+  wd
 }
 
 make_child_parent <- function(gp) {

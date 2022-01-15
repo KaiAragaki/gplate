@@ -9,16 +9,15 @@
 #'
 #' @examples
 #' new_gp(nrow = 8L, ncol = 16L)
-new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame()){
+new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 
   stopifnot(is.integer(nrow), is.integer(ncol), is.data.frame(data)|is.matrix(data))
 
   has_size <- nrow(data) > 0 & ncol(data) > 0
 
-  if (has_size) {
+  if (has_size & !tidy) {
     data <- gp_unravel(data)
   }
-
 
   wells <- nrow * ncol
 
@@ -152,7 +151,7 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame()){
 #'
 #' gp(rows = 6, cols = 17)
 #'
-gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL){
+gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE){
 
   if (all(is.null(wells), is.null(cols), is.null(rows))) {
     stop("Either wells or cols + rows must be set")
@@ -178,7 +177,7 @@ gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL){
     data <- data.frame()
   }
 
-  new_gp(nrow = as.integer(rows), ncol = as.integer(cols), data = data)
+  new_gp(nrow = as.integer(rows), ncol = as.integer(cols), data = data, tidy = tidy)
 }
 
 #' Coerce object to gp
