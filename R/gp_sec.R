@@ -27,17 +27,9 @@ gp_sec <- function(gp, name, labels = NULL,
                    break_sections = TRUE) {
 
   # Checks ---------------------------------------------------------------------
-  flow <- rlang::arg_match(flow)
-  start_corner <- rlang::arg_match(start_corner)
-
-  if (wrap & !break_sections) {
-    rlang::abort(message = c("`break_sections` must be TRUE if `wrap` is TRUE",
-                             i = "Wrapping requires breaking sections"))
-  }
-
-  if (missing(name)) {
-    rlang::abort(message = c("`name` must be supplied."))
-  }
+  check_has_name(name)
+  check_break_if_wrap(wrap, break_sections)
+  check_if_flow_and_custom_dims(flow, nrow, ncol)
 
   stopifnot(is.numeric(nrow) | is.null(nrow),
             is.numeric(ncol) | is.null(ncol),
@@ -45,16 +37,11 @@ gp_sec <- function(gp, name, labels = NULL,
             is.logical(wrap),
             is.logical(break_sections))
 
-  stopifnot((flow == "row" & length(nrow) == 1) | (flow == "col" & length(ncol) == 1))
-
   # Get margin -----------------------------------------------------------------
   margin <- get_margin(margin)
 
   # Make child parent ----------------------------------------------------------
   gp <- make_child_parent(gp)
-
-  # Make short well_data alias, wd ---------------------------------------------
-  wd <- gp$well_data
 
   # Get section dimensions including margins (if any) --------------------------
   # If nrow/ncol is not provided, parents used
@@ -68,6 +55,13 @@ gp_sec <- function(gp, name, labels = NULL,
 
   # Update metadata for child --------------------------------------------------
   gp$wells_sec <- nrow * ncol
+
+  # Make short well_data alias, wd ---------------------------------------------
+  wd <- gp$well_data
+
+  if (wrap) {
+    wd <- wd_unwrap(wd, flow, gp$nrow_sec, gp$ncol_sec)
+  }
 
   # Section demarcation --------------------------------------------------------
   wd <- wd |>
