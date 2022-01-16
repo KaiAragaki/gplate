@@ -49,6 +49,22 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
     well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
   }
 
+  row_coord_map <- tibble(
+    row_sec_par = seq_len(nrow),
+    row_sec_par_rel = row_sec_par,
+    row_sec = row_sec_par,
+    row_sec_rel = row_sec_par,
+    row_rel_child_sec_par = row_sec_par
+  )
+
+  col_coord_map <- tibble(
+    col_sec_par = seq_len(ncol),
+    col_sec_par_rel = col_sec_par,
+    col_sec = col_sec_par,
+    col_sec_rel = col_sec_par,
+    col_rel_child_sec_par = col_sec_par
+  )
+
   structure(list(nrow = nrow,
                  ncol = ncol,
                  wells = wells,
@@ -58,7 +74,9 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
                  ncol_sec = ncol_sec,
                  ncol_sec_par = ncol_sec_par,
                  wells_sec = wells_sec,
-                 wells_sec_par = wells_sec_par),
+                 wells_sec_par = wells_sec_par,
+                 row_coord_map = row_coord_map,
+                 col_coord_map = col_coord_map),
             class = "gp")
 }
 
