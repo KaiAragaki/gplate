@@ -43,9 +43,6 @@ gp_sec <- function(gp, name, labels = NULL,
   # Make child parent ----------------------------------------------------------
   gp <- make_child_parent(gp)
 
-  # Make short well_data alias, wd ---------------------------------------------
-  wd <- gp$well_data
-
   # Get section dimensions including margins (if any) --------------------------
   # If nrow/ncol is not provided, parents used
   if (!is.null(nrow)) {
@@ -58,6 +55,13 @@ gp_sec <- function(gp, name, labels = NULL,
 
   # Update metadata for child --------------------------------------------------
   gp$wells_sec <- nrow * ncol
+
+  # Make short well_data alias, wd ---------------------------------------------
+  wd <- gp$well_data
+
+  if (wrap) {
+    wd <- wd_unwrap(wd, flow, gp$nrow_sec, gp$ncol_sec)
+  }
 
   # Section demarcation --------------------------------------------------------
   wd <- wd |>
