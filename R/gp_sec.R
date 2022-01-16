@@ -27,25 +27,15 @@ gp_sec <- function(gp, name, labels = NULL,
                    break_sections = TRUE) {
 
   # Checks ---------------------------------------------------------------------
-  flow <- rlang::arg_match(flow)
-  start_corner <- rlang::arg_match(start_corner)
-
-  if (wrap & !break_sections) {
-    rlang::abort(message = c("`break_sections` must be TRUE if `wrap` is TRUE",
-                             i = "Wrapping requires breaking sections"))
-  }
-
-  if (missing(name)) {
-    rlang::abort(message = c("`name` must be supplied."))
-  }
+  check_has_name(name)
+  check_break_if_wrap(wrap, break_sections)
+  check_if_flow_and_custom_dims(flow, nrow, ncol)
 
   stopifnot(is.numeric(nrow) | is.null(nrow),
             is.numeric(ncol) | is.null(ncol),
             is.numeric(margin),
             is.logical(wrap),
             is.logical(break_sections))
-
-  stopifnot((flow == "row" & length(nrow) == 1) | (flow == "col" & length(ncol) == 1))
 
   # Get margin -----------------------------------------------------------------
   margin <- get_margin(margin)
