@@ -37,32 +37,28 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
   well_data$.row_sec         <- well_data$.row
   well_data$.row_sec_rel     <- well_data$.row
   well_data$.row_sec_par     <- well_data$.row
-  well_data$.row_sec_par_rel <- well_data$.row
 
   well_data$.col_rel         <- well_data$.col
   well_data$.col_sec         <- well_data$.col
   well_data$.col_sec_rel     <- well_data$.col
   well_data$.col_sec_par     <- well_data$.col
-  well_data$.col_sec_par_rel <- well_data$.col
 
   if (has_size) {
     well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
   }
 
   row_coord_map <- tibble(
-    row_sec_par = seq_len(nrow),
-    row_sec_par_rel = row_sec_par,
-    row_sec = row_sec_par,
-    row_sec_rel = row_sec_par,
-    row_rel_child_sec_par = row_sec_par
+    sec_par = seq_len(nrow),
+    sec = sec_par,
+    sec_rel = sec_par,
+    rel_child_sec_par = sec_par
   )
 
   col_coord_map <- tibble(
-    col_sec_par = seq_len(ncol),
-    col_sec_par_rel = col_sec_par,
-    col_sec = col_sec_par,
-    col_sec_rel = col_sec_par,
-    col_rel_child_sec_par = col_sec_par
+    sec_par = seq_len(ncol),
+    sec = sec_par,
+    sec_rel = sec_par,
+    rel_child_sec_par = sec_par
   )
 
   structure(list(nrow = nrow,

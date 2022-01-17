@@ -26,25 +26,27 @@ gp_sec <- function(gp, name, labels = NULL,
                    wrap = FALSE,
                    break_sections = TRUE) {
 
-  # Checks ---------------------------------------------------------------------
-  check_has_name(name)
-  check_break_if_wrap(wrap, break_sections)
-  check_if_flow_and_custom_dims(flow, nrow, ncol)
 
+  # Checks
   stopifnot(is.numeric(nrow) | is.null(nrow),
             is.numeric(ncol) | is.null(ncol),
             is.numeric(margin),
             is.logical(wrap),
             is.logical(break_sections))
 
-  # Get margin -----------------------------------------------------------------
-  margin <- get_margin(margin)
+  flow <- rlang::arg_match(flow)
+  start_corner <- rlang::arg_match(start_corner)
+  check_has_name(name)
+  check_break_if_wrap(wrap, break_sections)
+  check_if_flow_and_custom_dims(flow, nrow, ncol)
 
-  # Make child parent ----------------------------------------------------------
+
+
+  margin <- get_margin(margin)
   gp <- make_child_parent(gp)
 
-  # Get section dimensions including margins (if any) --------------------------
-  # If nrow/ncol is not provided, parents used
+  # Get sec dims + margin
+  # If no nrow/ncol, use parents
   if (!is.null(nrow)) {
     gp$nrow_sec <- nrow + margin$top + margin$bottom
   }
@@ -53,28 +55,34 @@ gp_sec <- function(gp, name, labels = NULL,
     gp$ncol_sec <- ncol + margin$left + margin$right
   }
 
-  # Update metadata for child --------------------------------------------------
+  # Update child metadata
   gp$wells_sec <- nrow * ncol
 
-  # Make short well_data alias, wd ---------------------------------------------
-  wd <- gp$well_data
-
   if (wrap) {
-    wd <- wd_unwrap(wd, flow, gp$nrow_sec, gp$ncol_sec)
+    gp <- gp_unwrap(gp, flow)
+    if (flow == "row") {
+      gp$ncol_sec_par <- max(gp$well_data$.col_sec)
+      gp$nrow_sec_par <- nrow
+    }
+
+    if (flow == "col") {
+      gp$nrow_sec_par <- max(gp$well_data$.row_sec)
+      gp$ncol_sec_par <- ncol
+    }
   }
+
+  gp <- row_coord_map(gp, start_corner)
+  gp <- col_coord_map(gp, start_corner)
+
+
+  # This creates a 'section stamp'...now we just need to figure out how to use it
+  # Perhaps if we join directly to wd, we don't have to create an intermediate stamp
+  stamp <- expand_grid(row_sec_par = gp$row_coord_map$sec_par, col_sec_par = gp$col_coord_map$sec_par) |>
+    left_join(gp$row_coord_map, by = c(row_sec_par = "sec_par")) |>
+    left_join(gp$col_coord_map, by = c(col_sec_par = "sec_par"), suffix = c("_row", "_col"))
 
   # Section demarcation --------------------------------------------------------
   wd <- wd |>
-    ## Make relative axes ------------------------------------------------------
-    gp_make_rel_ax(start_corner, flow) |>
-    ## Make sec_rel_ax, relative to CHILD direction in PARENT section ----------
-    gp_make_child_rel_sec_par_ax(start_corner, flow) |>
-    ## Make sec_rel_ax ---------------------------------------------------------
-    gp_make_sec_rel_ax(gp) |>
-    ## Define lanes ------------------------------------------------------------
-    gp_define_lanes(flow, wrap, gp$nrow_sec, gp$ncol_sec, gp$wells) |>
-    ## Make absolute section axes from relative section axes -------------------
-    gp_rel_sec_to_sec(start_corner, gp$nrow_sec, gp$ncol_sec) |>
     ## Mark if something is a margin -------------------------------------------
     add_is_margin(margin) |>
     ## Margins aren't part of sections. Nums should start with non-margins -----
@@ -102,102 +110,6 @@ gp_sec <- function(gp, name, labels = NULL,
   gp$well_data <- wd
 
   gp
-}
-
-gp_make_rel_ax <- function(wd, start_corner, flow) {
-  wd |>
-    gp_arrange_for_rel_ax(start_corner, flow) |>
-    dplyr::mutate(.row_rel = .data$.row |> as.character() |> forcats::fct_inorder() |> as.integer(),
-                  .col_rel = .data$.col |> as.character() |> forcats::fct_inorder() |> as.integer())
-}
-
-gp_make_child_rel_sec_par_ax <- function(wd, start_corner, flow) {
-  wd |>
-    gp_arrange_for_rel_ax(start_corner, flow) |>
-    dplyr::mutate(.row_rel_child_sec_par = .data$.row_sec_par |> as.character() |> forcats::fct_inorder() |> as.integer(),
-                  .col_rel_child_sec_par = .data$.col_sec_par |> as.character() |> forcats::fct_inorder() |> as.integer())
-}
-
-gp_arrange_for_rel_ax <- function(wd, start_corner, flow) {
-  if (start_corner == "tl") {
-    if (flow == "row") return(dplyr::arrange(wd, .data$.sec, .data$.row_sec_par, .data$.col_sec_par))
-    else return(dplyr::arrange(wd, .data$.sec, .data$.col_sec_par, .data$.row_sec_par))
-  }
-
-  if (start_corner == "tr") {
-    if (flow == "row") return(dplyr::arrange(wd, .data$.sec, .data$.row_sec_par, dplyr::desc(.data$.col_sec_par)))
-    else return(dplyr::arrange(wd, .data$.sec, dplyr::desc(.data$.col_sec_par), .data$.row_sec_par))
-  }
-
-  if (start_corner == "bl") {
-    if (flow == "row") return(dplyr::arrange(wd, .data$.sec, dplyr::desc(.data$.row_sec_par), .data$.col_sec_par))
-    else return(dplyr::arrange(wd, .data$.sec, .data$.col_sec_par, dplyr::desc(.data$.row_sec_par)))
-  }
-
-  if (start_corner == "br") {
-    if (flow == "row") return(dplyr::arrange(wd, .data$.sec, dplyr::desc(.data$.row_sec_par), dplyr::desc(.data$.col_sec_par)))
-    else return(dplyr::arrange(wd, .data$.sec, dplyr::desc(.data$.col_sec_par), dplyr::desc(.data$.row_sec_par)))
-  }
-}
-
-gp_make_sec_rel_ax <- function(wd, gp) {
-  wd |>
-    dplyr::mutate(.row_sec_rel = ((.data$.row_rel_child_sec_par - 1) %% gp$nrow_sec) + 1,
-                  .col_sec_rel = ((.data$.col_rel_child_sec_par - 1) %% gp$ncol_sec) + 1)
-}
-
-gp_define_lanes <- function(wd, flow, wrap, nrow, ncol, wells) {
-
-  if (wrap) {
-    if (flow == "row") {
-      wd <- wd |>
-        dplyr::mutate(.lane_h = ((.data$.row_rel_child_sec_par - 1) %/% nrow) + 1,
-                      .lane_v = 1) |>
-        dplyr::arrange(.row_sec_rel, .lane_h) |>
-        dplyr::group_by(.row_sec_rel) |>
-        dplyr::mutate(.col_sec_rel = rep(1:ncol, length.out = max(.data$.col)*max(.data$.lane_h))) |>
-        dplyr::ungroup()
-      return(wd)
-    }
-
-    if (flow == "col") {
-      wd <- wd |>
-        dplyr::mutate(.lane_h = 1,
-                      .lane_v = ((.data$.col_rel_child_sec_par - 1) %/% ncol) + 1) |>
-        dplyr::arrange(.col_sec_rel, .lane_v) |>
-        dplyr::group_by(.col_sec_rel) |>
-        dplyr::mutate(.row_sec_rel = rep(1:nrow, length.out = max(.data$.row)*max(.data$.lane_v))) |>
-        dplyr::ungroup()
-      return(wd)
-    }
-  }
-
-  wd <- wd |>
-    dplyr::mutate(.lane_h = ((.data$.col_rel_child_sec_par - 1) %/% ncol) + 1,
-                  .lane_v = ((.data$.row_rel_child_sec_par - 1) %/% nrow) + 1)
-}
-
-gp_rel_sec_to_sec <- function(wd, start_corner, nrow, ncol) {
-  if (start_corner == "tl") {
-    wd$.col_sec <- wd$.col_sec_rel
-    wd$.row_sec <- wd$.row_sec_rel
-  }
-
-  if (start_corner == "tr") {
-    wd$.col_sec <- -wd$.col_sec_rel + ncol + 1
-    wd$.row_sec <- wd$.row_sec_rel
-  }
-
-  if (start_corner == "bl") {
-    wd$.col_sec <- wd$.col_sec_rel
-    wd$.row_sec <- -wd$.row_sec_rel + nrow + 1
-  }
-
-  if (start_corner == "br") {
-    wd$.col_sec <- -wd$.col_sec_rel + ncol + 1
-    wd$.row_sec <- -wd$.row_sec_rel + nrow + 1
-  }
-  wd
 }
 
 add_is_margin <- function(wd, margin) {
@@ -261,8 +173,6 @@ make_child_parent <- function(gp) {
   gp$well_data$.sec_par         <- gp$well_data$.sec
   gp$well_data$.row_sec_par     <- gp$well_data$.row_sec
   gp$well_data$.col_sec_par     <- gp$well_data$.col_sec
-  gp$well_data$.row_sec_par_rel <- gp$well_data$.row_sec_rel
-  gp$well_data$.col_sec_par_rel <- gp$well_data$.col_sec_rel
 
   gp
 }
