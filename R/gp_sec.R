@@ -26,7 +26,7 @@ gp_sec <- function(gp, name, labels = NULL,
                    wrap = FALSE,
                    break_sections = TRUE) {
 
-  # Checks
+  # Checks ---------------------------------------------------------------------
   stopifnot(is.numeric(nrow) | is.null(nrow),
             is.numeric(ncol) | is.null(ncol),
             is.numeric(margin),
@@ -38,7 +38,7 @@ gp_sec <- function(gp, name, labels = NULL,
   check_has_name(name)
   check_break_if_wrap(wrap, break_sections)
   check_if_flow_and_custom_dims(flow, nrow, ncol)
-
+  # ----------------------------------------------------------------------------
   margin <- get_margin(margin)
   gp <- make_child_parent(gp)
 
@@ -69,55 +69,36 @@ gp_sec <- function(gp, name, labels = NULL,
   }
 
   # Probably temporary.
-  gp$well_data <- gp$well_data |>
-    dplyr::select(.row, .col)
+  # gp$well_data <- gp$well_data |>
+  #   dplyr::select(.row, .col)
 
   gp <- gp |>
     coord_map("row", start_corner, margin) |>
-    coord_map("col", start_corner, margin)
-
-  r_len <- gp$wells %/% gp$nrow_sec_par
-  repd_row_map <- replicate(r_len, gp$row_coord_map, simplify = FALSE) |>
-    dplyr::bind_rows(.id = ".sec_row") |>
-    dplyr::mutate(.sec_row = as.integer(.data$.sec_row)) |>
-    dplyr::slice_head(n = gp$wells)
+    coord_map("col", start_corner, margin) |>
+    add_map("row") |>
+    add_map("col")
 
   gp$well_data <- gp$well_data |>
-    dplyr::arrange(.data$.col) |>
-    dplyr::bind_cols(repd_row_map)
-
-  c_len <- gp$wells %/% gp$ncol_sec_par
-  repd_col_map <- replicate(c_len, gp$col_coord_map, simplify = FALSE) |>
-    dplyr::bind_rows(.id = ".sec_col") |>
-    dplyr::mutate(.sec_col = as.integer(.data$.sec_col)) |>
-    dplyr::slice_head(n = gp$wells)
-
-  gp$well_data <- gp$well_data |>
-    dplyr::arrange(.data$.row) |>
-    dplyr::bind_cols(repd_col_map) |>
     dplyr::mutate(.is_margin = .col_is_margin | .row_is_margin)
 
   gp <- make_sec(gp, flow)
 
   if (!break_sections) {
-    wd <- wd |>
+    gp$well_data <- gp$well_data |>
       dplyr::group_by(.sec) |>
       dplyr::mutate(.n = dplyr::n()) |>
       dplyr::mutate(.sec = ifelse(.n < gp$wells_sec, NA_integer_, .data$.sec) |> as.factor(),
-                    .sec = as.numeric(.sec), # No idea why this has to be a separate line to work, but it does
-                    {{name}} := as.factor(.sec)) |>
+                    .sec = as.numeric(.sec)) |>  # No idea why this has to be a separate line to work, but it does
       dplyr::ungroup() |>
       dplyr::mutate(.row_sec = ifelse(is.na(.sec), NA_integer_, .row_sec),
                     .col_sec = ifelse(is.na(.sec), NA_integer_, .col_sec))
   }
 
-  if (!is.null(labels)) {
-    length(labels) <- length(levels(wd[[name]]))
-    wd <- wd |>
-      dplyr::mutate({{name}} := factor(.data[[name]], levels = levels(.data[[name]]), labels = labels))
-  }
-
-  gp$well_data <- wd
+  # if (!is.null(labels)) {
+  #   length(labels) <- length(levels(wd[[name]]))
+  #   wd <- wd |>
+  #     dplyr::mutate({{name}} := factor(.data[[name]], levels = levels(.data[[name]]), labels = labels))
+  # }
 
   gp
 }
@@ -128,6 +109,13 @@ gp_sec <- function(gp, name, labels = NULL,
 
 # TODO
 # rewrap unwrapped plates
+
+# TODO
+# Add label functionality back in
+
+# TODO
+# Make it work with multiple layers
+# Right now it seems like just .sec isn't working ... .col_sec and .row_sec appear to work
 
 make_child_parent <- function(gp) {
   gp$nrow_sec_par  <- gp$nrow_sec
