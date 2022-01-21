@@ -26,7 +26,6 @@ gp_sec <- function(gp, name, labels = NULL,
                    wrap = FALSE,
                    break_sections = TRUE) {
 
-
   # Checks
   stopifnot(is.numeric(nrow) | is.null(nrow),
             is.numeric(ncol) | is.null(ncol),
@@ -39,8 +38,6 @@ gp_sec <- function(gp, name, labels = NULL,
   check_has_name(name)
   check_break_if_wrap(wrap, break_sections)
   check_if_flow_and_custom_dims(flow, nrow, ncol)
-
-
 
   margin <- get_margin(margin)
   gp <- make_child_parent(gp)
@@ -71,23 +68,36 @@ gp_sec <- function(gp, name, labels = NULL,
     }
   }
 
-  gp <- row_coord_map(gp, start_corner)
-  gp <- col_coord_map(gp, start_corner)
+  # Probably temporary.
+  gp$well_data <- gp$well_data |>
+    dplyr::select(.row, .col)
 
+  gp <- gp |>
+    coord_map("row", start_corner, margin) |>
+    coord_map("col", start_corner, margin)
 
-  # This creates a 'section stamp'...now we just need to figure out how to use it
-  # Perhaps if we join directly to wd, we don't have to create an intermediate stamp
-  stamp <- expand_grid(row_sec_par = gp$row_coord_map$sec_par, col_sec_par = gp$col_coord_map$sec_par) |>
-    left_join(gp$row_coord_map, by = c(row_sec_par = "sec_par")) |>
-    left_join(gp$col_coord_map, by = c(col_sec_par = "sec_par"), suffix = c("_row", "_col"))
+  r_len <- gp$wells %/% gp$nrow_sec_par
+  repd_row_map <- replicate(r_len, gp$row_coord_map, simplify = FALSE) |>
+    dplyr::bind_rows(.id = ".sec_row") |>
+    dplyr::mutate(.sec_row = as.integer(.data$.sec_row)) |>
+    dplyr::slice_head(n = gp$wells)
 
-  # Section demarcation --------------------------------------------------------
-  wd <- wd |>
-    ## Mark if something is a margin -------------------------------------------
-    add_is_margin(margin) |>
-    ## Margins aren't part of sections. Nums should start with non-margins -----
-    exclude_margin_from_sec() |>
-    define_sec(wrap, flow, arg_name = {{name}})
+  gp$well_data <- gp$well_data |>
+    dplyr::arrange(.data$.col) |>
+    dplyr::bind_cols(repd_row_map)
+
+  c_len <- gp$wells %/% gp$ncol_sec_par
+  repd_col_map <- replicate(c_len, gp$col_coord_map, simplify = FALSE) |>
+    dplyr::bind_rows(.id = ".sec_col") |>
+    dplyr::mutate(.sec_col = as.integer(.data$.sec_col)) |>
+    dplyr::slice_head(n = gp$wells)
+
+  gp$well_data <- gp$well_data |>
+    dplyr::arrange(.data$.row) |>
+    dplyr::bind_cols(repd_col_map) |>
+    dplyr::mutate(.is_margin = .col_is_margin | .row_is_margin)
+
+  gp <- make_sec(gp, flow)
 
   if (!break_sections) {
     wd <- wd |>
@@ -112,58 +122,12 @@ gp_sec <- function(gp, name, labels = NULL,
   gp
 }
 
-add_is_margin <- function(wd, margin) {
-  wd |>
-    dplyr::mutate(.is_margin = FALSE,
-                  .is_margin =
-                    .is_margin |
-                    .col_sec %in% 0:margin$left |
-                    .col_sec %in% (max(.col_sec, na.rm = TRUE) + 1):(max(.col_sec, na.rm = TRUE) + 1 - margin$right) |
-                    .row_sec %in% 0:margin$top |
-                    .row_sec %in% (max(.row_sec, na.rm = TRUE) + 1):(max(.row_sec, na.rm = TRUE) + 1 - margin$bottom))
-}
+# TODO
+# {{arg_name}} := as.factor(.sec)
+# AKA User named section col in data
 
-exclude_margin_from_sec <- function(wd) {
-  wd |>
-    dplyr::mutate(.col_sec = dplyr::if_else(.is_margin, NA_integer_, as.integer(.col_sec))) |>
-    dplyr::arrange(.col_sec) |>
-    dplyr::mutate(.col_sec = as.character(.col_sec) |> forcats::fct_inorder() |> as.numeric()) |>
-    dplyr::mutate(.row_sec = dplyr::if_else(.is_margin, NA_integer_, as.integer(.row_sec))) |>
-    dplyr::arrange(.row_sec) |>
-    dplyr::mutate(.row_sec = as.character(.row_sec) |> forcats::fct_inorder() |> as.numeric())
-
-}
-
-define_sec <- function(wd, wrap, flow, arg_name) {
-  if (wrap) {
-    if (flow == "row") {
-      wd <- wd |>
-        dplyr::arrange(.data$.row_sec_rel) |>
-        dplyr::group_by(.data$.row_sec_rel) |>
-        dplyr::mutate(.sec = rep(1:99, each = ncol, length.out = dplyr::n())) |>
-        dplyr::ungroup()
-    }
-
-    if (flow == "col") {
-      wd <- wd |>
-        dplyr::arrange(.data$.col_sec_rel) |>
-        dplyr::group_by(.data$.col_sec_rel) |>
-        dplyr::mutate(.sec = rep(1:99, each = nrow, length.out = dplyr::n())) |>
-        dplyr::ungroup()
-    }
-  } else {
-    wd <- wd |>
-      dplyr::group_by(.data$.lane_h, .data$.lane_v) |>
-      dplyr::rowwise() |>
-      dplyr::mutate(.sec = paste0(.data$.lane_h, .data$.lane_v) |> forcats::fct_inorder()) |>
-      dplyr::ungroup()
-  }
-
-  wd <- wd |> dplyr::mutate(.sec = as.integer(.data$.sec),
-                      .sec = dplyr::if_else(is.na(.col_sec) | is.na(.row_sec), NA_integer_, .sec),
-                      {{arg_name}} := as.factor(.sec))
-  wd
-}
+# TODO
+# rewrap unwrapped plates
 
 make_child_parent <- function(gp) {
   gp$nrow_sec_par  <- gp$nrow_sec

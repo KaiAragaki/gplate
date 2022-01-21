@@ -47,14 +47,14 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
     well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
   }
 
-  row_coord_map <- tibble(
+  row_coord_map <- dplyr::tibble(
     sec_par = seq_len(nrow),
     sec = sec_par,
     sec_rel = sec_par,
     rel_child_sec_par = sec_par
   )
 
-  col_coord_map <- tibble(
+  col_coord_map <- dplyr::tibble(
     sec_par = seq_len(ncol),
     sec = sec_par,
     sec_rel = sec_par,
