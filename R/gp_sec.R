@@ -117,6 +117,9 @@ gp_sec <- function(gp, name, labels = NULL,
 # Make it work with multiple layers
 # Right now it seems like just .sec isn't working ... .col_sec and .row_sec appear to work
 
+# TODO
+# I ultimately feel like a join would be better for .sec....the 'stamp' idea....still figuring out how to implement
+
 make_child_parent <- function(gp) {
   gp$nrow_sec_par  <- gp$nrow_sec
   gp$ncol_sec_par  <- gp$ncol_sec
