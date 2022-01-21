@@ -4,6 +4,7 @@ add_map <- function(gp, type = c("row", "col")) {
   if (type == "row") map <- gp$row_coord_map else map <- gp$col_coord_map
   order2 <- ifelse(type == "row", rlang::expr(.col_sec_par), rlang::expr(.row_sec_par))
   orderowt <- ifelse(type == "col", rlang::expr(.col_sec_par), rlang::expr(.row_sec_par))
+  orderowt_rel <- ifelse(type == "col", rlang::expr(.col_sec_par_rel), rlang::expr(.row_sec_par_rel))
   order1 <- ifelse(type == "row", rlang::expr(.col_rel), rlang::expr(.row_rel))
 
   len <- (gp$wells %/% len_sec_par) + 1

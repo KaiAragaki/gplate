@@ -126,6 +126,8 @@ make_child_parent <- function(gp) {
   gp$wells_sec_par <- gp$wells_sec
 
   gp$well_data$.sec_par         <- gp$well_data$.sec
+  gp$well_data$.row_sec_rel_par <- gp$well_data$.row_sec_rel
+  gp$well_data$.col_sec_rel_par <- gp$well_data$.col_sec_rel
   gp$well_data$.row_sec_par     <- gp$well_data$.row_sec
   gp$well_data$.col_sec_par     <- gp$well_data$.col_sec
 
