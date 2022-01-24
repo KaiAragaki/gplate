@@ -55,22 +55,18 @@ gp_sec <- function(gp, name, labels = NULL,
   # Update child metadata
   gp$wells_sec <- nrow * ncol
 
-  if (wrap) {
-    gp <- gp_unwrap(gp, flow)
-    if (flow == "row") {
-      gp$ncol_sec_par <- max(gp$well_data$.col_sec)
-      gp$nrow_sec_par <- nrow
-    }
-
-    if (flow == "col") {
-      gp$nrow_sec_par <- max(gp$well_data$.row_sec)
-      gp$ncol_sec_par <- ncol
-    }
-  }
-
-  # Probably temporary.
-  # gp$well_data <- gp$well_data |>
-  #   dplyr::select(.row, .col)
+  # if (wrap) {
+  #   gp <- gp_unwrap(gp, flow)
+  #   if (flow == "row") {
+  #     gp$ncol_sec_par <- max(gp$well_data$.col_sec)
+  #     gp$nrow_sec_par <- nrow
+  #   }
+  #
+  #   if (flow == "col") {
+  #     gp$nrow_sec_par <- max(gp$well_data$.row_sec)
+  #     gp$ncol_sec_par <- ncol
+  #   }
+  # }
 
   gp <- gp |>
     coord_map("row", start_corner, margin) |>
@@ -109,16 +105,12 @@ gp_sec <- function(gp, name, labels = NULL,
 
 # TODO
 # rewrap unwrapped plates
+# Maybe do this whole thing at the section level
+# Maybe unwrap the section maps? Can this be done at an individual map level or does it have to be at the merged level?
 
 # TODO
 # Add label functionality back in
 
-# TODO
-# Make it work with multiple layers
-# Right now it seems like just .sec isn't working ... .col_sec and .row_sec appear to work
-
-# TODO
-# I ultimately feel like a join would be better for .sec....the 'stamp' idea....still figuring out how to implement
 
 make_child_parent <- function(gp) {
   gp$nrow_sec_par  <- gp$nrow_sec
@@ -134,22 +126,3 @@ make_child_parent <- function(gp) {
   gp
 }
 
-get_margin <- function(m) {
-
-  if (length(m) == 1) {
-    return(list(top = m[1], right = m[1], bottom = m[1], left = m[1]))
-  }
-
-  if (length(m) == 2) {
-    return(list(top = m[1], right = m[2], bottom = m[1], left = m[2]))
-  }
-
-  if (length(m) == 3) {
-    return(list(top = m[1], right = m[2], bottom = m[3], left = m[2]))
-  }
-
-  if (length(m) == 4) {
-    return(list(top = m[1], right = m[2], bottom = m[3], left = m[4]))
-  }
-
-}
