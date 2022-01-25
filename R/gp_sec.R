@@ -74,8 +74,7 @@ gp_sec <- function(gp, name, labels = NULL,
     add_map("row") |>
     add_map("col")
 
-  gp$well_data <- gp$well_data |>
-    dplyr::mutate(.is_margin = .col_is_margin | .row_is_margin)
+  gp$well_data <- gp$well_data
 
   gp <- make_sec(gp, flow, wrap)
 

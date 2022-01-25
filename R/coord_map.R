@@ -34,7 +34,7 @@ coord_map <- function(gp, type = c("row", "col"), start_corner, margin) {
                   sec_rel = ifelse(is_margin, NA_integer_, sec_rel)) |>
     dplyr::ungroup() |>
     dplyr::mutate(sec = sec - min(sec, na.rm = TRUE) + 1,
-                  sec_rel = sec_rel - min(sec, na.rm = TRUE) + 1) |> # Set lowest value to 1 after margin removal
+                  sec_rel = sec_rel - min(sec_rel, na.rm = TRUE) + 1) |> # Set lowest value to 1 after margin removal
     dplyr::arrange(sec_par) |>
     dplyr::rename_with(~ paste0(".", type, "_", .x))
 
