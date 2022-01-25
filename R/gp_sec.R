@@ -106,7 +106,8 @@ gp_sec <- function(gp, name, labels = NULL,
 # TODO
 # rewrap unwrapped plates
 # Maybe do this whole thing at the section level
-# Maybe unwrap the section maps? Can this be done at an individual map level or does it have to be at the merged level?
+# Maybe unwrap the section maps? Can this be done at an individual map level or
+# does it have to be at the merged level?
 
 # TODO
 # Add label functionality back in

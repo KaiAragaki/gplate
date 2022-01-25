@@ -1,5 +1,14 @@
 coord_map <- function(gp, type = c("row", "col"), start_corner, margin) {
 
+  # When getting parents that have margins, these margins need to be persistent
+  # so that the child section is aware of them as well
+
+  # OR it needs to be such that the parents only pass on the non-margin rows
+  # Getting from option A to option B is pretty easy (filter).
+
+  # When we set wrap = TRUE, and flow = "row" (default),
+  # we only need to change .col_sec
+
   type <- rlang::arg_match(type)
   dim_sec_par <- ifelse(type == "row", gp$nrow_sec_par, gp$ncol_sec_par)
   dim_sec <- ifelse(type == "row", gp$nrow_sec, gp$ncol_sec)
