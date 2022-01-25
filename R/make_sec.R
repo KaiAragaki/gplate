@@ -33,7 +33,7 @@ make_sec <- function(gp, flow) {
     tidyr::fill(.sec)
 
   gp$well_data <- dplyr::select(gp$well_data, -contains(colnames(fake_sec_full)), .row_sec_par, .col_sec_par)
-  gp$well_data <- gp$well_data |> dplyr::left_join(fake_sec_full) |> ungroup()
+  gp$well_data <- gp$well_data |> dplyr::left_join(fake_sec_full) |> dplyr::ungroup()
 
   gp
 }
