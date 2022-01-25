@@ -77,7 +77,7 @@ gp_sec <- function(gp, name, labels = NULL,
   gp$well_data <- gp$well_data |>
     dplyr::mutate(.is_margin = .col_is_margin | .row_is_margin)
 
-  gp <- make_sec(gp, flow)
+  gp <- make_sec(gp, flow, wrap)
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>
