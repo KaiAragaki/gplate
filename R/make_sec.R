@@ -35,9 +35,11 @@ make_sec <- function(gp, flow, wrap) {
       sec <- rep(seq_len(n_blocks), each = gp$ncol_sec, length = length) |> rep_len(nrow(fake_sec_full))
       fake_sec_full <- fake_sec_full |>
         dplyr::arrange(.data$.row_sec_rel) |>
-        dplyr::mutate(.col_sec_rel = col,
-                      .sec = sec,
-                      .col_sec = .col_sec_rel) # TESTING ONLY!
+        dplyr::group_by(.data$.row_sec_rel) |>
+        dplyr::mutate(.col_sec_rel = rep_len(seq_len(gp$ncol_sec), length) |> rep_len(n()),
+                      .sec = rep(seq_len(n_blocks), each = gp$ncol_sec, length = length) |> rep_len(n())) |>
+        dplyr::ungroup() |>
+        dplyr::mutate(.col_sec = .col_sec_rel) # TESTING ONLY!
 
     }
   } else {
@@ -49,6 +51,11 @@ make_sec <- function(gp, flow, wrap) {
       dplyr::ungroup() |>
       tidyr::fill(.sec)
   }
+
+  # Current issue:
+  # gpgp <- gp(16, 24) |> gp_sec("section 1", nrow = 10, ncol = 5, wrap = TRUE)
+  # Will wrap from row_sec_par 7 to 8 because it doesn't have 'another 7' to wrap to
+  # Need to containerize by section somehow
 
   gp$well_data <- dplyr::select(gp$well_data, -contains(colnames(fake_sec_full)), .row_sec_par, .col_sec_par)
   gp$well_data <- gp$well_data |> dplyr::left_join(fake_sec_full) |> dplyr::ungroup()
