@@ -22,9 +22,13 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
   wells <- nrow * ncol
 
   nrow_sec      <- nrow
+  nrow_sec_no_mar <- nrow
   nrow_sec_par  <- nrow
+  nrow_sec_par_no_mar  <- nrow
   ncol_sec      <- ncol
   ncol_sec_par  <- ncol
+  ncol_sec_no_mar <- ncol
+  ncol_sec_par_no_mar  <- ncol
   wells_sec     <- wells
   wells_sec_par <- wells
 
@@ -37,28 +41,32 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
   well_data$.row_sec         <- well_data$.row
   well_data$.row_sec_rel     <- well_data$.row
   well_data$.row_sec_par     <- well_data$.row
+  well_data$.row_is_margin   <- FALSE
 
   well_data$.col_rel         <- well_data$.col
   well_data$.col_sec         <- well_data$.col
   well_data$.col_sec_rel     <- well_data$.col
   well_data$.col_sec_par     <- well_data$.col
+  well_data$.col_is_margin   <- FALSE
 
   if (has_size) {
     well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
   }
 
   row_coord_map <- dplyr::tibble(
-    sec_par = seq_len(nrow),
-    sec = sec_par,
-    sec_rel = sec_par,
-    rel_child_sec_par = sec_par
+    .row_sec_par = seq_len(nrow),
+    .row_sec = .row_sec_par,
+    .row_sec_rel = .row_sec_par,
+    .row_rel_child_sec_par = .row_sec_par,
+    .row_is_margin = FALSE
   )
 
   col_coord_map <- dplyr::tibble(
-    sec_par = seq_len(ncol),
-    sec = sec_par,
-    sec_rel = sec_par,
-    rel_child_sec_par = sec_par
+    .col_sec_par = seq_len(ncol),
+    .col_sec = .col_sec_par,
+    .col_sec_rel = .col_sec_par,
+    .col_rel_child_sec_par = .col_sec_par,
+    .col_is_margin = FALSE
   )
 
   structure(list(nrow = nrow,
@@ -66,9 +74,13 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
                  wells = wells,
                  well_data = well_data,
                  nrow_sec = nrow_sec,
+                 nrow_sec_no_mar = nrow_sec_no_mar,
                  nrow_sec_par = nrow_sec_par,
+                 nrow_sec_par_no_mar = nrow_sec_par_no_mar,
                  ncol_sec = ncol_sec,
+                 ncol_sec_no_mar = ncol_sec_no_mar,
                  ncol_sec_par = ncol_sec_par,
+                 ncol_sec_par_no_mar = ncol_sec_par_no_mar,
                  wells_sec = wells_sec,
                  wells_sec_par = wells_sec_par,
                  row_coord_map = row_coord_map,

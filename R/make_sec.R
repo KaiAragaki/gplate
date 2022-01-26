@@ -1,28 +1,35 @@
-make_sec <- function(gp, flow, wrap) {
+make_sec <- function(gp, flow, wrap, nrow, ncol) {
 
-  fake_sec <- tidyr::expand_grid(.row_sec_par = gp$row_coord_map$.row_sec_par, .col_sec_par = gp$col_coord_map$.col_sec_par)
-
-  fake_sec_full <- fake_sec |> dplyr::left_join(gp$row_coord_map) |> dplyr::left_join(gp$col_coord_map) |>
+  template_sec <-
+    tidyr::expand_grid(.row_sec_par = gp$row_coord_map$.row_sec_par, .col_sec_par = gp$col_coord_map$.col_sec_par) |>
+    dplyr::left_join(gp$row_coord_map) |>
+    dplyr::left_join(gp$col_coord_map) |>
     dplyr::mutate(.is_margin = .col_is_margin | .row_is_margin)
 
   if (wrap) {
     if (flow == "row") {
-      length <- sum(fake_sec_full$.row_sec_rel == 1, na.rm = TRUE)
-      n_blocks <- (length %/% gp$ncol_sec) + 1
-      times <- length(unique(fake_sec_full$.row_sec_rel))
-      col <- rep_len(seq_len(gp$ncol_sec), length) |> rep_len(nrow(fake_sec_full))
-      sec <- rep(seq_len(n_blocks), each = gp$ncol_sec, length = length) |> rep_len(nrow(fake_sec_full))
-      fake_sec_full <- fake_sec_full |>
-        dplyr::arrange(.data$.row_sec_rel) |>
-        dplyr::group_by(.data$.row_sec_rel) |>
-        dplyr::mutate(.col_sec_rel = rep_len(seq_len(gp$ncol_sec), length) |> rep_len(n()),
-                      .sec = rep(seq_len(n_blocks), each = gp$ncol_sec, length = length) |> rep_len(n())) |>
-        dplyr::ungroup() |>
-        dplyr::mutate(.col_sec = .col_sec_rel) # TESTING ONLY!
-
+      n_sec_nonflow <- ncol
+      dim_flow_sec_rel <- template_sec$.row_sec_rel
+      dim_flow_sec_rel_name <- expr(.row_sec_rel)
+      dim_nonflow_sec_rel <- expr(.col_sec_rel)
+    } else {
+      n_sec_nonflow <- nrow
+      dim_flow_sec_rel <- template_sec$.col_sec_rel
+      dim_nonflow_sec_rel <- ".row_sec_rel"
     }
+
+    n_first_dim <- sum(dim_flow_sec_rel == 1 & !template_sec$.is_margin, na.rm = TRUE)
+    n_secs <- (n_first_dim %/% n_sec_nonflow) + 1
+    template_sec <- template_sec |>
+      dplyr::group_by({{dim_flow_sec_rel_name}}, .is_margin) |>
+      dplyr::mutate({{dim_nonflow_sec_rel}} := rep_len(seq_len(n_sec_nonflow), n_first_dim) |> rep_len(dplyr::n()),
+                    .sec = rep(seq_len(n_secs), each = n_sec_nonflow, length = n_first_dim) |> rep_len(dplyr::n())) |>
+      dplyr::ungroup() |>
+      dplyr::mutate(.col_sec = .col_sec_rel) |> # TESTING ONLY!
+      dplyr::mutate(.sec = ifelse(.is_margin, NA_integer_, .sec))
+
   } else {
-    fake_sec_full <- fake_sec_full |>
+    template_sec <- template_sec |>
       dplyr::group_by(.row_sec_rel, .col_sec_rel) |>
       dplyr::arrange(.row_sec_par_rel, .col_sec_par_rel) |>
       dplyr::mutate(.sec = 1:dplyr::n(),
@@ -32,8 +39,8 @@ make_sec <- function(gp, flow, wrap) {
       dplyr::mutate(.sec = ifelse(.is_margin, NA_integer_, .sec))
   }
 
-  gp$well_data <- dplyr::select(gp$well_data, -contains(colnames(fake_sec_full)), .row_sec_par, .col_sec_par)
-  gp$well_data <- gp$well_data |> dplyr::left_join(fake_sec_full) |> dplyr::ungroup()
+  gp$well_data <- dplyr::select(gp$well_data, -contains(colnames(template_sec)), .row_sec_par, .col_sec_par)
+  gp$well_data <- gp$well_data |> dplyr::left_join(template_sec) |> dplyr::ungroup()
 
   gp
 

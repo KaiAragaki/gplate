@@ -42,6 +42,9 @@ gp_sec <- function(gp, name, labels = NULL,
   margin <- get_margin(margin)
   gp <- make_child_parent(gp)
 
+  gp$nrow_sec_no_mar <- nrow
+  gp$ncol_sec_no_mar <- ncol
+
   # Get sec dims + margin
   # If no nrow/ncol, use parents
   if (!is.null(nrow)) {
@@ -76,7 +79,7 @@ gp_sec <- function(gp, name, labels = NULL,
 
   gp$well_data <- gp$well_data
 
-  gp <- make_sec(gp, flow, wrap)
+  gp <- make_sec(gp, flow, wrap, nrow, ncol)
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>
@@ -114,7 +117,9 @@ gp_sec <- function(gp, name, labels = NULL,
 
 make_child_parent <- function(gp) {
   gp$nrow_sec_par  <- gp$nrow_sec
+  gp$nrow_sec_par_no_mar <- gp$nrow_sec_no_mar
   gp$ncol_sec_par  <- gp$ncol_sec
+  gp$ncol_sec_par_no_mar <- gp$ncol_sec_no_mar
   gp$wells_sec_par <- gp$wells_sec
 
   gp$well_data$.sec_par         <- gp$well_data$.sec
