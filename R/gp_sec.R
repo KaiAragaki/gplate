@@ -37,6 +37,9 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   check_has_name(name)
   check_break_if_wrap(wrap, break_sections)
   check_if_flow_and_custom_dims(flow, nrow, ncol)
+  if (wrap & margin != 0) {
+    rlang::abort(message = c("wrapping with margins not currently supported"))
+  }
   # ----------------------------------------------------------------------------
   margin <- get_margin(margin)
   gp <- make_child_parent(gp)
@@ -94,6 +97,10 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 # TODO
 # Add label functionality back in
 
+# TODO Need to essentially build one section on top of the other's results for
+# relative and nonrelative axes. Those two axes need to stay. The rest can be
+# tacked on in the correct order. Or, somehow, the identity of whether or not a
+# PARENT is 'backwards'
 
 make_child_parent <- function(gp) {
   gp$nrow_sec_par  <- gp$nrow_sec

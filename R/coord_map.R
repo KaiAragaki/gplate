@@ -12,39 +12,39 @@ coord_map <- function(gp, type = c("row", "col"), start_corner, margin, nrow, nc
   type <- rlang::arg_match(type)
   dim_sec_par <- ifelse(type == "row", gp$nrow_sec_par, gp$ncol_sec_par)
   dim_sec <- ifelse(type == "row", nrow, ncol)
+
   backwards_corners <- if(type == "row") c("bl", "br") else c("tr", "br")
   is_backwards <- start_corner %in% backwards_corners
 
-  if(type == "row") {
-    par_mar <- gp$row_coord_map$.row_sec_par[gp$row_coord_map$.row_is_margin]
-  } else {
-    par_mar <- gp$col_coord_map$.col_sec_par[gp$col_coord_map$.col_is_margin]
-  }
 
-  margin_head_size <- if (type == "row") margin$left else margin$top
-  margin_head <- (dim_sec + 1 - margin_head_size):(dim_sec + 1)
-  margin_tail_size <- if (type == "row") margin$right else margin$bottom
+
+  margin_head_size <- if (type == "row") margin$bottom else margin$left
+  margin_tail_size <- if (type == "row") margin$top else margin$right
+
+  dim_sec_mar <- dim_sec + margin_head_size + margin_tail_size
+
+  margin_head <- (dim_sec_mar + 1 - margin_head_size):(dim_sec_mar + 1)
   margin_tail <- 0:margin_tail_size
 
-  sec_par <- if (type == "row") gp$nrow_sec_par_no_mar else gp$ncol_sec_par_no_mar
+
+
+  sec_par <- if (type == "row") gp$nrow_sec_par else gp$ncol_sec_par
   sec_par <- seq_len(sec_par)
-  sec_par_rel <- if(is_backwards) rev(sec_par) else sec_par
+
+
 
   temp <-
-    dplyr::tibble(sec_par, sec_par_rel) |>
-    dplyr::arrange(sec_par_rel) |>
-    dplyr::mutate(sec_rel = rep_len(seq_len(dim_sec), dim_sec_par)) |>
+    dplyr::tibble(sec_par) |>
+    dplyr::mutate(sec = rep_len(seq_len(dim_sec + margin_head_size + margin_tail_size), dim_sec_par)) |>
     dplyr::rowwise() |>
-    dplyr::mutate(sec = ifelse(is_backwards, abs(.data$sec_rel - (dim_sec + 1)), .data$sec_rel),
-                  is_margin = (sec %in% margin_head) | (sec %in% margin_tail),
-                  sec = ifelse(is_margin, NA_integer_, sec),
-                  sec_rel = ifelse(is_margin, NA_integer_, sec_rel)) |>
+    dplyr::mutate(is_margin = (sec %in% margin_head) | (sec %in% margin_tail),
+                  sec = ifelse(is_margin, NA_integer_, sec)) |>
     dplyr::group_by(is_margin) |>
     dplyr::mutate(sec = (sec - sec[1] + 1L + dim_sec) %% dim_sec,
-                  sec = if_else(sec == 0, dim_sec, sec)) |>
+                  sec = ifelse(sec == 0, dim_sec, sec)) |>
     dplyr::rowwise() |>
-    dplyr::mutate(sec_rel = if_else(is_backwards, sec %% dim_sec, sec),
-                  sec_rel = if_else(sec_rel == 0, dim_sec, sec_rel)) |>
+    dplyr::mutate(sec_rel = ifelse(is_backwards, sec %% dim_sec, sec),
+                  sec_rel = ifelse(sec_rel == 0, dim_sec, sec_rel)) |>
     dplyr::ungroup() |>
     dplyr::mutate(sec = sec - min(sec, na.rm = TRUE) + 1,
                   sec_rel = sec_rel - min(sec_rel, na.rm = TRUE) + 1) |> # Set lowest value to 1 after margin removal

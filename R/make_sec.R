@@ -10,8 +10,8 @@ make_sec <- function(gp, flow, wrap, nrow, ncol) {
     if (flow == "row") {
       n_sec_nonflow <- ncol
       dim_flow_sec_rel <- template_sec$.row_sec_rel
-      dim_flow_sec_rel_name <- expr(.row_sec_rel)
-      dim_nonflow_sec_rel <- expr(.col_sec_rel)
+      dim_flow_sec_rel_name <- rlang::expr(.row_sec_rel)
+      dim_nonflow_sec_rel <- rlang::expr(.col_sec_rel)
     } else {
       n_sec_nonflow <- nrow
       dim_flow_sec_rel <- template_sec$.col_sec_rel
@@ -31,7 +31,7 @@ make_sec <- function(gp, flow, wrap, nrow, ncol) {
   } else {
     template_sec <- template_sec |>
       dplyr::group_by(.row_sec_rel, .col_sec_rel) |>
-      dplyr::arrange(.row_sec_par_rel, .col_sec_par_rel) |>
+      dplyr::arrange(.row_sec_par, .col_sec_par) |>
       dplyr::mutate(.sec = 1:dplyr::n(),
                     .sec = ifelse(.col_sec_rel != 1, NA_integer_, .sec)) |>
       dplyr::ungroup() |>

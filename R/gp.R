@@ -20,13 +20,13 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
   }
 
   nrow_sec      <- nrow
-  nrow_sec_no_mar <- nrow
+  nrow_sec_mar <- nrow
   nrow_sec_par  <- nrow
-  nrow_sec_par_no_mar  <- nrow
+  nrow_sec_par_mar  <- nrow
   ncol_sec      <- ncol
   ncol_sec_par  <- ncol
-  ncol_sec_no_mar <- ncol
-  ncol_sec_par_no_mar  <- ncol
+  ncol_sec_mar <- ncol
+  ncol_sec_par_mar  <- ncol
 
   well_data <- tidyr::expand_grid(.row = seq_len(nrow), .col = seq_len(ncol))
 
