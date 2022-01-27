@@ -1,4 +1,4 @@
-coord_map <- function(gp, type = c("row", "col"), start_corner, margin) {
+coord_map <- function(gp, type = c("row", "col"), start_corner, margin, nrow, ncol) {
 
   # When getting parents that have margins, these margins need to be persistent
   # so that the child section is aware of them as well
@@ -10,8 +10,8 @@ coord_map <- function(gp, type = c("row", "col"), start_corner, margin) {
   # we only need to change .col_sec
 
   type <- rlang::arg_match(type)
-  dim_sec_par <- ifelse(type == "row", gp$nrow_sec_par_no_mar, gp$ncol_sec_par_no_mar)
-  dim_sec <- ifelse(type == "row", gp$nrow_sec, gp$ncol_sec)
+  dim_sec_par <- ifelse(type == "row", gp$nrow_sec_par, gp$ncol_sec_par)
+  dim_sec <- ifelse(type == "row", nrow, ncol)
   backwards_corners <- if(type == "row") c("bl", "br") else c("tr", "br")
   is_backwards <- start_corner %in% backwards_corners
 
@@ -40,7 +40,7 @@ coord_map <- function(gp, type = c("row", "col"), start_corner, margin) {
                   sec = ifelse(is_margin, NA_integer_, sec),
                   sec_rel = ifelse(is_margin, NA_integer_, sec_rel)) |>
     dplyr::group_by(is_margin) |>
-    dplyr::mutate(sec = (sec - sec[1] + 1 + dim_sec) %% dim_sec,
+    dplyr::mutate(sec = (sec - sec[1] + 1L + dim_sec) %% dim_sec,
                   sec = if_else(sec == 0, dim_sec, sec)) |>
     dplyr::rowwise() |>
     dplyr::mutate(sec_rel = if_else(is_backwards, sec %% dim_sec, sec),

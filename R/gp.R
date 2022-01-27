@@ -19,8 +19,6 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
     data <- gp_unravel(data)
   }
 
-  wells <- nrow * ncol
-
   nrow_sec      <- nrow
   nrow_sec_no_mar <- nrow
   nrow_sec_par  <- nrow
@@ -29,8 +27,6 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
   ncol_sec_par  <- ncol
   ncol_sec_no_mar <- ncol
   ncol_sec_par_no_mar  <- ncol
-  wells_sec     <- wells
-  wells_sec_par <- wells
 
   well_data <- tidyr::expand_grid(.row = seq_len(nrow), .col = seq_len(ncol))
 
@@ -71,7 +67,6 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 
   structure(list(nrow = nrow,
                  ncol = ncol,
-                 wells = wells,
                  well_data = well_data,
                  nrow_sec = nrow_sec,
                  nrow_sec_no_mar = nrow_sec_no_mar,
@@ -81,8 +76,6 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
                  ncol_sec_no_mar = ncol_sec_no_mar,
                  ncol_sec_par = ncol_sec_par,
                  ncol_sec_par_no_mar = ncol_sec_par_no_mar,
-                 wells_sec = wells_sec,
-                 wells_sec_par = wells_sec_par,
                  row_coord_map = row_coord_map,
                  col_coord_map = col_coord_map),
             class = "gp")
@@ -106,14 +99,6 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #' changed by adding layers.
 #'
 #' - `wells`: Number of plate wells. Static.
-#'
-#' - `wells_sec`: Number of wells in the given section. When creating a plate,
-#' the section refers to the whole plate. This refers to the number of wells
-#' without the margin.
-#'
-#' - `wells_sec_par`: Number of wells in the section of the parent layer. When
-#' creating a plate, there is no parent layer, so the plate acts as its own
-#' parent.
 #'
 #' - `well_data`: Somewhat transient data used to define plotting coordinates
 #' for layers. See below for more information.
@@ -227,4 +212,19 @@ as_gp.default <- function(x, ...){
 #' @rdname as_gp
 as_gp.list <- function(x, ...) {
   gp(x, ...)
+}
+
+#' Calculate wells of gp object
+#'
+#' @param x
+#' @param ...
+#' @export
+wells <- function(x, ...){
+  UseMethod("wells")
+}
+
+#' @export
+#' @rdname wells
+wells.gp <- function(x, ...){
+  x$nrow * x$ncol
 }

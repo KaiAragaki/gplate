@@ -4,7 +4,7 @@
 \alias{new_gp}
 \title{A constructor for a gp object}
 \usage{
-new_gp(nrow = 1L, ncol = 1L, data = data.frame())
+new_gp(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE)
 }
 \arguments{
 \item{nrow}{Integer. Number of rows of the plate.}

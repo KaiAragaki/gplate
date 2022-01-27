@@ -7,6 +7,7 @@
 gp_sec(
   gp,
   name,
+  labels = NULL,
   nrow = NULL,
   ncol = NULL,
   start_corner = c("tl", "tr", "bl", "br"),

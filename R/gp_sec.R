@@ -18,8 +18,7 @@
 #' @export
 #'
 #' @examples
-gp_sec <- function(gp, name, labels = NULL,
-                   nrow = NULL, ncol = NULL,
+gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
                    start_corner = c("tl", "tr", "bl", "br"),
                    flow = c("row", "col"),
                    margin = 0,
@@ -42,42 +41,23 @@ gp_sec <- function(gp, name, labels = NULL,
   margin <- get_margin(margin)
   gp <- make_child_parent(gp)
 
-  gp$nrow_sec_no_mar <- nrow
-  gp$ncol_sec_no_mar <- ncol
-
   # Get sec dims + margin
   # If no nrow/ncol, use parents
   if (!is.null(nrow)) {
-    gp$nrow_sec <- nrow + margin$top + margin$bottom
+    gp$nrow_sec <- nrow
+    gp$nrow_sec_mar <- nrow + margin$top + margin$bottom
   }
 
   if (!is.null(ncol)) {
-    gp$ncol_sec <- ncol + margin$left + margin$right
+    gp$ncol_sec <- ncol
+    gp$ncol_sec_mar <- ncol + margin$left + margin$right
   }
 
-  # Update child metadata
-  gp$wells_sec <- nrow * ncol
-
-  # if (wrap) {
-  #   gp <- gp_unwrap(gp, flow)
-  #   if (flow == "row") {
-  #     gp$ncol_sec_par <- max(gp$well_data$.col_sec)
-  #     gp$nrow_sec_par <- nrow
-  #   }
-  #
-  #   if (flow == "col") {
-  #     gp$nrow_sec_par <- max(gp$well_data$.row_sec)
-  #     gp$ncol_sec_par <- ncol
-  #   }
-  # }
-
   gp <- gp |>
-    coord_map("row", start_corner, margin) |>
-    coord_map("col", start_corner, margin) |>
+    coord_map("row", start_corner, margin, nrow, ncol) |>
+    coord_map("col", start_corner, margin, nrow, ncol) |>
     add_map("row") |>
     add_map("col")
-
-  gp$well_data <- gp$well_data
 
   gp <- make_sec(gp, flow, wrap, nrow, ncol)
 
@@ -85,7 +65,7 @@ gp_sec <- function(gp, name, labels = NULL,
     gp$well_data <- gp$well_data |>
       dplyr::group_by(.sec) |>
       dplyr::mutate(.n = dplyr::n()) |>
-      dplyr::mutate(.sec = ifelse(.n < gp$wells_sec, NA_integer_, .data$.sec) |> as.factor(),
+      dplyr::mutate(.sec = ifelse(.n < nrow * ncol, NA_integer_, .data$.sec) |> as.factor(),
                     .sec = as.numeric(.sec)) |>  # No idea why this has to be a separate line to work, but it does
       dplyr::ungroup() |>
       dplyr::mutate(.row_sec = ifelse(is.na(.sec), NA_integer_, .row_sec),
@@ -117,10 +97,9 @@ gp_sec <- function(gp, name, labels = NULL,
 
 make_child_parent <- function(gp) {
   gp$nrow_sec_par  <- gp$nrow_sec
-  gp$nrow_sec_par_no_mar <- gp$nrow_sec_no_mar
+  gp$nrow_sec_par_no_mar <- gp$nrow_sec
   gp$ncol_sec_par  <- gp$ncol_sec
-  gp$ncol_sec_par_no_mar <- gp$ncol_sec_no_mar
-  gp$wells_sec_par <- gp$wells_sec
+  gp$ncol_sec_par_no_mar <- gp$ncol_sec
 
   gp$well_data$.sec_par         <- gp$well_data$.sec
   gp$well_data$.row_sec_rel_par <- gp$well_data$.row_sec_rel

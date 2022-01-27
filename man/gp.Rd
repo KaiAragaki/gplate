@@ -4,7 +4,7 @@
 \alias{gp}
 \title{Make a gp object}
 \usage{
-gp(rows = NULL, cols = NULL, wells = NULL)
+gp(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE)
 }
 \arguments{
 \item{rows}{Numeric. The number of rows the plate should have.}
@@ -27,12 +27,6 @@ A \code{gp} object has the following components:
 \item \code{nrow}/\code{ncol}: Number of plate rows/cols. This is static and will not be
 changed by adding layers.
 \item \code{wells}: Number of plate wells. Static.
-\item \code{wells_sec}: Number of wells in the given section. When creating a plate,
-the section refers to the whole plate. This refers to the number of wells
-without the margin.
-\item \code{wells_sec_par}: Number of wells in the section of the parent layer. When
-creating a plate, there is no parent layer, so the plate acts as its own
-parent.
 \item \code{well_data}: Somewhat transient data used to define plotting coordinates
 for layers. See below for more information.
 \item \code{nrow_sec}/\code{ncols_sec}: The number of rows/cols of the current section.

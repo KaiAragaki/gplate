@@ -7,10 +7,10 @@ add_map <- function(gp, type = c("row", "col")) {
   orderowt_rel <- ifelse(type == "col", rlang::expr(.col_sec_par_rel), rlang::expr(.row_sec_par_rel))
   order1 <- ifelse(type == "row", rlang::expr(.col_rel), rlang::expr(.row_rel))
 
-  len <- (gp$wells %/% len_sec_par) + 1
+  len <- (wells(gp) %/% len_sec_par) + 1
   map_to_size <- replicate(len, map, simplify = FALSE) |>
     dplyr::bind_rows() |>
-    dplyr::slice_head(n = gp$wells)
+    dplyr::slice_head(n = wells(gp))
 
   gp$well_data <- gp$well_data |>
     dplyr::arrange(.sec, rlang::eval_tidy(order1), rlang::eval_tidy(order2)) |>
