@@ -43,6 +43,8 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   # ----------------------------------------------------------------------------
   margin <- get_margin(margin)
   gp <- make_child_parent(gp)
+
+  # Internalize user arguments into gp object ----------------------------------
   gp$start_corner <- start_corner
 
   # Get sec dims + margin
@@ -57,9 +59,11 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     gp$ncol_sec_mar <- ncol + margin$left + margin$right
   }
 
+  # Make sections --------------------------------------------------------------
+
   gp <- gp |>
-    coord_map("row", start_corner, margin, nrow, ncol) |>
-    coord_map("col", start_corner, margin, nrow, ncol) |>
+    coord_map("row", margin) |>
+    coord_map("col", margin) |>
     add_map("row") |>
     add_map("col")
 
