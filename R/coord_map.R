@@ -18,8 +18,8 @@ coord_map <- function(gp, type = c("row", "col"), start_corner, margin, nrow, nc
 
 
 
-  margin_head_size <- if (type == "row") margin$bottom else margin$left
-  margin_tail_size <- if (type == "row") margin$top else margin$right
+  margin_head_size <- if (type == "row") margin$bottom else margin$right
+  margin_tail_size <- if (type == "row") margin$top else margin$left
 
   dim_sec_mar <- dim_sec + margin_head_size + margin_tail_size
 
