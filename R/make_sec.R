@@ -21,13 +21,13 @@ make_sec <- function(gp, flow, wrap, nrow, ncol) {
       arby <- rlang::expr(.row_sec_par)
       should_desc <- gp$start_corner %in% c("br", "tr")
     }
-# Needs to be arrange by x_sec_par
     n_first_dim <- sum(dim_flow_sec_rel == 1 & !template_sec$.is_margin, na.rm = TRUE)
     n_secs <- (n_first_dim %/% n_sec_nonflow) + 1
 
     template_sec <- template_sec |>
       dplyr::group_by({{dim_flow_sec_rel_name}}, .is_margin)
 
+    # FIXME - repeated below. Extract and reuse
     if(gp$start_corner == "tl") {
       template_sec <- dplyr::arrange(template_sec, .row_sec_par, .col_sec_par)
     } else if (gp$start_corner == "tr") {
