@@ -80,6 +80,8 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
                     .col_sec = ifelse(is.na(.sec), NA_integer_, .col_sec))
   }
 
+  gp$well_data <- dplyr::mutate(gp$well_data, {{name}} := .sec)
+
   # if (!is.null(labels)) {
   #   length(labels) <- length(levels(wd[[name]]))
   #   wd <- wd |>
@@ -88,10 +90,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   gp
 }
-
-# TODO
-# {{arg_name}} := as.factor(.sec)
-# AKA User named section col in data
 
 # TODO
 # rewrap unwrapped plates
