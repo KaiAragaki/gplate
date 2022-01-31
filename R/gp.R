@@ -68,6 +68,8 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
   structure(list(nrow = nrow,
                  ncol = ncol,
                  well_data = well_data,
+                 start_corner = "tl",
+                 start_corner_par = "tl",
                  nrow_sec = nrow_sec,
                  nrow_sec_mar = nrow_sec_mar,
                  nrow_sec_par = nrow_sec_par,

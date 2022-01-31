@@ -31,23 +31,34 @@ coord_map <- function(gp, type = c("row", "col"), start_corner, margin, nrow, nc
   sec_par <- if (type == "row") gp$nrow_sec_par else gp$ncol_sec_par
   sec_par <- seq_len(sec_par)
 
+  if (type == "row") {
+    if (gp$start_corner_par %in% c("bl", "br")) sec_par_rel <- rev(sec_par) else sec_par_rel <- sec_par
+  } else {
+    if (gp$start_corner_par %in% c("tr", "br")) sec_par_rel <- rev(sec_par) else sec_par_rel <- sec_par
+  }
+
 
 
   temp <-
-    dplyr::tibble(sec_par) |>
-    dplyr::mutate(sec = rep_len(seq_len(dim_sec + margin_head_size + margin_tail_size), dim_sec_par)) |>
+    dplyr::tibble(sec_par, sec_par_rel)
+
+  if (is_backwards) {
+    temp <- arrange(temp, desc(sec_par))
+  }
+
+  temp <- temp |>
+    dplyr::mutate(sec_rel = rep_len(seq_len(dim_sec + margin_head_size + margin_tail_size), dim_sec_par)) |>
     dplyr::rowwise() |>
-    dplyr::mutate(is_margin = (sec %in% margin_head) | (sec %in% margin_tail),
-                  sec = ifelse(is_margin, NA_integer_, sec)) |>
+    dplyr::mutate(is_margin = (sec_rel %in% margin_head) | (sec_rel %in% margin_tail),
+                  sec_rel = ifelse(is_margin, NA_integer_, sec_rel)) |>
     dplyr::group_by(is_margin) |>
-    dplyr::mutate(sec = (sec - sec[1] + 1L + dim_sec) %% dim_sec,
-                  sec = ifelse(sec == 0, dim_sec, sec)) |>
-    dplyr::rowwise() |>
-    dplyr::mutate(sec_rel = ifelse(is_backwards, sec %% dim_sec, sec),
+    dplyr::mutate(sec_rel = (sec_rel - sec_rel[1] + 1L + dim_sec) %% dim_sec,
                   sec_rel = ifelse(sec_rel == 0, dim_sec, sec_rel)) |>
+    dplyr::rowwise() |>
+    dplyr::mutate(sec = ifelse(is_backwards, -sec_rel + dim_sec + 1, sec_rel)) |>
     dplyr::ungroup() |>
-    dplyr::mutate(sec = sec - min(sec, na.rm = TRUE) + 1,
-                  sec_rel = sec_rel - min(sec_rel, na.rm = TRUE) + 1) |> # Set lowest value to 1 after margin removal
+    dplyr::mutate(sec_rel = sec_rel - min(sec_rel, na.rm = TRUE) + 1,
+                  sec = sec - min(sec, na.rm = TRUE) + 1) |> # Set lowest value to 1 after margin removal
     dplyr::arrange(sec_par) |>
     dplyr::rename_with(~ paste0(".", type, "_", .x))
 

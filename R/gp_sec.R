@@ -43,6 +43,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   # ----------------------------------------------------------------------------
   margin <- get_margin(margin)
   gp <- make_child_parent(gp)
+  gp$start_corner <- start_corner
 
   # Get sec dims + margin
   # If no nrow/ncol, use parents
@@ -103,10 +104,11 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 # PARENT is 'backwards'
 
 make_child_parent <- function(gp) {
+  gp$start_corner_par <- gp$start_corner
   gp$nrow_sec_par  <- gp$nrow_sec
-  gp$nrow_sec_par_no_mar <- gp$nrow_sec
+  gp$nrow_sec_par_mar <- gp$nrow_sec
   gp$ncol_sec_par  <- gp$ncol_sec
-  gp$ncol_sec_par_no_mar <- gp$ncol_sec
+  gp$ncol_sec_par_mar <- gp$ncol_sec
 
   gp$well_data$.sec_par         <- gp$well_data$.sec
   gp$well_data$.row_sec_rel_par <- gp$well_data$.row_sec_rel

@@ -30,8 +30,19 @@ make_sec <- function(gp, flow, wrap, nrow, ncol) {
 
   } else {
     template_sec <- template_sec |>
-      dplyr::group_by(.row_sec_rel, .col_sec_rel) |>
-      dplyr::arrange(.row_sec_par, .col_sec_par) |>
+      dplyr::group_by(.row_sec_rel, .col_sec_rel)
+
+    if(gp$start_corner == "tl") {
+      template_sec <- dplyr::arrange(template_sec, .row_sec_par_rel, .col_sec_par_rel)
+    } else if (gp$start_corner == "tr") {
+      template_sec <- dplyr::arrange(template_sec, .row_sec_par_rel, desc(.col_sec_par_rel))
+    } else if (gp$start_corner == "bl") {
+      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par_rel), .col_sec_par_rel)
+    } else {
+      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par_rel), desc(.col_sec_par_rel))
+    }
+
+    template_sec <- template_sec |>
       dplyr::mutate(.sec = 1:dplyr::n(),
                     .sec = ifelse(.col_sec_rel != 1, NA_integer_, .sec)) |>
       dplyr::ungroup() |>
