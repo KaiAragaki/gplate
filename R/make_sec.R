@@ -29,13 +29,13 @@ make_sec <- function(gp, flow, wrap, nrow, ncol) {
       dplyr::group_by({{dim_flow_sec_rel_name}}, .is_margin)
 
     if(gp$start_corner == "tl") {
-      template_sec <- dplyr::arrange(template_sec, .row_sec_par_rel, .col_sec_par_rel)
+      template_sec <- dplyr::arrange(template_sec, .row_sec_par, .col_sec_par)
     } else if (gp$start_corner == "tr") {
-      template_sec <- dplyr::arrange(template_sec, .row_sec_par_rel, desc(.col_sec_par_rel))
+      template_sec <- dplyr::arrange(template_sec, .row_sec_par, desc(.col_sec_par))
     } else if (gp$start_corner == "bl") {
-      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par_rel), .col_sec_par_rel)
+      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par), .col_sec_par)
     } else {
-      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par_rel), desc(.col_sec_par_rel))
+      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par), desc(.col_sec_par))
     }
 
     template_sec <- template_sec |>
@@ -50,13 +50,13 @@ make_sec <- function(gp, flow, wrap, nrow, ncol) {
       dplyr::group_by(.row_sec_rel, .col_sec_rel)
 
     if(gp$start_corner == "tl") {
-      template_sec <- dplyr::arrange(template_sec, .row_sec_par_rel, .col_sec_par_rel)
+      template_sec <- dplyr::arrange(template_sec, .row_sec_par, .col_sec_par)
     } else if (gp$start_corner == "tr") {
-      template_sec <- dplyr::arrange(template_sec, .row_sec_par_rel, desc(.col_sec_par_rel))
+      template_sec <- dplyr::arrange(template_sec, .row_sec_par, desc(.col_sec_par))
     } else if (gp$start_corner == "bl") {
-      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par_rel), .col_sec_par_rel)
+      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par), .col_sec_par)
     } else {
-      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par_rel), desc(.col_sec_par_rel))
+      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par), desc(.col_sec_par))
     }
 
     template_sec <- template_sec |>
