@@ -11,7 +11,7 @@ coord_map <- function(gp, type = c("row", "col"), start_corner, margin, nrow, nc
 
   type <- rlang::arg_match(type)
   dim_sec_par <- ifelse(type == "row", gp$nrow_sec_par, gp$ncol_sec_par)
-  dim_sec <- ifelse(type == "row", nrow, ncol)
+  dim_sec <- ifelse(type == "row", gp$nrow_sec, gp$ncol_sec)
 
   backwards_corners <- if(type == "row") c("bl", "br") else c("tr", "br")
   is_backwards <- start_corner %in% backwards_corners

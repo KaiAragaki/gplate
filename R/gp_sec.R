@@ -37,7 +37,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   check_has_name(name)
   check_break_if_wrap(wrap, break_sections)
   check_if_flow_and_custom_dims(flow, nrow, ncol)
-  if (wrap & margin != 0) {
+  if ((wrap & length(margin) > 1) || (wrap & margin != 0)) {
     rlang::abort(message = c("wrapping with margins not currently supported"))
   }
   # ----------------------------------------------------------------------------
