@@ -179,9 +179,7 @@ gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE
   }
 
   # Calculate one set of arguments from the other
-  if (is.null(wells)) {
-    wells <- cols * rows
-  } else {
+  if (!is.null(wells)) {
     cols <- plate_formats[plate_formats$wells == wells,]$cols
     rows <- plate_formats[plate_formats$wells == wells,]$rows
   }
