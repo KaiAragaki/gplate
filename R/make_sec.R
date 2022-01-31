@@ -12,16 +12,33 @@ make_sec <- function(gp, flow, wrap, nrow, ncol) {
       dim_flow_sec_rel <- template_sec$.row_sec_rel
       dim_flow_sec_rel_name <- rlang::expr(.row_sec_rel)
       dim_nonflow_sec_rel <- rlang::expr(.col_sec_rel)
+      arby <- rlang::expr(.col_sec_par)
+      should_desc <- gp$start_corner %in% c("br", "bl")
     } else {
       n_sec_nonflow <- nrow
       dim_flow_sec_rel <- template_sec$.col_sec_rel
       dim_nonflow_sec_rel <- ".row_sec_rel"
+      arby <- rlang::expr(.row_sec_par)
+      should_desc <- gp$start_corner %in% c("br", "tr")
     }
-
+# Needs to be arrange by x_sec_par
     n_first_dim <- sum(dim_flow_sec_rel == 1 & !template_sec$.is_margin, na.rm = TRUE)
     n_secs <- (n_first_dim %/% n_sec_nonflow) + 1
+
     template_sec <- template_sec |>
-      dplyr::group_by({{dim_flow_sec_rel_name}}, .is_margin) |>
+      dplyr::group_by({{dim_flow_sec_rel_name}}, .is_margin)
+
+    if(gp$start_corner == "tl") {
+      template_sec <- dplyr::arrange(template_sec, .row_sec_par_rel, .col_sec_par_rel)
+    } else if (gp$start_corner == "tr") {
+      template_sec <- dplyr::arrange(template_sec, .row_sec_par_rel, desc(.col_sec_par_rel))
+    } else if (gp$start_corner == "bl") {
+      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par_rel), .col_sec_par_rel)
+    } else {
+      template_sec <- dplyr::arrange(template_sec, desc(.row_sec_par_rel), desc(.col_sec_par_rel))
+    }
+
+    template_sec <- template_sec |>
       dplyr::mutate({{dim_nonflow_sec_rel}} := rep_len(seq_len(n_sec_nonflow), n_first_dim) |> rep_len(dplyr::n()),
                     .sec = rep(seq_len(n_secs), each = n_sec_nonflow, length = n_first_dim) |> rep_len(dplyr::n())) |>
       dplyr::ungroup() |>
