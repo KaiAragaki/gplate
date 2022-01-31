@@ -28,14 +28,8 @@ coord_map <- function(gp, type = c("row", "col"), margin) {
 
   if (gp$start_corner_par %in% backwards_corners) sec_par_rel <- rev(sec_par) else sec_par_rel <- sec_par
 
-  temp <-
-    dplyr::tibble(sec_par, sec_par_rel)
-
-  if (is_backwards) {
-    temp <- arrange(temp, desc(sec_par))
-  }
-
-  temp <- temp |>
+  temp <- dplyr::tibble(sec_par, sec_par_rel) |>
+    dplyr::arrang(sec_par_rel) |>
     dplyr::mutate(sec_rel = rep_len(seq_len(dim_sec + margin_head_size + margin_tail_size), dim_sec_par)) |>
     dplyr::rowwise() |>
     dplyr::mutate(is_margin = (sec_rel %in% margin_head) | (sec_rel %in% margin_tail),
