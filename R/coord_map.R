@@ -1,14 +1,5 @@
 coord_map <- function(gp, type = c("row", "col"), margin) {
 
-  # When getting parents that have margins, these margins need to be persistent
-  # so that the child section is aware of them as well
-
-  # OR it needs to be such that the parents only pass on the non-margin rows
-  # Getting from option A to option B is pretty easy (filter).
-
-  # When we set wrap = TRUE, and flow = "row" (default),
-  # we only need to change .col_sec
-
   type <- rlang::arg_match(type)
 
   dim_sec_par <- ifelse(type == "row", gp$nrow_sec_par, gp$ncol_sec_par)
@@ -28,24 +19,28 @@ coord_map <- function(gp, type = c("row", "col"), margin) {
 
   if (gp$start_corner_par %in% backwards_corners) sec_par_rel <- rev(sec_par) else sec_par_rel <- sec_par
 
-  temp <- dplyr::tibble(sec_par, sec_par_rel) |>
-    dplyr::arrang(sec_par_rel) |>
-    dplyr::mutate(sec_rel = rep_len(seq_len(dim_sec + margin_head_size + margin_tail_size), dim_sec_par)) |>
+  coord_map <-
+    dplyr::tibble(sec_par, sec_par_rel) |>
+    dplyr::arrange(sec_par) |>
+    dplyr::mutate(sec_rel = rep_len(seq_len(dim_sec + margin_head_size + margin_tail_size), dim_sec_par))
+
+  if (is_backwards) {
+    coord_map <- dplyr::mutate(coord_map, sec_rel = rev(sec_rel))
+  }
+
+  coord_map <- coord_map |>
     dplyr::rowwise() |>
-    dplyr::mutate(is_margin = (sec_rel %in% margin_head) | (sec_rel %in% margin_tail),
+    dplyr::mutate(is_margin = sec_rel %in% c(margin_head, margin_tail),
                   sec_rel = ifelse(is_margin, NA_integer_, sec_rel)) |>
-    dplyr::group_by(is_margin) |>
-    dplyr::mutate(sec_rel = (sec_rel - sec_rel[1] + 1L + dim_sec) %% dim_sec,
-                  sec_rel = ifelse(sec_rel == 0, dim_sec, sec_rel)) |>
+    dplyr::ungroup() |>
+    dplyr::mutate(sec_rel = sec_rel - min(sec_rel, na.rm = TRUE) + 1) |> # Set lowest value to 1 after margin removal
     dplyr::rowwise() |>
     dplyr::mutate(sec = ifelse(is_backwards, -sec_rel + dim_sec + 1, sec_rel)) |>
     dplyr::ungroup() |>
-    dplyr::mutate(sec_rel = sec_rel - min(sec_rel, na.rm = TRUE) + 1,
-                  sec = sec - min(sec, na.rm = TRUE) + 1) |> # Set lowest value to 1 after margin removal
     dplyr::arrange(sec_par) |>
     dplyr::rename_with(~ paste0(".", type, "_", .x))
 
-  if(type == "row") gp$row_coord_map <- temp else gp$col_coord_map <- temp
+  if(type == "row") gp$row_coord_map <- coord_map else gp$col_coord_map <- coord_map
 
   gp
 }
