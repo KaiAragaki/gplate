@@ -82,28 +82,15 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   gp$well_data <- dplyr::mutate(gp$well_data, {{name}} := .sec)
 
-  # if (!is.null(labels)) {
-  #   length(labels) <- length(levels(wd[[name]]))
-  #   wd <- wd |>
-  #     dplyr::mutate({{name}} := factor(.data[[name]], levels = levels(.data[[name]]), labels = labels))
-  # }
+  if (!is.null(labels)) {
+    length(labels) <- length(levels(as.factor(gp$well_data[[name]])))
+    gp$well_data <- gp$well_data |>
+      dplyr::mutate({{name}} := factor(.data[[name]], levels = levels(as.factor(.data[[name]])), labels = labels))
+  }
 
   gp
 }
 
-# TODO
-# rewrap unwrapped plates
-# Maybe do this whole thing at the section level
-# Maybe unwrap the section maps? Can this be done at an individual map level or
-# does it have to be at the merged level?
-
-# TODO
-# Add label functionality back in
-
-# TODO Need to essentially build one section on top of the other's results for
-# relative and nonrelative axes. Those two axes need to stay. The rest can be
-# tacked on in the correct order. Or, somehow, the identity of whether or not a
-# PARENT is 'backwards'
 
 make_child_parent <- function(gp) {
   gp$start_corner_par <- gp$start_corner
