@@ -18,15 +18,11 @@ coord_map <- function(gp, type = c("row", "col"), margin) {
   margin_head_size <- if (type == "row") margin$bottom else margin$right
   margin_tail_size <- if (type == "row") margin$top else margin$left
 
-  margin_machine <- function(dim_sec, margin_head_size, margin_tail_size) {
-    # For every item in dim_sec...
-    # Put the margin head before it
-    # Put the dim_sec item in
-    # Put the margin tail after it
-    # Add a little column denoting whether it's a margin or a dim along the way
-    # A little c(n, is_margin) rbind magic may suffice
-  }
-
+  ## Now where does this all fit in with everything?
+  # purrr::pmap(list(mh = margin_head_size, ds = dim_sec, mt = margin_tail_size), ~ tibble::tibble(n = c(..1, ..2, ..3), is_margin = c(T, F, T))) |>
+  #   purrr::reduce(dplyr::bind_rows) |>
+  #   dplyr::mutate(my_data = purrr::map2(n, is_margin, ~ tibble::tibble(seq = seq_len(.x), my_margin = rep(.y, .x)))) |>
+  #   tidyr::unnest(my_data)
 
   dim_sec_mar <- dim_sec + margin_head_size + margin_tail_size
 
