@@ -51,12 +51,12 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   # If no nrow/ncol, use parents
   if (!is.null(nrow)) {
     gp$nrow_sec <- nrow
-    gp$nrow_sec_mar <- nrow + margin$top + margin$bottom
+    gp$nrow_sec_mar <- sum(nrow + margin$top + margin$bottom) # Need sum because nrow is not necessarily a single digit
   }
 
   if (!is.null(ncol)) {
     gp$ncol_sec <- ncol
-    gp$ncol_sec_mar <- ncol + margin$left + margin$right
+    gp$ncol_sec_mar <- sum(ncol + margin$left + margin$right)
   }
 
   # Make sections --------------------------------------------------------------
