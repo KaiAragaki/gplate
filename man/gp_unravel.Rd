@@ -4,10 +4,13 @@
 \alias{gp_unravel}
 \title{Turn data from 'plate form' to 'tidy form'}
 \usage{
-gp_unravel(df)
+gp_unravel(df, rownames = NULL)
 }
 \arguments{
-\item{matrix}{}
+\item{df}{The data.frame in plate-form to be tidied}
+
+\item{rownames}{Optional character. If there is a colname that specifies the
+row index, it will be arranged by this column, then dropped.}
 }
 \value{
 a tibble

@@ -9,6 +9,7 @@ gp_sec(
   name,
   nrow = NULL,
   ncol = NULL,
+  labels = NULL,
   start_corner = c("tl", "tr", "bl", "br"),
   flow = c("row", "col"),
   margin = 0,
@@ -27,6 +28,8 @@ section.}
 \item{ncol}{Numeric. Section width. If \code{NULL}, will fill width of parent
 section.}
 
+\item{labels}{Optional. What should the labels of each section be?}
+
 \item{start_corner}{Corner of section to place first item.}
 
 \item{flow}{Direction that subsequent items should be placed relative to first corner.}
@@ -36,11 +39,17 @@ take an argument of one (same border all around), two (top/bottom,
 left/right), three (top, left/right, bottom), or four (top, right, bottom,
 left).}
 
+\item{wrap}{Should the sections that go off the edge continue on the next row/column?}
+
 \item{break_sections}{Should partial sections be allowed?}
 }
 \value{
-
+a \code{gp}
 }
 \description{
 Add a section to a \code{gp} object.
+}
+\examples{
+
+gp(16, 24) |> gp_sec("section 1", ncol = 3)
 }

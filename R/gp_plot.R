@@ -7,6 +7,8 @@
 #' @export
 #'
 #' @examples
+#'
+#' gp(16, 24) |> gp_plot(.row)
 gp_plot <- function(gp, name) {
     wd <- gp$well_data
     ggplot2::ggplot(wd, ggplot2::aes(x = .col, y = .row, color = {{ name }})) +

@@ -2,6 +2,8 @@
 #'
 #' @param nrow Integer. Number of rows of the plate.
 #' @param ncol Integer. Number of columns of the plate.
+#' @param data An optional dataframe including plate data
+#' @param tidy Is the supplied data already tidy, or should it be tidied?
 #'
 #' @return a `gp` object
 #'
@@ -19,14 +21,14 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
     data <- gp_unravel(data)
   }
 
-  wells <- nrow * ncol
-
-  nrow_sec      <- nrow
-  nrow_sec_par  <- nrow
-  ncol_sec      <- ncol
-  ncol_sec_par  <- ncol
-  wells_sec     <- wells
-  wells_sec_par <- wells
+  nrow_sec          <- nrow
+  nrow_sec_mar      <- nrow
+  nrow_sec_par      <- nrow
+  nrow_sec_par_mar  <- nrow
+  ncol_sec          <- ncol
+  ncol_sec_par      <- ncol
+  ncol_sec_mar      <- ncol
+  ncol_sec_par_mar  <- ncol
 
   well_data <- tidyr::expand_grid(.row = seq_len(nrow), .col = seq_len(ncol))
 
@@ -37,28 +39,49 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
   well_data$.row_sec         <- well_data$.row
   well_data$.row_sec_rel     <- well_data$.row
   well_data$.row_sec_par     <- well_data$.row
-  well_data$.row_sec_par_rel <- well_data$.row
+  well_data$.row_is_margin   <- FALSE
 
   well_data$.col_rel         <- well_data$.col
   well_data$.col_sec         <- well_data$.col
   well_data$.col_sec_rel     <- well_data$.col
   well_data$.col_sec_par     <- well_data$.col
-  well_data$.col_sec_par_rel <- well_data$.col
+  well_data$.col_is_margin   <- FALSE
 
   if (has_size) {
     well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
   }
 
+  row_coord_map <- dplyr::tibble(
+    .row_sec_par = seq_len(nrow),
+    .row_sec = .row_sec_par,
+    .row_sec_rel = .row_sec_par,
+    .row_rel_child_sec_par = .row_sec_par,
+    .row_is_margin = FALSE
+  )
+
+  col_coord_map <- dplyr::tibble(
+    .col_sec_par = seq_len(ncol),
+    .col_sec = .col_sec_par,
+    .col_sec_rel = .col_sec_par,
+    .col_rel_child_sec_par = .col_sec_par,
+    .col_is_margin = FALSE
+  )
+
   structure(list(nrow = nrow,
                  ncol = ncol,
-                 wells = wells,
                  well_data = well_data,
+                 start_corner = "tl",
+                 start_corner_par = "tl",
                  nrow_sec = nrow_sec,
+                 nrow_sec_mar = nrow_sec_mar,
                  nrow_sec_par = nrow_sec_par,
+                 nrow_sec_par_mar = nrow_sec_par_mar,
                  ncol_sec = ncol_sec,
+                 ncol_sec_mar = ncol_sec_mar,
                  ncol_sec_par = ncol_sec_par,
-                 wells_sec = wells_sec,
-                 wells_sec_par = wells_sec_par),
+                 ncol_sec_par_mar = ncol_sec_par_mar,
+                 row_coord_map = row_coord_map,
+                 col_coord_map = col_coord_map),
             class = "gp")
 }
 
@@ -69,6 +92,8 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #' @param wells Numeric. The number of wells the plate has. If this is
 #'   specified, rows and cols must be null - they are inferred from common form
 #'   factors of plates.
+#' @param data An optional data.frame of well data the same dimensions as the plate to be described
+#' @param tidy Are the data supplied tidy?
 #'
 #' @return a `gp` object
 #'
@@ -80,14 +105,6 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #' changed by adding layers.
 #'
 #' - `wells`: Number of plate wells. Static.
-#'
-#' - `wells_sec`: Number of wells in the given section. When creating a plate,
-#' the section refers to the whole plate. This refers to the number of wells
-#' without the margin.
-#'
-#' - `wells_sec_par`: Number of wells in the section of the parent layer. When
-#' creating a plate, there is no parent layer, so the plate acts as its own
-#' parent.
 #'
 #' - `well_data`: Somewhat transient data used to define plotting coordinates
 #' for layers. See below for more information.
@@ -166,9 +183,7 @@ gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE
   }
 
   # Calculate one set of arguments from the other
-  if (is.null(wells)) {
-    wells <- cols * rows
-  } else {
+  if (!is.null(wells)) {
     cols <- plate_formats[plate_formats$wells == wells,]$cols
     rows <- plate_formats[plate_formats$wells == wells,]$rows
   }
@@ -201,4 +216,19 @@ as_gp.default <- function(x, ...){
 #' @rdname as_gp
 as_gp.list <- function(x, ...) {
   gp(x, ...)
+}
+
+#' Calculate wells of gp object
+#'
+#' @param x a `gp`
+#' @param ... Unused
+#' @export
+wells <- function(x, ...){
+  UseMethod("wells")
+}
+
+#' @export
+#' @rdname wells
+wells.gp <- function(x, ...){
+  x$nrow * x$ncol
 }

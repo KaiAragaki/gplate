@@ -23,11 +23,6 @@ Suggests:
     rmarkdown,
     knitr
 VignetteBuilder: knitr
-Collate: 
-    'gp.R'
-    'gp_plot.R'
-    'gp_sec.R'
-    'testplot.R'
 Depends: 
     R (>= 4.1.0)
 URL: https://kaiaragaki.github.io/gp/

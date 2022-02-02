@@ -4,12 +4,16 @@
 \alias{new_gp}
 \title{A constructor for a gp object}
 \usage{
-new_gp(nrow = 1L, ncol = 1L, data = data.frame())
+new_gp(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE)
 }
 \arguments{
 \item{nrow}{Integer. Number of rows of the plate.}
 
 \item{ncol}{Integer. Number of columns of the plate.}
+
+\item{data}{An optional dataframe including plate data}
+
+\item{tidy}{Is the supplied data already tidy, or should it be tidied?}
 }
 \value{
 a \code{gp} object

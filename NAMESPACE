@@ -2,6 +2,7 @@
 
 S3method(as_gp,default)
 S3method(as_gp,list)
+S3method(wells,gp)
 export(as_gp)
 export(gp)
 export(gp_mini_theme)
@@ -10,3 +11,4 @@ export(gp_sec)
 export(gp_serve)
 export(gp_unravel)
 export(new_gp)
+export(wells)
