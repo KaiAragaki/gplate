@@ -7,6 +7,8 @@
 gp_unravel(df, rownames = NULL)
 }
 \arguments{
+\item{df}{The data.frame in plate-form to be tidied}
+
 \item{rownames}{Optional character. If there is a colname that specifies the
 row index, it will be arranged by this column, then dropped.}
 }

@@ -13,11 +13,15 @@
 #'   left/right), three (top, left/right, bottom), or four (top, right, bottom,
 #'   left).
 #' @param break_sections Should partial sections be allowed?
+#' @param labels Optional. What should the labels of each section be?
+#' @param wrap Should the sections that go off the edge continue on the next row/column?
 #'
-#' @return
+#' @return a `gp`
 #' @export
 #'
 #' @examples
+#'
+#' gp(16, 24) |> gp_sec("section 1", ncol = 3)
 gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
                    start_corner = c("tl", "tr", "bl", "br"),
                    flow = c("row", "col"),
@@ -60,6 +64,9 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   }
 
   # Make sections --------------------------------------------------------------
+
+  pp <- gp |>
+    coordinate("row", margin)
 
   gp <- gp |>
     coord_map("row", margin) |>

@@ -2,8 +2,8 @@ make_sec <- function(gp, flow, wrap, nrow, ncol) {
 
   template_sec <-
     tidyr::expand_grid(.row_sec_par = gp$row_coord_map$.row_sec_par, .col_sec_par = gp$col_coord_map$.col_sec_par) |>
-    dplyr::left_join(gp$row_coord_map) |>
-    dplyr::left_join(gp$col_coord_map) |>
+    dplyr::left_join(gp$row_coord_map, by = ".row_sec_par") |>
+    dplyr::left_join(gp$col_coord_map, by = ".col_sec_par") |>
     dplyr::mutate(.is_margin = .col_is_margin | .row_is_margin)
 
   if (wrap) {
@@ -68,7 +68,7 @@ make_sec <- function(gp, flow, wrap, nrow, ncol) {
   }
 
   gp$well_data <- dplyr::select(gp$well_data, -contains(colnames(template_sec)), .row_sec_par, .col_sec_par)
-  gp$well_data <- gp$well_data |> dplyr::left_join(template_sec) |> dplyr::ungroup()
+  gp$well_data <- gp$well_data |> dplyr::left_join(template_sec, by = c(".row_sec_par", ".col_sec_par")) |> dplyr::ungroup()
 
   gp
 

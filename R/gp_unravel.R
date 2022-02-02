@@ -1,6 +1,6 @@
 #' Turn data from 'plate form' to 'tidy form'
 #'
-#' @param df
+#' @param df The data.frame in plate-form to be tidied
 #' @param rownames Optional character. If there is a colname that specifies the
 #'   row index, it will be arranged by this column, then dropped.
 #'

@@ -15,3 +15,9 @@ a \code{tibble}, with \code{.row} and \code{.col}, as well as any created sectio
 \description{
 Extract useful, tidy data from a gp object
 }
+\examples{
+
+gp(16, 24) |>
+  gp_sec("my_sec", nrow = 9, ncol = 7, labels = c("sample_1", "sample_2", "sample_3")) |>
+  gp_serve()
+}

@@ -11,9 +11,13 @@ gp(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE)
 
 \item{cols}{Numeric. The number of columns the plate should have.}
 
+\item{data}{An optional data.frame of well data the same dimensions as the plate to be described}
+
 \item{wells}{Numeric. The number of wells the plate has. If this is
 specified, rows and cols must be null - they are inferred from common form
 factors of plates.}
+
+\item{tidy}{Are the data supplied tidy?}
 }
 \value{
 a \code{gp} object

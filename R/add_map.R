@@ -1,3 +1,11 @@
+#' Add a coord_map to well_data
+#'
+#' @param gp a `gp`
+#' @param type Character. Which axis type, row or col?
+#'
+#' @return a `gp`
+#' @keywords internal
+#' @noRd
 add_map <- function(gp, type = c("row", "col")) {
 
   len_sec_par <- ifelse(type == "row", gp$nrow_sec_par, gp$ncol_sec_par)

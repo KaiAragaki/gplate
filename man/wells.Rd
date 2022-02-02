@@ -9,6 +9,11 @@ wells(x, ...)
 
 \method{wells}{gp}(x, ...)
 }
+\arguments{
+\item{x}{a \code{gp}}
+
+\item{...}{Unused}
+}
 \description{
 Calculate wells of gp object
 }

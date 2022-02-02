@@ -17,3 +17,7 @@ a \code{ggplot}
 \description{
 Plot a \code{gp} object
 }
+\examples{
+
+gp(16, 24) |> gp_plot(.row)
+}

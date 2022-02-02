@@ -46,8 +46,8 @@ Four cell-lines, plus a non-targetting control (NTC):
 ```{r}
 gp(16, 24) |> 
   gp_sec("no_border", margin = 1) |> 
-  gp_sec("primers", nrow = 9, ncol = 3, c("Primer 1", "Primer 2", "Primer 3")) |> 
-  gp_sec("cell line", nrow = 2, c("1", "2", "3", "4")) |> 
+  gp_sec("primers", nrow = 9, ncol = 3, labels = c("Primer 1", "Primer 2", "Primer 3")) |> 
+  gp_sec("cell line", nrow = 2, labels = c("1", "2", "3", "4")) |> 
   gp_plot(`cell line`)
 ```
 

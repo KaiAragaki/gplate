@@ -2,6 +2,8 @@
 #'
 #' @param nrow Integer. Number of rows of the plate.
 #' @param ncol Integer. Number of columns of the plate.
+#' @param data An optional dataframe including plate data
+#' @param tidy Is the supplied data already tidy, or should it be tidied?
 #'
 #' @return a `gp` object
 #'
@@ -90,6 +92,8 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #' @param wells Numeric. The number of wells the plate has. If this is
 #'   specified, rows and cols must be null - they are inferred from common form
 #'   factors of plates.
+#' @param data An optional data.frame of well data the same dimensions as the plate to be described
+#' @param tidy Are the data supplied tidy?
 #'
 #' @return a `gp` object
 #'
@@ -216,8 +220,8 @@ as_gp.list <- function(x, ...) {
 
 #' Calculate wells of gp object
 #'
-#' @param x
-#' @param ...
+#' @param x a `gp`
+#' @param ... Unused
 #' @export
 wells <- function(x, ...){
   UseMethod("wells")
