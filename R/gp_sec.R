@@ -100,10 +100,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
 
 
-
-
-
-
   gp <- gp |>
     coord_map("row", margin) |>
     coord_map("col", margin) |>
