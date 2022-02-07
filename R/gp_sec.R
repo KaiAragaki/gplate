@@ -65,25 +65,13 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   # Make sections --------------------------------------------------------------
 
-  pp <- gp |>
+  rr <- gp |>
     coordinate("row", margin)
 
-  # So....
-  #
-  # If we have a row coordinate system
-  #
-  # And we are NOT flowing
-  #
-  # And we are ok with clipping of sections
-  #
-  # Then...
-  #
-  # We should NEST by the parent rows
-  # And we should add in a flow relative to the child
+  # TODO What if wrap = TRUE?
+  # TODO DRY
 
   is_backwards_row <- start_corner %in% c("tr", "br")
-
-
 
   if (!is_backwards_row) {
     gp$well_data <- gp$well_data |>
@@ -94,8 +82,34 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   }
 
   gp$well_data <- gp$well_data |>
-    dplyr::group_by(.sec) |>
-    tidyr::nest()
+    dplyr::group_by(.sec, .row_sec_par) |>
+    dplyr::select(setdiff(colnames(gp$well_data), colnames(rr))) |>
+    tidyr::nest() |>
+    dplyr::mutate(data = purrr::map(data, \(x) {cbind(non_int_replicate(rr, x), x)})) |>
+    tidyr::unnest(cols = data) |>
+    dplyr::ungroup()
+
+  cc <- gp |>
+    coordinate("col", margin)
+
+  is_backwards_col <- start_corner %in% c("bl", "br")
+
+  if (!is_backwards_col) {
+    gp$well_data <- gp$well_data |>
+      dplyr::arrange(.col_sec_par)
+  } else {
+    gp$well_data <- gp$well_data |>
+      dplyr::arrange(desc(.col_sec_par))
+  }
+
+  gp$well_data <- gp$well_data |>
+    dplyr::group_by(.sec, .col_sec_par) |>
+    dplyr::select(setdiff(colnames(gp$well_data), colnames(cc))) |>
+    tidyr::nest() |>
+    dplyr::mutate(data = purrr::map(data, \(x) {cbind(non_int_replicate(cc, x), x)})) |>
+    tidyr::unnest(cols = data) |>
+    dplyr::ungroup()
+
 
 
 
