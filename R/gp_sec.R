@@ -68,6 +68,42 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   pp <- gp |>
     coordinate("row", margin)
 
+  # So....
+  #
+  # If we have a row coordinate system
+  #
+  # And we are NOT flowing
+  #
+  # And we are ok with clipping of sections
+  #
+  # Then...
+  #
+  # We should NEST by the parent rows
+  # And we should add in a flow relative to the child
+
+  is_backwards_row <- start_corner %in% c("tr", "br")
+
+
+
+  if (!is_backwards_row) {
+    gp$well_data <- gp$well_data |>
+      dplyr::arrange(.row_sec_par)
+  } else {
+    gp$well_data <- gp$well_data |>
+      dplyr::arrange(desc(.row_sec_par))
+  }
+
+  gp$well_data <- gp$well_data |>
+    dplyr::group_by(.sec) |>
+    tidyr::nest()
+
+
+
+
+
+
+
+
   gp <- gp |>
     coord_map("row", margin) |>
     coord_map("col", margin) |>
