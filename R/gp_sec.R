@@ -82,7 +82,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   }
 
   gp$well_data <- gp$well_data |>
-    dplyr::group_by(.sec, .row_sec_par) |>
+    dplyr::group_by(.sec, .col_sec_par) |>
     dplyr::select(setdiff(colnames(gp$well_data), colnames(rr))) |>
     tidyr::nest() |>
     dplyr::mutate(data = purrr::map(data, \(x) {cbind(non_int_replicate(rr, x), x)})) |>
@@ -103,14 +103,15 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   }
 
   gp$well_data <- gp$well_data |>
-    dplyr::group_by(.sec, .col_sec_par) |>
+    dplyr::group_by(.sec, .row_sec_par) |>
     dplyr::select(setdiff(colnames(gp$well_data), colnames(cc))) |>
     tidyr::nest() |>
     dplyr::mutate(data = purrr::map(data, \(x) {cbind(non_int_replicate(cc, x), x)})) |>
+    dplyr::mutate(.test_index = dplyr::cur_group_id() %/% gp$ncol_sec + 1) |>
     tidyr::unnest(cols = data) |>
     dplyr::ungroup()
 
-
+# Instead of adding a test index, make non_int_replicate step bring its own id?
 
 
 
