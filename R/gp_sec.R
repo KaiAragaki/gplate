@@ -86,6 +86,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     dplyr::select(setdiff(colnames(gp$well_data), colnames(rr))) |>
     tidyr::nest() |>
     dplyr::mutate(data = purrr::map(data, \(x) {cbind(non_int_replicate(rr, x), x)})) |>
+    dplyr::mutate(.test_index_col = (.data$.col_sec_par - 1) %/% gp$ncol_sec + 1) |>
     tidyr::unnest(cols = data) |>
     dplyr::ungroup()
 
@@ -107,21 +108,14 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     dplyr::select(setdiff(colnames(gp$well_data), colnames(cc))) |>
     tidyr::nest() |>
     dplyr::mutate(data = purrr::map(data, \(x) {cbind(non_int_replicate(cc, x), x)})) |>
-    dplyr::mutate(.test_index = dplyr::cur_group_id() %/% gp$ncol_sec + 1) |>
+    dplyr::mutate(.test_index_row = (.data$.row_sec_par - 1) %/% gp$nrow_sec + 1) |>
     tidyr::unnest(cols = data) |>
     dplyr::ungroup()
 
-# Instead of adding a test index, make non_int_replicate step bring its own id?
+  # FIXME This only holds in the TL case!!!!
+  gp$well_data <- gp$well_data |>
+    dplyr::mutate(.sec = paste0(.test_index_col, .test_index_row) |> as.numeric() |> as.factor() |> as.numeric())
 
-
-
-  gp <- gp |>
-    coord_map("row", margin) |>
-    coord_map("col", margin) |>
-    add_map("row") |>
-    add_map("col")
-
-  gp <- make_sec(gp, flow, wrap, nrow, ncol)
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>
