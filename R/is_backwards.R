@@ -28,7 +28,7 @@ arrange_by_rel_dim <- function(gp, dim = c("row", "col"), start_corner) {
 
 unroll_sec_dim_along_parent <- function(gp, dim, start_corner, section_prototype) {
 
-  dim_sec_par <- ifelse(dim == "row", rlang::expr(.col_sec_rel_par), rlang::expr(.row_sec_rel_par))
+  dim_sec_par <- ifelse(dim == "row", rlang::expr(.col_sec_par), rlang::expr(.row_sec_par))
   ndim_sec <- ifelse(dim == "row", gp$ncol_sec, gp$nrow_sec)
   index_name <- ifelse(dim == "row", ".index_col", ".index_row")
 
