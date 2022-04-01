@@ -79,8 +79,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   gp <- arrange_by_rel_dim(gp, "col", start_corner) |>
     unroll_sec_dim_along_parent("col", start_corner, cc)
 
-  # FIXME This only holds in the TL case!!!!
-
   if (flow == "row") {
     gp$well_data <- gp$well_data |>
       dplyr::mutate(.sec = paste0(.index_row, .index_col) |> as.numeric() |> as.factor() |> as.numeric()) |>
