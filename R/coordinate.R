@@ -11,17 +11,15 @@ coordinate <- function(gp, type = c("row", "col"), margin) {
 
   if (type == "row") {
     dim_sec <- gp$nrow_sec
-    backwards_corners <- c("bl", "br")
     margin_head <- margin$bottom
     margin_tail <- margin$top
   } else {
     dim_sec <- gp$ncol_sec
-    backwards_corners <- c("tr", "br")
     margin_head <- margin$right
     margin_tail <- margin$left
   }
 
-  is_backwards <- gp$start_corner %in% backwards_corners
+  is_backwards <- is_backwards(type, gp$start_corner)
 
   purrr::pmap(list(margin_head, dim_sec, margin_tail),
               ~ tibble::tibble(n = c(..1, ..2, ..3),
