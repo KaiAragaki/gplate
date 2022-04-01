@@ -1,4 +1,7 @@
-make_sec <- function(gp, flow, wrap, nrow, ncol) {
+make_sec <- function(gp, start_corner) {
+
+
+
 
   template_sec <-
     tidyr::expand_grid(.row_sec_par = gp$row_coord_map$.row_sec_par, .col_sec_par = gp$col_coord_map$.col_sec_par) |>

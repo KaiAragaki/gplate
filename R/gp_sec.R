@@ -65,57 +65,26 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   # Make sections --------------------------------------------------------------
 
+  # TODO What if wrap = TRUE?
+
   rr <- gp |>
     coordinate("row", margin)
 
-  # TODO What if wrap = TRUE?
-  # TODO DRY
+  gp <- arrange_by_rel_dim(gp, "row", start_corner)
 
-  is_backwards_row <- start_corner %in% c("tr", "br")
-
-  if (!is_backwards_row) {
-    gp$well_data <- gp$well_data |>
-      dplyr::arrange(.row_sec_par)
-  } else {
-    gp$well_data <- gp$well_data |>
-      dplyr::arrange(desc(.row_sec_par))
-  }
-
-  gp$well_data <- gp$well_data |>
-    dplyr::group_by(.sec, .col_sec_par) |>
-    dplyr::select(setdiff(colnames(gp$well_data), colnames(rr))) |>
-    tidyr::nest() |>
-    dplyr::mutate(data = purrr::map(data, \(x) {cbind(non_int_replicate(rr, x), x)})) |>
-    dplyr::mutate(.test_index_col = (.data$.col_sec_par - 1) %/% gp$ncol_sec + 1) |>
-    tidyr::unnest(cols = data) |>
-    dplyr::ungroup()
+  gp <- unroll_sec_dim_along_parent(gp, "row", start_corner, rr)
 
   cc <- gp |>
     coordinate("col", margin)
 
-  is_backwards_col <- start_corner %in% c("bl", "br")
+  gp <- arrange_by_rel_dim(gp, "col", start_corner)
 
-  if (!is_backwards_col) {
-    gp$well_data <- gp$well_data |>
-      dplyr::arrange(.col_sec_par)
-  } else {
-    gp$well_data <- gp$well_data |>
-      dplyr::arrange(desc(.col_sec_par))
-  }
-
-  gp$well_data <- gp$well_data |>
-    dplyr::group_by(.sec, .row_sec_par) |>
-    dplyr::select(setdiff(colnames(gp$well_data), colnames(cc))) |>
-    tidyr::nest() |>
-    dplyr::mutate(data = purrr::map(data, \(x) {cbind(non_int_replicate(cc, x), x)})) |>
-    dplyr::mutate(.test_index_row = (.data$.row_sec_par - 1) %/% gp$nrow_sec + 1) |>
-    tidyr::unnest(cols = data) |>
-    dplyr::ungroup()
+  gp <- unroll_sec_dim_along_parent(gp, "col", start_corner, cc)
 
   # FIXME This only holds in the TL case!!!!
   gp$well_data <- gp$well_data |>
-    dplyr::mutate(.sec = paste0(.test_index_col, .test_index_row) |> as.numeric() |> as.factor() |> as.numeric())
-
+    dplyr::mutate(.sec = paste0(.index_col, .index_row) |> as.numeric() |> as.factor() |> as.numeric()) |>
+    dplyr::select(-c(".index_col", ".index_row"))
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>
