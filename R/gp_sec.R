@@ -70,21 +70,27 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   rr <- gp |>
     coordinate("row", margin)
 
-  gp <- arrange_by_rel_dim(gp, "row", start_corner)
-
-  gp <- unroll_sec_dim_along_parent(gp, "row", start_corner, rr)
+  gp <- arrange_by_rel_dim(gp, "row", start_corner) |>
+    unroll_sec_dim_along_parent("row", start_corner, rr)
 
   cc <- gp |>
     coordinate("col", margin)
 
-  gp <- arrange_by_rel_dim(gp, "col", start_corner)
-
-  gp <- unroll_sec_dim_along_parent(gp, "col", start_corner, cc)
+  gp <- arrange_by_rel_dim(gp, "col", start_corner) |>
+    unroll_sec_dim_along_parent("col", start_corner, cc)
 
   # FIXME This only holds in the TL case!!!!
-  gp$well_data <- gp$well_data |>
-    dplyr::mutate(.sec = paste0(.index_col, .index_row) |> as.numeric() |> as.factor() |> as.numeric()) |>
-    dplyr::select(-c(".index_col", ".index_row"))
+
+  if (flow == "row") {
+    gp$well_data <- gp$well_data |>
+      dplyr::mutate(.sec = paste0(.index_row, .index_col) |> as.numeric() |> as.factor() |> as.numeric()) |>
+      dplyr::select(-c(".index_col", ".index_row"))
+  } else if (flow == "col") {
+    gp$well_data <- gp$well_data |>
+      dplyr::mutate(.sec = paste0(.index_col, .index_row) |> as.numeric() |> as.factor() |> as.numeric()) |>
+      dplyr::select(-c(".index_col", ".index_row"))
+  }
+
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>

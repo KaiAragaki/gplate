@@ -28,7 +28,7 @@ arrange_by_rel_dim <- function(gp, dim = c("row", "col"), start_corner) {
 
 unroll_sec_dim_along_parent <- function(gp, dim, start_corner, section_prototype) {
 
-  dim_sec_par <- ifelse(dim == "row", rlang::expr(.col_sec_par), rlang::expr(.row_sec_par))
+  dim_sec_par <- ifelse(dim == "row", rlang::expr(.col_sec_rel_par), rlang::expr(.row_sec_rel_par))
   ndim_sec <- ifelse(dim == "row", gp$ncol_sec, gp$nrow_sec)
   index_name <- ifelse(dim == "row", ".index_col", ".index_row")
 
@@ -37,7 +37,12 @@ unroll_sec_dim_along_parent <- function(gp, dim, start_corner, section_prototype
     dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype))) |>
     tidyr::nest() |>
     dplyr::mutate(data = purrr::map(data, \(x) {cbind(non_int_replicate(section_prototype, x), x)})) |>
-    dplyr::mutate({{ index_name }} := ({{ dim_sec_par }} - 1) %/% ndim_sec + 1) |>
+    dplyr::mutate(temp := ({{ dim_sec_par }} - 1) %/% ndim_sec + 1) |>
+    dplyr::ungroup() |>
+    dplyr::mutate(max_temp = max(temp)) |>
+    dplyr::rowwise() |>
+    dplyr::mutate({{ index_name }} := ifelse(is_backwards(dim, start_corner), temp * -1  + 1 + max_temp, temp)) |>
+    dplyr::select(-temp, -max_temp) |>
     tidyr::unnest(cols = data) |>
     dplyr::ungroup()
 
