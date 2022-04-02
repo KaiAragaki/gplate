@@ -19,9 +19,6 @@ coordinate <- function(gp, type = c("row", "col"), margin) {
     margin_tail <- margin$left
   }
 
-  # .row_sec_par looks wrong...issue is prob here.
-  # Looks rel when it shouldn't be.
-
   dim_unit <- purrr::pmap(list(margin_head, dim_sec, margin_tail),
               ~ tibble::tibble(n = c(..1, ..2, ..3),
                                is_margin = c(T, F, T))) |>

@@ -67,10 +67,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   # TODO What if wrap = TRUE?
 
-  # FIXME tt <- gp(8, 12) |> gp_sec("cond", 4, 6, flow = "row", start_corner = "tl", margin = 1) |> gp_sec("conc", 3, 3, start_corner = "br")
-  # Sections appear labeled in correct order but do not appear to flow correctly.
-  # Seemed to work fine in last commit. Refactor bug I think
-
   gp <- gp |>
     coordinate("row", margin) |>
     unroll_sec_dim_along_parent("row") |>
