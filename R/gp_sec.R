@@ -92,7 +92,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>
-      dplyr::group_by(.sec) |>
+      dplyr::group_by(.sec, .sec_par) |>
       dplyr::mutate(.n = dplyr::n()) |>
       dplyr::mutate(.sec = ifelse(.n < nrow * ncol, NA_integer_, .data$.sec) |> as.factor(),
                     .sec = as.numeric(.sec)) |>  # No idea why this has to be a separate line to work, but it does
