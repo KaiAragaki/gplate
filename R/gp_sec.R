@@ -67,18 +67,20 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   # TODO What if wrap = TRUE?
 
-  rr <- gp |>
-    coordinate("row", margin)
+  # FIXME tt <- gp(8, 12) |> gp_sec("cond", 4, 6, flow = "row", start_corner = "tl", margin = 1) |> gp_sec("conc", 3, 3, start_corner = "br")
+  # Sections appear labeled in correct order but do not appear to flow correctly.
+  # Seemed to work fine in last commit. Refactor bug I think
 
-  gp <- arrange_by_rel_dim(gp, "row", start_corner) |>
-    unroll_sec_dim_along_parent("row", start_corner, rr)
+  gp <- gp |>
+    coordinate("row", margin) |>
+    arrange_by_rel_dim("row") |>
+    unroll_sec_dim_along_parent("row") |>
+    coordinate("col", margin) |>
+    arrange_by_rel_dim("col") |>
+    unroll_sec_dim_along_parent("col")
 
-  cc <- gp |>
-    coordinate("col", margin)
 
-  gp <- arrange_by_rel_dim(gp, "col", start_corner) |>
-    unroll_sec_dim_along_parent("col", start_corner, cc)
-
+  # FIXME This won't work if index numbers get very big. Fragile!
   if (flow == "row") {
     gp$well_data <- gp$well_data |>
       dplyr::mutate(.sec = paste0(.index_row, .index_col) |> as.numeric() |> as.factor() |> as.numeric()) |>
