@@ -73,10 +73,8 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   gp <- gp |>
     coordinate("row", margin) |>
-    arrange_by_rel_dim("row") |>
     unroll_sec_dim_along_parent("row") |>
     coordinate("col", margin) |>
-    arrange_by_rel_dim("col") |>
     unroll_sec_dim_along_parent("col")
 
 

@@ -12,21 +12,6 @@ is_fwd <- function(gp, dim) {
          gp$start_corner %in% c("tl", "tr"))
 }
 
-arrange_by_rel_dim <- function(gp, dim) {
-
-  dim_sec_par <- ifelse(dim == "row",
-                        rlang::expr(.row_sec_par),
-                        rlang::expr(.col_sec_par))
-#
-#   if (is_fwd(gp, dim)) {
-#     gp$well_data <- gp$well_data |> dplyr::arrange({{ dim_sec_par }})
-#   } else {
-#     gp$well_data <- gp$well_data |> dplyr::arrange(dplyr::desc({{ dim_sec_par }}))
-#   }
-#
-  gp
-}
-
 unroll_sec_dim_along_parent <- function(gp, dim) {
 
   dim_sec_par <- ifelse(dim == "row", rlang::expr(.col_sec_par), rlang::expr(.row_sec_par))
