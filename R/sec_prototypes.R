@@ -20,9 +20,10 @@ is_fwd <- function(gp, dim) {
 #'
 #' @return A `gp`
 #'
-unroll_sec_dim_along_parent <- function(gp, dim) {
+unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
   dim_sec_par <- ifelse(dim == "row", rlang::expr(.col_sec_par), rlang::expr(.row_sec_par))
+  non_dim_sec_par <- ifelse(dim == "row", rlang::expr(.row_sec_par), rlang::expr(.col_sec_par))
   ndim_sec <- ifelse(dim == "row", gp$ncol_sec_mar, gp$nrow_sec_mar)
   ndim_sec_par <- ifelse(dim == "row", gp$ncol_sec_par_mar, gp$nrow_sec_par_mar)
   index_name <- ifelse(dim == "row", ".index_col", ".index_row")
@@ -30,6 +31,18 @@ unroll_sec_dim_along_parent <- function(gp, dim) {
     section_prototype <- gp[["row_unit"]]
   } else {
     section_prototype <- gp[["col_unit"]]
+  }
+
+  if (wrap) {
+    dim_sec_rel <- ifelse(dim == "row", rlang::expr(.col_sec_rel), rlang::expr(.row_sec_rel)) # Need rel?
+
+    tt <- gp$well_data |>
+      group_by(.data$.sec, {{ dim_sec_rel }}) |>
+      dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype))) |>
+      dplyr::arrange({{ dim_sec_par }}, {{ non_dim_sec_par }}) |>
+      tidyr::nest() |>
+      dplyr::mutate(data = purrr::map(.data$data, \(x) {cbind(non_int_replicate(section_prototype, x), x)})) |>
+      tidyr::unnest(cols = .data$data)
   }
 
   gp$well_data <- gp$well_data |>
