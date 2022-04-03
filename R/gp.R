@@ -13,7 +13,13 @@
 #' new_gp(nrow = 8L, ncol = 16L)
 new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 
-  stopifnot(is.integer(nrow), is.integer(ncol), is.data.frame(data)|is.matrix(data))
+  stopifnot(is.integer(nrow), is.integer(ncol), is.data.frame(data) | is.matrix(data))
+
+  wd <- tidyr::expand_grid(.row = seq_len(nrow), .col = seq_len(ncol))
+  wd$.sec <- wd$.sec_par <- 1L
+  wd$.row_rel <- wd$.row_sec <- wd$.row_sec_rel <- wd$.row_sec_par <- wd$.row
+  wd$.col_rel <- wd$.col_sec <- wd$.col_sec_rel <- wd$.col_sec_par <- wd$.col
+  wd$.row_is_margin <- wd$.col_is_margin <- FALSE
 
   has_size <- nrow(data) > 0 & ncol(data) > 0
 
@@ -21,67 +27,23 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
     data <- gp_unravel(data)
   }
 
-  nrow_sec          <- nrow
-  nrow_sec_mar      <- nrow
-  nrow_sec_par      <- nrow
-  nrow_sec_par_mar  <- nrow
-  ncol_sec          <- ncol
-  ncol_sec_par      <- ncol
-  ncol_sec_mar      <- ncol
-  ncol_sec_par_mar  <- ncol
-
-  well_data <- tidyr::expand_grid(.row = seq_len(nrow), .col = seq_len(ncol))
-
-  well_data$.sec             <- 1L
-  well_data$.sec_par         <- 1L
-
-  well_data$.row_rel         <- well_data$.row
-  well_data$.row_sec         <- well_data$.row
-  well_data$.row_sec_rel     <- well_data$.row
-  well_data$.row_sec_par     <- well_data$.row
-  well_data$.row_is_margin   <- FALSE
-
-  well_data$.col_rel         <- well_data$.col
-  well_data$.col_sec         <- well_data$.col
-  well_data$.col_sec_rel     <- well_data$.col
-  well_data$.col_sec_par     <- well_data$.col
-  well_data$.col_is_margin   <- FALSE
-
   if (has_size) {
-    well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
+    wd <- dplyr::left_join(wd, data, by = c(".row", ".col"))
   }
-
-  row_coord_map <- dplyr::tibble(
-    .row_sec_par = seq_len(nrow),
-    .row_sec = .row_sec_par,
-    .row_sec_rel = .row_sec_par,
-    .row_rel_child_sec_par = .row_sec_par,
-    .row_is_margin = FALSE
-  )
-
-  col_coord_map <- dplyr::tibble(
-    .col_sec_par = seq_len(ncol),
-    .col_sec = .col_sec_par,
-    .col_sec_rel = .col_sec_par,
-    .col_rel_child_sec_par = .col_sec_par,
-    .col_is_margin = FALSE
-  )
 
   structure(list(nrow = nrow,
                  ncol = ncol,
-                 well_data = well_data,
+                 well_data = wd,
                  start_corner = "tl",
                  start_corner_par = "tl",
-                 nrow_sec = nrow_sec,
-                 nrow_sec_mar = nrow_sec_mar,
-                 nrow_sec_par = nrow_sec_par,
-                 nrow_sec_par_mar = nrow_sec_par_mar,
-                 ncol_sec = ncol_sec,
-                 ncol_sec_mar = ncol_sec_mar,
-                 ncol_sec_par = ncol_sec_par,
-                 ncol_sec_par_mar = ncol_sec_par_mar,
-                 row_coord_map = row_coord_map,
-                 col_coord_map = col_coord_map),
+                 nrow_sec = nrow,
+                 nrow_sec_mar = nrow,
+                 nrow_sec_par = nrow,
+                 nrow_sec_par_mar = nrow,
+                 ncol_sec = ncol,
+                 ncol_sec_mar = ncol,
+                 ncol_sec_par = ncol,
+                 ncol_sec_par_mar = ncol),
             class = "gp")
 }
 

@@ -1,6 +1,6 @@
 #' Add a section to a `gp` object.
 #'
-#' @param gp a `gp` object
+#' @param gp A `gp` object
 #' @param name Character. Name of the section.
 #' @param nrow Numeric. Section height. If `NULL`, will fill width of parent
 #'   section.
@@ -65,20 +65,29 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   # Make sections --------------------------------------------------------------
 
-  pp <- gp |>
-    coordinate("row", margin)
+  # TODO What if wrap = TRUE?
 
   gp <- gp |>
-    coord_map("row", margin) |>
-    coord_map("col", margin) |>
-    add_map("row") |>
-    add_map("col")
+    coordinate("row", margin) |>
+    unroll_sec_dim_along_parent("row") |>
+    coordinate("col", margin) |>
+    unroll_sec_dim_along_parent("col")
 
-  gp <- make_sec(gp, flow, wrap, nrow, ncol)
+
+  # FIXME This won't work if index numbers get very big. Fragile!
+  if (flow == "row") {
+    gp$well_data <- gp$well_data |>
+      dplyr::mutate(.sec = paste0(.index_row, .index_col) |> as.numeric() |> as.factor() |> as.numeric()) |>
+      dplyr::select(-c(".index_col", ".index_row"))
+  } else if (flow == "col") {
+    gp$well_data <- gp$well_data |>
+      dplyr::mutate(.sec = paste0(.index_col, .index_row) |> as.numeric() |> as.factor() |> as.numeric()) |>
+      dplyr::select(-c(".index_col", ".index_row"))
+  }
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>
-      dplyr::group_by(.sec) |>
+      dplyr::group_by(.sec, .sec_par) |>
       dplyr::mutate(.n = dplyr::n()) |>
       dplyr::mutate(.sec = ifelse(.n < nrow * ncol, NA_integer_, .data$.sec) |> as.factor(),
                     .sec = as.numeric(.sec)) |>  # No idea why this has to be a separate line to work, but it does
@@ -101,9 +110,9 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
 make_child_parent <- function(gp) {
   gp$start_corner_par <- gp$start_corner
-  gp$nrow_sec_par  <- gp$nrow_sec
+  gp$nrow_sec_par     <- gp$nrow_sec
   gp$nrow_sec_par_mar <- gp$nrow_sec
-  gp$ncol_sec_par  <- gp$ncol_sec
+  gp$ncol_sec_par     <- gp$ncol_sec
   gp$ncol_sec_par_mar <- gp$ncol_sec
 
   gp$well_data$.sec_par         <- gp$well_data$.sec

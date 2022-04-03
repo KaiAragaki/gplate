@@ -95,18 +95,3 @@ For instance:
 > You should align your primers in columns
 > <img src="man/figures/mini-plot_cols.png" width="75" /> instead of in
 > rows <img src="man/figures/mini-plot_rows.png" width="75" />
-
-# TODO
-
--   [x] Break Sections: Be able to specify if only ‘whole integer’
-    sections should be allowed to appear
-    -   wrap = TRUE needs to be put through this stuff too.
--   [x] Margin/Padding
-    -   Should probably JUST do margin for simplicity sake.
--   [x] Real plotting functions. Also a miniplotting function for inline
-    plotting (a la sparklines)
--   [x] pkgdown
--   [ ] update hex
--   [ ] Allow user to supply a vector for rows/cols for section
-    definition
--   [ ] Data layering? Need to think about how to best do this.

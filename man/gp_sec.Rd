@@ -18,7 +18,7 @@ gp_sec(
 )
 }
 \arguments{
-\item{gp}{a \code{gp} object}
+\item{gp}{A \code{gp} object}
 
 \item{name}{Character. Name of the section.}
 
