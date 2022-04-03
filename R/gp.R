@@ -51,22 +51,6 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
     well_data <- dplyr::left_join(well_data, data, by = c(".row", ".col"))
   }
 
-  row_coord_map <- dplyr::tibble(
-    .row_sec_par = seq_len(nrow),
-    .row_sec = .row_sec_par,
-    .row_sec_rel = .row_sec_par,
-    .row_rel_child_sec_par = .row_sec_par,
-    .row_is_margin = FALSE
-  )
-
-  col_coord_map <- dplyr::tibble(
-    .col_sec_par = seq_len(ncol),
-    .col_sec = .col_sec_par,
-    .col_sec_rel = .col_sec_par,
-    .col_rel_child_sec_par = .col_sec_par,
-    .col_is_margin = FALSE
-  )
-
   structure(list(nrow = nrow,
                  ncol = ncol,
                  well_data = well_data,
@@ -79,9 +63,7 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
                  ncol_sec = ncol_sec,
                  ncol_sec_mar = ncol_sec_mar,
                  ncol_sec_par = ncol_sec_par,
-                 ncol_sec_par_mar = ncol_sec_par_mar,
-                 row_coord_map = row_coord_map,
-                 col_coord_map = col_coord_map),
+                 ncol_sec_par_mar = ncol_sec_par_mar),
             class = "gp")
 }
 
