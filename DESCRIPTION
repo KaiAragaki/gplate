@@ -18,6 +18,7 @@ Imports:
     ggplot2,
     methods,
     purrr,
+    rlang,
     stats,
     tibble,
     tidyr
