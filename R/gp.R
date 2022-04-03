@@ -159,9 +159,9 @@ gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE
 
 #' Coerce object to gp
 #'
-#' @param x
+#' @param x Object to coerce
 #'
-#' @param ...
+#' @param ... Unused
 #'
 #' @export
 as_gp <- function(x, ...){

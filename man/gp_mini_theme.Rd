@@ -7,7 +7,7 @@
 gp_mini_theme()
 }
 \value{
-
+A \code{ggplot2} theme
 }
 \description{
 A theme for making little in-line plots

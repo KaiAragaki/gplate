@@ -12,6 +12,14 @@ is_fwd <- function(gp, dim) {
          gp$start_corner %in% c("tl", "tr"))
 }
 
+#' Repeat one dimension of a child section across a dimension of a parent section
+#'
+#'
+#' @param gp A `gp`
+#' @param dim Either "row" or "col"
+#'
+#' @return A `gp`
+#'
 unroll_sec_dim_along_parent <- function(gp, dim) {
 
   dim_sec_par <- ifelse(dim == "row", rlang::expr(.col_sec_par), rlang::expr(.row_sec_par))
@@ -28,7 +36,7 @@ unroll_sec_dim_along_parent <- function(gp, dim) {
     dplyr::group_by(.data$.sec, {{ dim_sec_par }}) |>
     dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype))) |>
     tidyr::nest() |>
-    dplyr::mutate(data = purrr::map(data, \(x) {cbind(non_int_replicate(section_prototype, x), x)}))
+    dplyr::mutate(data = purrr::map(.data$data, \(x) {cbind(non_int_replicate(section_prototype, x), x)}))
 
   if(is_fwd(gp, dim)) {
     gp$well_data <- dplyr::mutate(gp$well_data, temp = {{ dim_sec_par }})
@@ -37,9 +45,9 @@ unroll_sec_dim_along_parent <- function(gp, dim) {
   }
 
   gp$well_data <- gp$well_data |>
-    dplyr::mutate({{ index_name }} := (temp - 1) %/% ndim_sec + 1) |>
-    dplyr::select(-temp) |>
-    tidyr::unnest(cols = data) |>
+    dplyr::mutate({{ index_name }} := (.data$temp - 1) %/% ndim_sec + 1) |>
+    dplyr::select(-.data$temp) |>
+    tidyr::unnest(cols = .data$data) |>
     dplyr::ungroup()
 
   gp

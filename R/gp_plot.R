@@ -18,7 +18,7 @@ gp_plot <- function(gp, name) {
 
 #' A theme for making little in-line plots
 #'
-#' @return
+#' @return A `ggplot2` theme
 #' @export
 gp_mini_theme <- function() {
   ggplot2::theme(panel.grid = ggplot2::element_blank(),

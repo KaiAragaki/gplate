@@ -22,6 +22,8 @@
 #' @examples
 #'
 #' gp(16, 24) |> gp_sec("section 1", ncol = 3)
+#'
+#' @importFrom rlang .data `:=`
 gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
                    start_corner = c("tl", "tr", "bl", "br"),
                    flow = c("row", "col"),
@@ -77,26 +79,26 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   # FIXME This won't work if index numbers get very big. Fragile!
   if (flow == "row") {
     gp$well_data <- gp$well_data |>
-      dplyr::mutate(.sec = paste0(.index_row, .index_col) |> as.numeric() |> as.factor() |> as.numeric()) |>
+      dplyr::mutate(.sec = paste0(.data$.index_row, .data$.index_col) |> as.numeric() |> as.factor() |> as.numeric()) |>
       dplyr::select(-c(".index_col", ".index_row"))
   } else if (flow == "col") {
     gp$well_data <- gp$well_data |>
-      dplyr::mutate(.sec = paste0(.index_col, .index_row) |> as.numeric() |> as.factor() |> as.numeric()) |>
+      dplyr::mutate(.sec = paste0(.data$.index_col, .data$.index_row) |> as.numeric() |> as.factor() |> as.numeric()) |>
       dplyr::select(-c(".index_col", ".index_row"))
   }
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>
-      dplyr::group_by(.sec, .sec_par) |>
+      dplyr::group_by(.data$.sec, .data$.sec_par) |>
       dplyr::mutate(.n = dplyr::n()) |>
-      dplyr::mutate(.sec = ifelse(.n < nrow * ncol, NA_integer_, .data$.sec) |> as.factor(),
-                    .sec = as.numeric(.sec)) |>  # No idea why this has to be a separate line to work, but it does
+      dplyr::mutate(.sec = ifelse(.data$.n < nrow * ncol, NA_integer_, .data$.sec) |> as.factor(),
+                    .sec = as.numeric(.data$.sec)) |>  # No idea why this has to be a separate line to work, but it does
       dplyr::ungroup() |>
-      dplyr::mutate(.row_sec = ifelse(is.na(.sec), NA_integer_, .row_sec),
-                    .col_sec = ifelse(is.na(.sec), NA_integer_, .col_sec))
+      dplyr::mutate(.row_sec = ifelse(is.na(.data$.sec), NA_integer_, .data$.row_sec),
+                    .col_sec = ifelse(is.na(.data$.sec), NA_integer_, .data$.col_sec))
   }
 
-  gp$well_data <- dplyr::mutate(gp$well_data, {{name}} := .sec)
+  gp$well_data <- dplyr::mutate(gp$well_data, {{name}} := .data$.sec)
 
   if (!is.null(labels)) {
     length(labels) <- length(levels(as.factor(gp$well_data[[name]])))

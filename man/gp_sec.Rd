@@ -52,4 +52,5 @@ Add a section to a \code{gp} object.
 \examples{
 
 gp(16, 24) |> gp_sec("section 1", ncol = 3)
+
 }

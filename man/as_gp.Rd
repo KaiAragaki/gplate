@@ -13,9 +13,9 @@ as_gp(x, ...)
 \method{as_gp}{list}(x, ...)
 }
 \arguments{
-\item{x}{}
+\item{x}{Object to coerce}
 
-\item{...}{}
+\item{...}{Unused}
 }
 \description{
 Coerce object to gp

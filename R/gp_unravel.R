@@ -22,7 +22,7 @@ gp_unravel <- function(df, rownames = NULL) {
 
   df |>
     dplyr::as_tibble(.name_repair = "minimal") |>
-    setNames(as.character(seq_len(ncol(df)))) |>
+    stats::setNames(as.character(seq_len(ncol(df)))) |>
     dplyr::mutate(.row = seq_len(nrow(df))) |>
     dplyr::relocate(.row) |>
     tidyr::pivot_longer(cols = -.row, names_to = ".col") |>
