@@ -1,6 +1,6 @@
 #' Add a section to a `gp` object.
 #'
-#' @param gp a `gp` object
+#' @param gp A `gp` object
 #' @param name Character. Name of the section.
 #' @param nrow Numeric. Section height. If `NULL`, will fill width of parent
 #'   section.
@@ -85,7 +85,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
       dplyr::select(-c(".index_col", ".index_row"))
   }
 
-
   if (!break_sections) {
     gp$well_data <- gp$well_data |>
       dplyr::group_by(.sec, .sec_par) |>
@@ -111,9 +110,9 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
 make_child_parent <- function(gp) {
   gp$start_corner_par <- gp$start_corner
-  gp$nrow_sec_par  <- gp$nrow_sec
+  gp$nrow_sec_par     <- gp$nrow_sec
   gp$nrow_sec_par_mar <- gp$nrow_sec
-  gp$ncol_sec_par  <- gp$ncol_sec
+  gp$ncol_sec_par     <- gp$ncol_sec
   gp$ncol_sec_par_mar <- gp$ncol_sec
 
   gp$well_data$.sec_par         <- gp$well_data$.sec
