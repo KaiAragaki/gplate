@@ -75,19 +75,24 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     coordinate("col", margin) |>
     unroll_sec_dim_along_parent("col")
 
-
-  # FIXME This won't work if index numbers get very big. Fragile!
   if (flow == "row") {
     gp$well_data <- gp$well_data |>
-      dplyr::mutate(.sec = paste0(.data$.index_row, .data$.index_col) |> as.numeric() |> as.factor() |> as.numeric())
+      dplyr::arrange(.data$.index_row, .data$.index_col)
   } else if (flow == "col") {
     gp$well_data <- gp$well_data |>
-      dplyr::mutate(.sec = paste0(.data$.index_col, .data$.index_row) |> as.numeric() |> as.factor() |> as.numeric())
+      dplyr::arrange(.data$.index_col, .data$.index_row)
   }
 
   gp$well_data <- gp$well_data |>
+    dplyr::select(-.data$.sec) |>
+    dplyr::group_by(.data$.index_row, .data$.index_col) |>
+    tidyr::nest() |>
+    dplyr::ungroup() |>
+    dplyr::mutate(.sec = dplyr::row_number()) |>
+    tidyr::unnest(.data$data) |>
     dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin, NA_character_, .data$.sec)) |>
     dplyr::select(-c(".index_col", ".index_row"))
+
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>
