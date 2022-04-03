@@ -23,8 +23,8 @@ is_fwd <- function(gp, dim) {
 unroll_sec_dim_along_parent <- function(gp, dim) {
 
   dim_sec_par <- ifelse(dim == "row", rlang::expr(.col_sec_par), rlang::expr(.row_sec_par))
-  ndim_sec <- ifelse(dim == "row", gp$ncol_sec, gp$nrow_sec)
-  ndim_sec_par <- ifelse(dim == "row", gp$ncol_sec_par, gp$nrow_sec_par)
+  ndim_sec <- ifelse(dim == "row", gp$ncol_sec_mar, gp$nrow_sec_mar)
+  ndim_sec_par <- ifelse(dim == "row", gp$ncol_sec_par_mar, gp$nrow_sec_par_mar)
   index_name <- ifelse(dim == "row", ".index_col", ".index_row")
   if(dim == "row") {
     section_prototype <- gp[["row_unit"]]
