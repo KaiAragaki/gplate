@@ -69,11 +69,22 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   # TODO What if wrap = TRUE?
 
+  # If wrap = TRUE, the FLOWING dimension will still have the same row numbers.
+  # Therefore, it should go first.
+
+  # Then, the non-flowing dimension can play off of that. Not sure how yet.
+
   gp <- gp |>
-    coordinate("row", margin) |>
-    unroll_sec_dim_along_parent("row") |>
-    coordinate("col", margin) |>
-    unroll_sec_dim_along_parent("col")
+    coordinate(flow, margin) |>
+    unroll_sec_dim_along_parent(flow)
+
+  if (!wrap) {
+    gp <- gp |>
+      coordinate(setdiff(c("row", "col"), flow), margin) |>
+      unroll_sec_dim_along_parent(setdiff(c("row", "col"), flow))
+  } else {
+    # Do stuff
+  }
 
   if (flow == "row") {
     gp$well_data <- gp$well_data |>
