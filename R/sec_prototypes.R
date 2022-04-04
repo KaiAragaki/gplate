@@ -42,19 +42,12 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
       dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype))) |>
       dplyr::arrange({{ dim_sec_par }}, {{ non_dim_sec_par }}) |>
       tidyr::nest() |>
-      dplyr::mutate(data = purrr::map(.data$data, \(x) {cbind(non_int_replicate(section_prototype, x), x)}))
-
-    if(is_fwd(gp, dim)) {
-      gp$well_data <- dplyr::mutate(gp$well_data, temp = {{ non_dim_sec_rel }})
-    } else {
-      gp$well_data <- dplyr::mutate(gp$well_data, temp = {{ non_dim_sec_rel }} * -1 + 1 + ndim_sec_par)
-    }
-
-    gp$well_data <- gp$well_data |>
-      dplyr::mutate({{ index_name }} := (.data$temp - 1) %/% ndim_sec + 1) |>
-      dplyr::select(-.data$temp) |>
-      tidyr::unnest(cols = .data$data) |>
-      dplyr::ungroup()
+      dplyr::mutate(data = purrr::map(.data$data, \(x) {cbind(non_int_replicate(section_prototype, x), x)})) |>
+      dplyr::rowwise() |>
+      dplyr::mutate(max_sec = nrow(.data$data) %/% ndim_sec + 1,
+                    .sec = list(rep(1:max_sec, each = ndim_sec, length.out = nrow(.data$data)))) |>
+      tidyr::unnest(cols = c(.data$data, .data$.sec)) |>
+      dplyr::select(-max_sec)
 
     return(gp)
   }
