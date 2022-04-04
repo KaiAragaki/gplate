@@ -69,6 +69,11 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   # TODO What if wrap = TRUE?
 
+  # Make sure this works:
+  # Make a section bigger than the current parent section
+  # Then, make another child section that starts in the bottom right corner ('off screen')
+  # It should not START at what is visible on screen!
+
   # If wrap = TRUE, the FLOWING dimension will still have the same row numbers.
   # Therefore, it should go first.
 
@@ -81,6 +86,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     unroll_sec_dim_along_parent(setdiff(c("row", "col"), flow), wrap)
 
   if (flow == "row") {
+
     gp$well_data <- gp$well_data |>
       dplyr::arrange(.data$.index_row, .data$.index_col)
   } else if (flow == "col") {
