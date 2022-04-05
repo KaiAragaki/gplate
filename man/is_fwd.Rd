@@ -5,6 +5,8 @@
 \title{Check if axis moves in the canonical direction}
 \usage{
 is_fwd(gp, dim)
+
+is_fwd(gp, dim)
 }
 \arguments{
 \item{gp}{A \code{gp}}
@@ -13,8 +15,13 @@ is_fwd(gp, dim)
 }
 \value{
 logical.
+
+logical.
 }
 \description{
+'Forwards' is thought of 'left to right' when thinking about moving across
+columns and 'top to bottom' when moving across rows
+
 'Forwards' is thought of 'left to right' when thinking about moving across
 columns and 'top to bottom' when moving across rows
 }

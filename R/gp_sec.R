@@ -46,6 +46,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   # ----------------------------------------------------------------------------
   margin <- get_margin(margin)
   gp <- make_child_parent(gp)
+  non_flow <- setdiff(c("row", "col"), flow)
 
   # Internalize user arguments into gp object ----------------------------------
   gp$start_corner <- start_corner
@@ -64,27 +65,18 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   # Make sections --------------------------------------------------------------
 
-  # TODO What if wrap = TRUE?
-
   # Make sure this works:
   # Make a section bigger than the current parent section
   # Then, make another child section that starts in the bottom right corner ('off screen')
   # It should not START at what is visible on screen!
 
-  # If wrap = TRUE, the FLOWING dimension will still have the same row numbers.
-  # Therefore, it should go first.
-
-  # Then, the non-flowing dimension can play off of that. Not sure how yet.
-
-  #
-
   gp <- gp |>
     coordinate("row", margin) |>
     coordinate("col", margin) |>
     arrange_by_rel_dim(flow) |>
-    unroll_sec_dim_along_parent(flow, wrap = FALSE) |>
-    arrange_by_rel_dim(setdiff(c("row", "col"), flow)) |>
-    unroll_sec_dim_along_parent(setdiff(c("row", "col"), flow), wrap)
+    unroll_sec_dim_along_parent(flow, flow, wrap = FALSE) |>
+    arrange_by_rel_dim(non_flow) |>
+    unroll_sec_dim_along_parent(non_flow, flow, wrap)
 
   if (wrap) {
     gp$well_data <- gp$well_data |>
