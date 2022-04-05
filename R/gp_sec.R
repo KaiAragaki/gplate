@@ -79,7 +79,9 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   gp <- gp |>
     coordinate("row", margin) |>
     coordinate("col", margin) |>
+    arrange_by_rel_dim(flow) |>
     unroll_sec_dim_along_parent(flow, wrap = FALSE) |>
+    arrange_by_rel_dim(setdiff(c("row", "col"), flow)) |>
     unroll_sec_dim_along_parent(setdiff(c("row", "col"), flow), wrap)
 
   if (wrap) {
@@ -97,6 +99,8 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
       dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin, NA_character_, .data$.sec)) |>
       dplyr::select(-c(".index_col", ".index_row"))
   }
+
+  # FIXME Somehow the .row_sec_rel (and .row_sec) are wrong but the sections are right.
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>
