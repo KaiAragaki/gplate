@@ -47,7 +47,7 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
 
     gp$well_data <- gp$well_data |>
-      group_by(.data$.sec, {{ dim_sec_rel }}) |>
+      dplyr::group_by(.data$.sec, {{ dim_sec_rel }}) |>
       dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype)))
 
     if (is_fwd(gp, dim) & is_fwd(gp, non_dim)) {
@@ -156,6 +156,7 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
   non_dim_sec_par <- ifelse(dim == "row", rlang::expr(.row_sec_par), rlang::expr(.col_sec_par))
   non_dim_sec_rel_par <- ifelse(dim == "row", rlang::expr(.row_sec_rel_par), rlang::expr(.col_sec_rel_par))
   ndim_sec <- ifelse(dim == "row", gp$ncol_sec_mar, gp$nrow_sec_mar)
+  non_ndim_sec <- ifelse(dim == "row", gp$nrow_sec_mar, gp$ncol_sec_mar)
   ndim_sec_par <- ifelse(dim == "row", gp$ncol_sec_par_mar, gp$nrow_sec_par_mar)
   index_name <- ifelse(dim == "row", ".index_col", ".index_row")
   dim_sec <- ifelse(dim == "row", rlang::expr(.col_sec), rlang::expr(.row_sec))
@@ -174,7 +175,7 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
 
     gp$well_data <- gp$well_data |>
-      group_by(.data$.sec, {{ dim_sec_rel }}) |>
+      dplyr::group_by(.data$.sec, {{ dim_sec_rel }}) |>
       dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype)))
 
     if (is_fwd(gp, dim) & is_fwd(gp, non_dim)) {
@@ -191,8 +192,8 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
       tidyr::nest() |>
       dplyr::mutate(data = purrr::map(.data$data, \(x) {cbind(non_int_replicate(section_prototype, x), x)})) |>
       dplyr::rowwise() |>
-      dplyr::mutate(max_sec = nrow(.data$data) %/% ndim_sec + 1,
-                    .sec = list(rep(1:max_sec, each = ndim_sec, length.out = nrow(.data$data)))) |>
+      dplyr::mutate(max_sec = nrow(.data$data) %/% non_ndim_sec + 1,
+                    .sec = list(rep(1:max_sec, each = non_ndim_sec, length.out = nrow(.data$data)))) |>
       tidyr::unnest(cols = c(.data$data, .data$.sec)) |>
       dplyr::mutate({{ non_dim_sec_rel }} := {{ non_dim_sec }}) |>
       dplyr::select(-max_sec)
@@ -215,7 +216,7 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
   if(is_fwd(gp, dim)) {
     gp$well_data <- dplyr::mutate(gp$well_data, temp = {{ dim_sec_par }})
-    gp$well_data <- dplyr::mutate(gp$well_data, temp = {{ dim_sec }})
+    # gp$well_data <- dplyr::mutate(gp$well_data, temp = {{ dim_sec }})
   } else {
     gp$well_data <- dplyr::mutate(gp$well_data, temp = {{ dim_sec_par }} * -1 + 1 + ndim_sec_par)
   }
