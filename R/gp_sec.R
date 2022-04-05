@@ -79,6 +79,8 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   # Then, the non-flowing dimension can play off of that. Not sure how yet.
 
+  #
+
   gp <- gp |>
     coordinate("row", margin) |>
     coordinate("col", margin) |>
