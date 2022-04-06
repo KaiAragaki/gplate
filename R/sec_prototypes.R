@@ -24,12 +24,10 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
   non_dim <- setdiff(c("row", "col"), dim)
 
-  non_dim_sec <- rlang::sym(paste0(".", non_dim, "_sec"))
-  non_dim_sec_rel <- rlang::sym(paste0(".", non_dim, "_sec_rel"))
+  non_dim_sec     <- rlang::sym(paste0(".", non_dim, "_sec"))
   non_dim_sec_par <- rlang::sym(paste0(".", non_dim, "_sec_par"))
 
-  dim_sec <- rlang::sym(paste0(".", dim, "_sec"))
-  dim_sec_rel <- rlang::sym(paste0(".", dim, "_sec_rel"))
+  dim_sec     <- rlang::sym(paste0(".", dim, "_sec"))
   dim_sec_par <- rlang::sym(paste0(".", dim, "_sec_par"))
 
   n_non_dim_sec <- ifelse(dim == "row", gp$ncol_sec_mar, gp$nrow_sec_mar)
@@ -40,59 +38,51 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
   section_prototype <- gp[[paste0(dim, "_unit")]]
 
+  gp$well_data <- gp$well_data |>
+    dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype)))
+
   if (wrap) {
-
     gp$well_data <- gp$well_data |>
-      dplyr::group_by(.data$.sec, {{ non_dim_sec }}) |>
-      dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype)))
-
-    gp <- arrange_by_rel_dim(gp, non_dim)
-
+      dplyr::group_by(.data$.sec, {{ non_dim_sec }})
+  } else {
     gp$well_data <- gp$well_data |>
-      tidyr::nest() |>
-      dplyr::mutate(data = purrr::map(.data$data, \(x) {cbind(non_int_replicate(section_prototype, x), x)})) |>
-      dplyr::rowwise() |>
-      dplyr::mutate(max_sec = nrow(.data$data) %/% n_dim_sec + 1,
-                    .sec = list(rep(1:max_sec, each = n_dim_sec, length.out = nrow(.data$data)))) |>
-      tidyr::unnest(cols = c(.data$data, .data$.sec)) |>
-      dplyr::mutate({{ dim_sec_rel }} := {{ dim_sec }}) |>
-      dplyr::select(-max_sec)
-
-  # Reducible if I make rel flipper (see below)
-    if (!is_fwd(gp, dim)) {
-      gp$well_data[[dim_sec]] <- flip_dim(gp, dim_sec)
-    }
-
-    return(gp)
+      dplyr::group_by(.data$.sec, {{ non_dim_sec_par }})
   }
 
   gp$well_data <- gp$well_data |>
-    dplyr::group_by(.data$.sec, {{ non_dim_sec_par }}) |>
-    dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype))) |>
     tidyr::nest() |>
     dplyr::mutate(data = purrr::map(.data$data, \(x) {cbind(non_int_replicate(section_prototype, x), x)}))
 
-  # Reducible if I make rel flipper (see below)
-  if(is_fwd(gp, non_dim)) {
-    gp$well_data$temp <- gp$well_data[[non_dim_sec_par]]
+  if (wrap) {
+    gp$well_data <- gp$well_data |>
+      dplyr::rowwise() |>
+      dplyr::mutate(max_sec = nrow(.data$data) %/% n_dim_sec + 1,
+                    .sec = list(rep(1:max_sec, each = n_dim_sec, length.out = nrow(.data$data)))) |>
+      tidyr::unnest(cols = dplyr::everything()) |>
+      dplyr::select(-max_sec)
   } else {
-    gp$well_data$temp <- flip_dim(gp, non_dim_sec_par)
+    # Reducible if I make rel flipper (see below)
+    if(is_fwd(gp, non_dim)) {
+      gp$well_data$temp <- gp$well_data[[non_dim_sec_par]]
+    } else {
+      gp$well_data$temp <- flip_dim(gp, non_dim_sec_par)
+    }
+
+    gp$well_data <- gp$well_data |>
+      dplyr::mutate({{ index_name }} := (.data$temp - 1) %/% n_non_dim_sec + 1)|>
+      dplyr::select(-.data$temp) |>
+      tidyr::unnest(cols = dplyr::everything())
   }
 
-  gp$well_data <- gp$well_data |>
-    dplyr::mutate({{ index_name }} := (.data$temp - 1) %/% n_non_dim_sec + 1)|>
-    dplyr::select(-.data$temp) |>
-    tidyr::unnest(cols = .data$data)
-
+  # Reducible I think
   if (!is_fwd(gp, dim)) {
-    gp$well_data <- gp$well_data |>
-      dplyr::mutate({{ dim_sec_rel }} := {{ dim_sec }})
     gp$well_data[[dim_sec]] <- flip_dim(gp, dim_sec)
   }
-  gp$well_data <- gp$well_data |>
-    dplyr::ungroup()
+
+  gp$well_data <- dplyr::ungroup(gp$well_data)
 
   gp
+
 }
 
 arrange_by_rel_dim <- function(gp, dim) {

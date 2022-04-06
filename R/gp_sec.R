@@ -69,7 +69,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     coordinate("col", margin) |>
     arrange_by_rel_dim(flow) |>
     unroll_sec_dim_along_parent(flow, wrap = FALSE) |>
-    arrange_by_rel_dim(non_flow) |>
+    arrange_by_rel_dim(flow) |>
     unroll_sec_dim_along_parent(non_flow, wrap)
 
   if (wrap) {
