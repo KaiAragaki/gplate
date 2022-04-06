@@ -58,28 +58,20 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
       dplyr::rowwise() |>
       dplyr::mutate(max_sec = nrow(.data$data) %/% n_dim_sec + 1,
                     .sec = list(rep(1:max_sec, each = n_dim_sec, length.out = nrow(.data$data)))) |>
-      tidyr::unnest(cols = dplyr::everything()) |>
       dplyr::select(-max_sec)
   } else {
-    # Reducible if I make rel flipper (see below)
-    if(is_fwd(gp, non_dim)) {
-      gp$well_data$temp <- gp$well_data[[non_dim_sec_par]]
-    } else {
-      gp$well_data$temp <- flip_dim(gp, non_dim_sec_par)
-    }
+    gp$well_data$temp <- rel_dim(gp, non_dim_sec_par, non_dim)
 
     gp$well_data <- gp$well_data |>
       dplyr::mutate({{ index_name }} := (.data$temp - 1) %/% n_non_dim_sec + 1)|>
-      dplyr::select(-.data$temp) |>
-      tidyr::unnest(cols = dplyr::everything())
+      dplyr::select(-.data$temp)
   }
 
-  # Reducible I think
-  if (!is_fwd(gp, dim)) {
-    gp$well_data[[dim_sec]] <- flip_dim(gp, dim_sec)
-  }
+  gp$well_data <- gp$well_data |>
+    tidyr::unnest(cols = dplyr::everything()) |>
+    dplyr::ungroup()
 
-  gp$well_data <- dplyr::ungroup(gp$well_data)
+  gp$well_data[[dim_sec]] <- rel_dim(gp, dim_sec, dim)
 
   gp
 
@@ -115,6 +107,14 @@ flip_dim <- function(gp, dim) {
   n_dim <- gp[[paste0("n", no_dot)]]
 
   gp$well_data[[dim]] * -1 + 1 + n_dim
+}
+
+rel_dim <- function(gp, dim, rel) {
+  if (is_fwd(gp, rel)) {
+    gp$well_data[[dim]]
+  } else {
+    flip_dim(gp, dim)
+  }
 }
 
 # Make a conditional flipper - wrapper around flip_dim that checks if is_fwd and only acts if !is_fwd
