@@ -3,7 +3,7 @@ pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   gp_for_data: gp_for_data.html
-last_built: 2022-04-03T21:29Z
+last_built: 2022-04-06T02:03Z
 urls:
   reference: https://kaiaragaki.github.io/gp/reference
   article: https://kaiaragaki.github.io/gp/articles
