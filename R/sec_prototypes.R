@@ -46,17 +46,7 @@ unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
       dplyr::group_by(.data$.sec, {{ non_dim_sec }}) |>
       dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype)))
 
-    # Create desc as needed using some kind of 'relativize' function?
-
-    if (is_fwd(gp, non_dim) & is_fwd(gp, dim)) {
-      gp$well_data <- dplyr::arrange(gp$well_data, {{ non_dim_sec_par }}, {{ dim_sec_par }})
-    } else if (is_fwd(gp, non_dim) & !is_fwd(gp, dim)) {
-      gp$well_data <- dplyr::arrange(gp$well_data, {{ non_dim_sec_par }}, dplyr::desc({{ dim_sec_par }}))
-    } else if (!is_fwd(gp, non_dim) & is_fwd(gp, dim)) {
-      gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ non_dim_sec_par }}), {{ dim_sec_par }})
-    } else {
-      gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ non_dim_sec_par }}), dplyr::desc({{ dim_sec_par }}))
-    }
+    gp <- arrange_by_rel_dim(gp, non_dim)
 
     gp$well_data <- gp$well_data |>
       tidyr::nest() |>
