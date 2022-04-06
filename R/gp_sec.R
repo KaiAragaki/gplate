@@ -64,12 +64,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   }
 
   # Make sections --------------------------------------------------------------
-
-  # Make sure this works:
-  # Make a section bigger than the current parent section
-  # Then, make another child section that starts in the bottom right corner ('off screen')
-  # It should not START at what is visible on screen!
-
   gp <- gp |>
     coordinate("row", margin) |>
     coordinate("col", margin) |>
@@ -93,8 +87,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
       dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin, NA_character_, .data$.sec)) |>
       dplyr::select(-c(".index_col", ".index_row"))
   }
-
-  # FIXME Somehow the .row_sec_rel (and .row_sec) are wrong but the sections are right.
 
   if (!break_sections) {
     gp$well_data <- gp$well_data |>

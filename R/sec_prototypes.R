@@ -22,9 +22,6 @@ is_fwd <- function(gp, dim) {
 #'
 unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
 
-  # Row sec number is off
-  # Col sec rel is flipped when it shouldn't be
-
   non_flow <- setdiff(c("row", "col"), flow)
 
   flow_sec         <- rlang::sym(paste0(".", flow, "_sec"))
