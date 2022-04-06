@@ -22,23 +22,6 @@ is_fwd <- function(gp, dim) {
 #'
 unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
 
-  non_flow <- setdiff(c("row", "col"), flow)
-
-  flow_sec         <- rlang::sym(paste0(".", flow, "_sec"))
-  flow_sec_rel     <- rlang::sym(paste0(".", flow, "_sec_rel"))
-  flow_sec_par     <- rlang::sym(paste0(".", flow, "_sec_par"))
-
-  non_flow_sec         <- rlang::sym(paste0(".", non_flow, "_sec"))
-  non_flow_sec_rel     <- rlang::sym(paste0(".", non_flow, "_sec_rel"))
-  non_flow_sec_par     <- rlang::sym(paste0(".", non_flow, "_sec_par"))
-
-  n_flow_sec         <- ifelse(flow == "row", gp$nrow_sec_mar, gp$ncol_sec_mar)
-  n_non_flow_sec     <- ifelse(flow == "row", gp$ncol_sec_mar, gp$nrow_sec_mar)
-  n_flow_sec_par     <- ifelse(flow == "row", gp$nrow_sec_par_mar, gp$ncol_sec_par_mar)
-  n_non_flow_sec_par <- ifelse(flow == "row", gp$ncol_sec_par_mar, gp$nrow_sec_par_mar)
-
-  index_name <- ifelse(dim == "row", ".index_col", ".index_row")
-
   non_dim <- setdiff(c("row", "col"), dim)
 
   non_dim_sec <- rlang::sym(paste0(".", non_dim, "_sec"))
@@ -65,14 +48,14 @@ unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
 
     # Create desc as needed using some kind of 'relativize' function?
 
-    if (is_fwd(gp, flow) & is_fwd(gp, non_flow)) {
-      gp$well_data <- dplyr::arrange(gp$well_data, {{ flow_sec_par }}, {{ non_flow_sec_par }})
-    } else if (is_fwd(gp, flow) & !is_fwd(gp, non_flow)) {
-      gp$well_data <- dplyr::arrange(gp$well_data, {{ flow_sec_par }}, dplyr::desc({{ non_flow_sec_par }}))
-    } else if (!is_fwd(gp, flow) & is_fwd(gp, non_flow)) {
-      gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ flow_sec_par }}), {{ non_flow_sec_par }})
+    if (is_fwd(gp, non_dim) & is_fwd(gp, dim)) {
+      gp$well_data <- dplyr::arrange(gp$well_data, {{ non_dim_sec_par }}, {{ dim_sec_par }})
+    } else if (is_fwd(gp, non_dim) & !is_fwd(gp, dim)) {
+      gp$well_data <- dplyr::arrange(gp$well_data, {{ non_dim_sec_par }}, dplyr::desc({{ dim_sec_par }}))
+    } else if (!is_fwd(gp, non_dim) & is_fwd(gp, dim)) {
+      gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ non_dim_sec_par }}), {{ dim_sec_par }})
     } else {
-      gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ flow_sec_par }}), dplyr::desc({{ non_flow_sec_par }}))
+      gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ non_dim_sec_par }}), dplyr::desc({{ dim_sec_par }}))
     }
 
     gp$well_data <- gp$well_data |>
@@ -82,12 +65,12 @@ unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
       dplyr::mutate(max_sec = nrow(.data$data) %/% n_dim_sec + 1,
                     .sec = list(rep(1:max_sec, each = n_dim_sec, length.out = nrow(.data$data)))) |>
       tidyr::unnest(cols = c(.data$data, .data$.sec)) |>
-      dplyr::mutate({{ non_flow_sec_rel }} := {{ non_flow_sec }}) |>
+      dplyr::mutate({{ dim_sec_rel }} := {{ dim_sec }}) |>
       dplyr::select(-max_sec)
 
-    if (!is_fwd(gp, non_flow)) {
+    if (!is_fwd(gp, dim)) {
       gp$well_data <- gp$well_data |>
-        dplyr::mutate({{ non_flow_sec }} := {{ non_flow_sec }} * -1 + 1 + n_dim_sec)
+        dplyr::mutate({{ dim_sec }} := {{ dim_sec }} * -1 + 1 + n_dim_sec)
     }
 
     return(gp)
