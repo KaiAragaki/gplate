@@ -57,8 +57,8 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
     gp$well_data <- gp$well_data |>
       dplyr::rowwise() |>
       dplyr::mutate(max_sec = nrow(.data$data) %/% n_dim_sec + 1,
-                    .sec = list(rep(1:max_sec, each = n_dim_sec, length.out = nrow(.data$data)))) |>
-      dplyr::select(-max_sec)
+                    .sec = list(rep(1:.data$max_sec, each = n_dim_sec, length.out = nrow(.data$data)))) |>
+      dplyr::select(-.data$max_sec)
   } else {
     gp$well_data$temp <- rel_dim(gp, non_dim_sec_par, non_dim)
 
@@ -74,7 +74,6 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
   gp$well_data[[dim_sec]] <- rel_dim(gp, dim_sec, dim)
 
   gp
-
 }
 
 arrange_by_rel_dim <- function(gp, dim) {
