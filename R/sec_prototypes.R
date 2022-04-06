@@ -59,8 +59,7 @@ unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
       dplyr::select(-max_sec)
 
     if (!is_fwd(gp, dim)) {
-      gp$well_data <- gp$well_data |>
-        dplyr::mutate({{ dim_sec }} := {{ dim_sec }} * -1 + 1 + n_dim_sec)
+      gp$well_data[[dim_sec]] <- flip_dim(gp, dim_sec)
     }
 
     return(gp)
@@ -117,3 +116,14 @@ arrange_by_rel_dim <- function(gp, dim) {
   gp
 }
 
+flip_dim <- function(gp, dim) {
+  # the dim is a symbol, so it needs special (arcane) treatment
+  dim <- rlang::as_name(rlang::quo(!!dim))
+
+  # rm leading dot
+  no_dot <- substr(dim, 2, nchar(dim))
+
+  n_dim <- gp[[paste0("n", no_dot)]]
+
+  gp$well_data[[dim]] * -1 + 1 + n_dim
+}
