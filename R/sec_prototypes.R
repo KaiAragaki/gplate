@@ -6,7 +6,7 @@
 #' @param dim Character. A dimension, either "row" or "col".
 #'
 #' @return logical.
-is_fwd <- function(gp, dim, flow) {
+is_fwd <- function(gp, dim) {
   ifelse(dim == "row",
          gp$start_corner %in% c("tl", "tr"),
          gp$start_corner %in% c("tl", "bl"))
@@ -63,16 +63,16 @@ unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
   if (wrap) {
 
     gp$well_data <- gp$well_data |>
-      dplyr::group_by(.data$.sec, {{ non_dim_sec_rel }}) |>
+      dplyr::group_by(.data$.sec, {{ non_dim_sec }}) |>
       dplyr::select(setdiff(colnames(gp$well_data), colnames(section_prototype)))
 
     # Create desc as needed using some kind of 'relativize' function?
 
-    if (is_fwd(gp, dim) & is_fwd(gp, non_dim)) {
+    if (is_fwd(gp, flow) & is_fwd(gp, non_flow)) {
       gp$well_data <- dplyr::arrange(gp$well_data, {{ flow_sec_par }}, {{ non_flow_sec_par }})
-    } else if (!is_fwd(gp, dim) & is_fwd(gp, non_dim)) {
+    } else if (is_fwd(gp, flow) & !is_fwd(gp, non_flow)) {
       gp$well_data <- dplyr::arrange(gp$well_data, {{ flow_sec_par }}, dplyr::desc({{ non_flow_sec_par }}))
-    } else if (is_fwd(gp, dim) & !is_fwd(gp, non_dim)) {
+    } else if (!is_fwd(gp, flow) & is_fwd(gp, non_flow)) {
       gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ flow_sec_par }}), {{ non_flow_sec_par }})
     } else {
       gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ flow_sec_par }}), dplyr::desc({{ non_flow_sec_par }}))
@@ -88,7 +88,7 @@ unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
       dplyr::mutate({{ non_flow_sec_rel }} := {{ non_flow_sec }}) |>
       dplyr::select(-max_sec)
 
-    if (!is_fwd(gp, non_dim)) {
+    if (!is_fwd(gp, non_flow)) {
       gp$well_data <- gp$well_data |>
         dplyr::mutate({{ non_flow_sec }} := {{ non_flow_sec }} * -1 + 1 + n_dim_sec)
     }
