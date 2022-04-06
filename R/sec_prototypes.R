@@ -20,7 +20,7 @@ is_fwd <- function(gp, dim) {
 #'
 #' @return A `gp`
 #'
-unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
+unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
   non_dim <- setdiff(c("row", "col"), dim)
 
@@ -58,6 +58,7 @@ unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
       dplyr::mutate({{ dim_sec_rel }} := {{ dim_sec }}) |>
       dplyr::select(-max_sec)
 
+  # Reducible if I make rel flipper (see below)
     if (!is_fwd(gp, dim)) {
       gp$well_data[[dim_sec]] <- flip_dim(gp, dim_sec)
     }
@@ -71,10 +72,11 @@ unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
     tidyr::nest() |>
     dplyr::mutate(data = purrr::map(.data$data, \(x) {cbind(non_int_replicate(section_prototype, x), x)}))
 
+  # Reducible if I make rel flipper (see below)
   if(is_fwd(gp, non_dim)) {
-    gp$well_data <- dplyr::mutate(gp$well_data, temp = {{ non_dim_sec_par }})
+    gp$well_data$temp <- gp$well_data[[non_dim_sec_par]]
   } else {
-    gp$well_data <- dplyr::mutate(gp$well_data, temp = {{ non_dim_sec_par }} * -1 + 1 + n_non_dim_sec_par)
+    gp$well_data$temp <- flip_dim(gp, non_dim_sec_par)
   }
 
   gp$well_data <- gp$well_data |>
@@ -82,13 +84,10 @@ unroll_sec_dim_along_parent <- function(gp, dim, flow, wrap) {
     dplyr::select(-.data$temp) |>
     tidyr::unnest(cols = .data$data)
 
-  # Really, the prototype column should be named dim_sec_rel, and then dim_sec should be made here.
-  # Or, a different arrangement strategy should be made so that the non-relative is correct.
-
   if (!is_fwd(gp, dim)) {
     gp$well_data <- gp$well_data |>
-      dplyr::mutate({{ dim_sec_rel }} := {{ dim_sec }},
-                    {{ dim_sec }} := {{ dim_sec }} * -1 + 1 + n_dim_sec)
+      dplyr::mutate({{ dim_sec_rel }} := {{ dim_sec }})
+    gp$well_data[[dim_sec]] <- flip_dim(gp, dim_sec)
   }
   gp$well_data <- gp$well_data |>
     dplyr::ungroup()
@@ -127,3 +126,5 @@ flip_dim <- function(gp, dim) {
 
   gp$well_data[[dim]] * -1 + 1 + n_dim
 }
+
+# Make a conditional flipper - wrapper around flip_dim that checks if is_fwd and only acts if !is_fwd
