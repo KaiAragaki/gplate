@@ -68,9 +68,9 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     coordinate("row", margin) |>
     coordinate("col", margin) |>
     arrange_by_rel_dim(flow) |>
-    unroll_sec_dim_along_parent(flow, flow, wrap = FALSE) |>
+    unroll_sec_dim_along_parent(flow, wrap = FALSE) |>
     arrange_by_rel_dim(non_flow) |>
-    unroll_sec_dim_along_parent(non_flow, flow, wrap)
+    unroll_sec_dim_along_parent(non_flow, wrap)
 
   if (wrap) {
     gp$well_data <- gp$well_data |>
