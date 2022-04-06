@@ -11,8 +11,7 @@ span > img {
 <!-- badges: start -->
 <!-- badges: end -->
 
-**gp** is a package meant to provide introduce a **g**rammar of
-**p**lates.
+**gp** introduces a **g**rammar of **p**lates.
 
 Microwell plates are usually arranged in visually meaningful ways but
 are not tidy data, and their manipulation to and from a tidy form is
