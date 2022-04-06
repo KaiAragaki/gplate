@@ -5,8 +5,6 @@
 \title{Repeat one dimension of a child section across a dimension of a parent section}
 \usage{
 unroll_sec_dim_along_parent(gp, dim, wrap)
-
-unroll_sec_dim_along_parent(gp, dim, wrap)
 }
 \arguments{
 \item{gp}{A \code{gp}}
@@ -15,11 +13,7 @@ unroll_sec_dim_along_parent(gp, dim, wrap)
 }
 \value{
 A \code{gp}
-
-A \code{gp}
 }
 \description{
-Repeat one dimension of a child section across a dimension of a parent section
-
 Repeat one dimension of a child section across a dimension of a parent section
 }
