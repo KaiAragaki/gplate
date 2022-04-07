@@ -74,7 +74,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   if (wrap) {
     gp$well_data <- gp$well_data |>
-      dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin, NA_character_, .data$.sec)) |>
+      dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin, NA_integer_, .data$.sec)) |>
       dplyr::select(-dplyr::contains(".index"))
   } else {
     gp$well_data <- gp$well_data |>
@@ -84,7 +84,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
       dplyr::ungroup() |>
       dplyr::mutate(.sec = dplyr::row_number()) |>
       tidyr::unnest(.data$data) |>
-      dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin, NA_character_, .data$.sec)) |>
+      dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin, NA_integer_, .data$.sec)) |>
       dplyr::select(-c(".index_col", ".index_row"))
   }
 
