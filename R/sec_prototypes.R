@@ -1,17 +1,3 @@
-#' Check if axis moves in the canonical direction
-#'
-#' 'Forwards' is thought of 'left to right' when thinking about moving across
-#' columns and 'top to bottom' when moving across rows
-#' @param gp A `gp`
-#' @param dim Character. A dimension, either "row" or "col".
-#'
-#' @return logical.
-is_fwd <- function(gp, dim) {
-  ifelse(dim == "row",
-         gp$start_corner %in% c("tl", "tr"),
-         gp$start_corner %in% c("tl", "bl"))
-}
-
 #' Repeat one dimension of a child section across a dimension of a parent section
 #'
 #'
@@ -95,24 +81,4 @@ arrange_by_rel_dim <- function(gp, dim) {
   }
 
   gp
-}
-
-flip_dim <- function(gp, dim) {
-  # the dim is a symbol, so it needs special (arcane) treatment
-  dim <- rlang::as_name(rlang::quo(!!dim))
-
-  # rm leading dot
-  no_dot <- substr(dim, 2, nchar(dim))
-
-  n_dim <- gp[[paste0("n", no_dot)]]
-
-  gp$well_data[[dim]] * -1 + 1 + n_dim
-}
-
-rel_dim <- function(gp, dim, rel) {
-  if (is_fwd(gp, rel)) {
-    gp$well_data[[dim]]
-  } else {
-    flip_dim(gp, dim)
-  }
 }
