@@ -61,23 +61,3 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
   gp
 }
-
-arrange_by_dim <- function(gp, dim) {
-
-  non_dim <- setdiff(c("row", "col"), dim)
-
-  dim_sec_par     <- rlang::sym(paste0(".", dim, "_sec_par"))
-  non_dim_sec_par <- rlang::sym(paste0(".", non_dim, "_sec_par"))
-
-  if (is_fwd(gp, dim) & is_fwd(gp, non_dim)) {
-    gp$well_data <- dplyr::arrange(gp$well_data, {{ dim_sec_par }}, {{ non_dim_sec_par }})
-  } else if (is_fwd(gp, dim) & !is_fwd(gp, non_dim)) {
-    gp$well_data <- dplyr::arrange(gp$well_data, {{ dim_sec_par }}, dplyr::desc({{ non_dim_sec_par }}))
-  } else if (!is_fwd(gp, dim) & is_fwd(gp, non_dim)) {
-    gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ dim_sec_par }}), {{ non_dim_sec_par }})
-  } else {
-    gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ dim_sec_par }}), dplyr::desc({{ non_dim_sec_par }}))
-  }
-
-  gp
-}

@@ -76,3 +76,31 @@ rel_dim <- function(gp, dim, rel) {
     flip_dim(gp, dim)
   }
 }
+
+#' Arrange `gp` well data relative to user supplied `start_corner`
+#'
+#' @param gp A `gp` object
+#' @param dim Character. Either "row" or "col"
+#'
+#' @return A `gp` with `gp$well_data` arranged by dim and the non-dim (ie if dim
+#'   = "row", the 'non-dim' is "col") relative to the start corner (start corner
+#'   is at the top, farther from start corner is at bottom)
+arrange_by_dim <- function(gp, dim) {
+
+  non_dim <- setdiff(c("row", "col"), dim)
+
+  dim_sec_par     <- rlang::sym(paste0(".", dim, "_sec_par"))
+  non_dim_sec_par <- rlang::sym(paste0(".", non_dim, "_sec_par"))
+
+  if (is_fwd(gp, dim) & is_fwd(gp, non_dim)) {
+    gp$well_data <- dplyr::arrange(gp$well_data, {{ dim_sec_par }}, {{ non_dim_sec_par }})
+  } else if (is_fwd(gp, dim) & !is_fwd(gp, non_dim)) {
+    gp$well_data <- dplyr::arrange(gp$well_data, {{ dim_sec_par }}, dplyr::desc({{ non_dim_sec_par }}))
+  } else if (!is_fwd(gp, dim) & is_fwd(gp, non_dim)) {
+    gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ dim_sec_par }}), {{ non_dim_sec_par }})
+  } else {
+    gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ dim_sec_par }}), dplyr::desc({{ non_dim_sec_par }}))
+  }
+
+  gp
+}
