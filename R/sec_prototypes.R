@@ -17,6 +17,7 @@ is_fwd <- function(gp, dim) {
 #'
 #' @param gp A `gp`
 #' @param dim Either "row" or "col"
+#' @param wrap Logical. Should this dimension wrap around when it hits a section boundary?
 #'
 #' @return A `gp`
 #'

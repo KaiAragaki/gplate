@@ -10,6 +10,8 @@ unroll_sec_dim_along_parent(gp, dim, wrap)
 \item{gp}{A \code{gp}}
 
 \item{dim}{Either "row" or "col"}
+
+\item{wrap}{Logical. Should this dimension wrap around when it hits a section boundary?}
 }
 \value{
 A \code{gp}

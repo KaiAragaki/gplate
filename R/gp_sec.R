@@ -75,7 +75,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   if (wrap) {
     gp$well_data <- gp$well_data |>
       dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin, NA_character_, .data$.sec)) |>
-      dplyr::select(-contains(".index"))
+      dplyr::select(-dplyr::contains(".index"))
   } else {
     gp$well_data <- gp$well_data |>
       dplyr::select(-.data$.sec) |>

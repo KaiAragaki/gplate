@@ -132,6 +132,8 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #'
 gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE){
 
+  plate_formats <- gp::plate_formats
+
   if (all(is.null(wells), is.null(cols), is.null(rows))) {
     stop("Either wells or cols + rows must be set")
   }

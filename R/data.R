@@ -9,3 +9,7 @@
 #' Standard plate formats for microwell plates
 #'
 "plate_formats"
+
+#' Data from a protein quantification assay in a 96-well plate. See the "Using
+#' gp to wrangle plate data" vignette for more details
+"protein_quant"
