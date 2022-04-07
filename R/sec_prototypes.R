@@ -115,5 +115,3 @@ rel_dim <- function(gp, dim, rel) {
     flip_dim(gp, dim)
   }
 }
-
-# Make a conditional flipper - wrapper around flip_dim that checks if is_fwd and only acts if !is_fwd

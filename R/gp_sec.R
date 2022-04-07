@@ -102,9 +102,13 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   gp$well_data <- dplyr::mutate(gp$well_data, {{name}} := .data$.sec)
 
   if (!is.null(labels)) {
+    usr_labels_len <- length(labels)
     length(labels) <- length(levels(as.factor(gp$well_data[[name]])))
     gp$well_data <- gp$well_data |>
-      dplyr::mutate({{name}} := factor(.data[[name]], levels = levels(as.factor(.data[[name]])), labels = labels))
+      dplyr::mutate({{name}} := factor(.data[[name]], levels = levels(as.factor(.data[[name]])), labels = labels),
+                    {{name}} := if_else(is.na(.data$.sec_par), NA_character_, as.character(.data[[name]]))) |>
+      dplyr::rowwise() |>
+      dplyr::mutate(.sec = if_else(.data$.sec > usr_labels_len | is.na(.data$.sec_par), NA_integer_, .data$.sec))
   }
 
   gp
