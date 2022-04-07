@@ -54,7 +54,8 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #' @param wells Numeric. The number of wells the plate has. If this is
 #'   specified, rows and cols must be null - they are inferred from common form
 #'   factors of plates.
-#' @param data An optional data.frame of well data the same dimensions as the plate to be described
+#' @param data An optional data.frame of well data the same dimensions as the
+#'   plate to be described
 #' @param tidy Are the data supplied tidy?
 #'
 #' @return a `gp` object
@@ -66,18 +67,17 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #' - `nrow`/`ncol`: Number of plate rows/cols. This is static and will not be
 #' changed by adding layers.
 #'
-#' - `wells`: Number of plate wells. Static.
-#'
 #' - `well_data`: Somewhat transient data used to define plotting coordinates
 #' for layers. See below for more information.
 #'
 #' - `nrow_sec`/`ncols_sec`: The number of rows/cols of the current section.
 #' When creating a plate, that number is the number of rows/cols of the plate
-#' (the plate is the section).
+#' (the plate is the section). Can take on a 'mar' suffix, which specifies the
+#' number including margins (if any)
 #'
 #' - `nrow_sec_par`/`ncol_sec_par`: The number of rows/cols of the parent
 #' section. When creating a plate, it has no parent, so defaults to being its
-#' own parent.
+#' own parent. Can take on a 'mar' suffix. See above.
 #'
 #' `well_data` consists of many columns. The variable names can be broken down
 #' as follows:
@@ -91,28 +91,13 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #' relative to it's section corners, with the top left corner of a given section
 #' always being (1, 1).
 #'
-#' - `rel`: Short for 'relative'. This means that the numbering is relative to
-#' the `starting_corner` argument used to create the given section. For
-#' instance, a section created with a `starting_corner` of `br` (bottom right)
-#' will have a `row_sec_rel` and `col_sec_rel` of 1 in each of its bottom right
-#' corners. A column labelled `row_rel` in this example would refer to the
-#' bottom right of the _plate_ as 1, but not necessarily the bottom right of
-#' each section.
-#'
 #' - `par`: Short for 'parent'. These columns are all the data from the previous
 #' layer.
 #'
-#' - `lane`: These specify (usually) multiwell strips only defined in one
-#' direction. `lane_h` and `lane_v` in tandem from checkerboard-like patterns,
+#' - `index`: These specify (usually) multiwell strips only defined in one
+#' dimension. Together, `index_row` and `index_col` form checkerboard-like patterns,
 #' where each intersection is a section. This is a bit more complicated when
 #' `wrap = TRUE`, so the simile does not hold for all cases.
-#'
-#' - `col/row_rel_child_sec_par`: These are odd columns. They represent the axes
-#' of parental sections, but using the child's relative coordinate system. For
-#' example, if a parent defined sections starting in the upper left, and the
-#' child defined sections starting in the upper right, `col_rel_child_sec_par`
-#' would be a reversed `col_sec_par_rel`, while `row_rel_child_sec_par` would be
-#' identical to `row_sec_par_rel`
 #'
 #' @export
 #'

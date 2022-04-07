@@ -1,17 +1,3 @@
-#' Check if axis moves in the canonical direction
-#'
-#' 'Forwards' is thought of 'left to right' when thinking about moving across
-#' columns and 'top to bottom' when moving across rows
-#' @param gp A `gp`
-#' @param dim Character. A dimension, either "row" or "col".
-#'
-#' @return logical.
-is_fwd <- function(gp, dim) {
-  ifelse(dim == "row",
-         gp$start_corner %in% c("tl", "tr"),
-         gp$start_corner %in% c("tl", "bl"))
-}
-
 #' Repeat one dimension of a child section across a dimension of a parent section
 #'
 #'
@@ -20,7 +6,6 @@ is_fwd <- function(gp, dim) {
 #' @param wrap Logical. Should this dimension wrap around when it hits a section boundary?
 #'
 #' @return A `gp`
-#'
 unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
   non_dim <- setdiff(c("row", "col"), dim)
@@ -75,44 +60,4 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
   gp$well_data[[dim_sec]] <- rel_dim(gp, dim_sec, dim)
 
   gp
-}
-
-arrange_by_rel_dim <- function(gp, dim) {
-
-  non_dim <- setdiff(c("row", "col"), dim)
-
-  dim_sec_par     <- rlang::sym(paste0(".", dim, "_sec_par"))
-  non_dim_sec_par <- rlang::sym(paste0(".", non_dim, "_sec_par"))
-
-  if (is_fwd(gp, dim) & is_fwd(gp, non_dim)) {
-    gp$well_data <- dplyr::arrange(gp$well_data, {{ dim_sec_par }}, {{ non_dim_sec_par }})
-  } else if (is_fwd(gp, dim) & !is_fwd(gp, non_dim)) {
-    gp$well_data <- dplyr::arrange(gp$well_data, {{ dim_sec_par }}, dplyr::desc({{ non_dim_sec_par }}))
-  } else if (!is_fwd(gp, dim) & is_fwd(gp, non_dim)) {
-    gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ dim_sec_par }}), {{ non_dim_sec_par }})
-  } else {
-    gp$well_data <- dplyr::arrange(gp$well_data, dplyr::desc({{ dim_sec_par }}), dplyr::desc({{ non_dim_sec_par }}))
-  }
-
-  gp
-}
-
-flip_dim <- function(gp, dim) {
-  # the dim is a symbol, so it needs special (arcane) treatment
-  dim <- rlang::as_name(rlang::quo(!!dim))
-
-  # rm leading dot
-  no_dot <- substr(dim, 2, nchar(dim))
-
-  n_dim <- gp[[paste0("n", no_dot)]]
-
-  gp$well_data[[dim]] * -1 + 1 + n_dim
-}
-
-rel_dim <- function(gp, dim, rel) {
-  if (is_fwd(gp, rel)) {
-    gp$well_data[[dim]]
-  } else {
-    flip_dim(gp, dim)
-  }
 }

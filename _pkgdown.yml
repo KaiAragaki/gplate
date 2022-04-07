@@ -2,3 +2,43 @@ url: https://kaiaragaki.github.io/gp/
 template:
   bootstrap: 5
 
+reference:
+
+- title: Build plates
+- contents:
+  - gp
+  - gp_sec
+
+
+- title: Visualize
+- contents:
+  - gp_plot
+  - gp_mini_theme
+
+- title: Datasets
+- contents:
+  - example_plate
+  - pcr_plate
+  - plate_formats
+  - protein_quant
+
+- title: Utilities
+- contents:
+  - as_gp
+  - gp_serve
+  - gp_unravel
+  - wells
+
+
+- title: Internal utilities
+- contents:
+  - new_gp
+  - arrange_by_dim
+  - coordinate
+  - flip_dim
+  - is_fwd
+  - non_int_replicate
+  - rel_dim
+  - unroll_sec_dim_along_parent
+
+
