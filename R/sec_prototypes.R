@@ -62,7 +62,7 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
   gp
 }
 
-arrange_by_rel_dim <- function(gp, dim) {
+arrange_by_dim <- function(gp, dim) {
 
   non_dim <- setdiff(c("row", "col"), dim)
 
