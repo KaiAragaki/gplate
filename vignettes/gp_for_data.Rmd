@@ -23,31 +23,80 @@ library(gp)
 If you work in a lab or with lab data, you've probably had to deal with data that look like this:
 
 ```{r}
-pcr_plate
+protein_quant
 ```
 
-Just looking at this sucks. You can use some `tidyverse` magic or use `plater` to help you at least make this matrix into a tidy data.frame, but annotating the wells as to which rows and which columns are what can be soul-rending (heavens forbid you have a non-standard plate layout). In this vignette, we'll not only tidy these data, but annotate them in a fairly painless process.
+Just looking at this sucks. You can use some `tidyverse` magic or use `plater` to help you at least make this matrix into a tidy `data.frame`, but annotating the wells as to which rows and which columns are what can be soul-rending (heavens forbid you have a non-standard plate layout). In this vignette, we'll not only tidy these data, but annotate them in a fairly painless process.
 
 
 # The data
 
-The data shown above represent the relative quantities (RQs) of a qPCR run with three primers:
+The data shown above represent absorbance values at 562nm. `gp` lets us plot our data quickly:
 
-```{r, echo = FALSE}
-gp(16, 24) |> 
-  gp_sec("no_border", margin = 1) |> 
-  gp_sec("primers", nrow = 9, ncol = 3, c("Primer 1", "Primer 2", "Primer 3")) |> 
-  gp_plot(primers)
-
+```{r fig.width=3.5, fig.height=2}
+gp(8, 12, protein_quant) |>
+  gp_plot(value)
 ```
 
-Four cell-lines, plus a non-targetting control (NTC):
+Allow me to describe what you're seeing. This has the added benefit that by describing it, we are also tidying it - more on that later.
+
+Each sample is in triplicate, and each triplicate stands next to one another moving from left to right, wrapping around to the next 'band' of rows when it hits an edge. Or, more simply:
+
+```{r fig.width=2.7, fig.height=2}
+gp(8, 12) |> 
+  gp_sec("samples", nrow = 3, ncol = 1) |> 
+  gp_plot(as.factor(samples)) +
+  ggplot2::theme(legend.position = "none")
+```
+
+However, there are some wells that have sample in them, and some that are empty. I want to specify the difference between the two:
+
+```{r fig.width=3.7, fig.height=2}
+gp(8, 12) |> 
+  gp_sec("has_sample", nrow = 3, ncol = 19, wrap = TRUE, labels = c("sample")) |> 
+  gp_plot(has_sample)
+```
+
+Notice the `wrap = TRUE` - this allows for sections that are bigger than the 'parent section' (here the plate) by wrapping them around to the next 'band'.
+
+Now say I want to label each one as a number of a triplicate - the top sample is 1, the middle is 2, and the bottom is 3. In the above sentence, I mentioned 'parent section' because any section can also have sections of it's own. We're going to use this idea to label our replicates:
+
+```{r fig.width=3.7, fig.height=2}
+gp(8, 12) |> 
+  gp_sec("has_sample", nrow = 3, ncol = 19, wrap = TRUE, labels = c("sample")) |> 
+  gp_sec("replicate", nrow = 1, labels = c("1", "2", "3")) |> 
+  gp_plot(replicate)
+```
+
+Notice here how I didn't specify `ncol`. This is because by default, a section will take up the maximum space possible (here `19`). 
+
+Finally, I want to label each sample with a name:
+
+```{r fig.width=2.7, fig.height=2}
+gp(8, 12) |> 
+  gp_sec("has_sample", nrow = 3, ncol = 19, wrap = TRUE, labels = c("sample")) |> 
+  gp_sec("replicate", nrow = 1, labels = c("1", "2", "3")) |> 
+  gp_sec("sample", nrow = 3, ncol = 1, labels = c(paste0("standard ", 1:7), paste0("sample ", 1:12))) |> 
+  gp_plot(sample) +
+  ggplot2::theme(legend.position = "none") # Too many samples - clutters the plot
+```
+
+Now, the fun part: Since we described our data so well, tidying it is very easy. First, we supply our data as the third argument of `gp`:
 
 ```{r}
-gp(16, 24) |> 
-  gp_sec("no_border", margin = 1) |> 
-  gp_sec("primers", nrow = 9, ncol = 3, labels = c("Primer 1", "Primer 2", "Primer 3")) |> 
-  gp_sec("cell line", nrow = 2, labels = c("1", "2", "3", "4")) |> 
-  gp_plot(`cell line`)
+my_plate <- gp(8, 12, protein_quant) |> 
+  gp_sec("has_sample", nrow = 3, ncol = 19, wrap = TRUE, labels = c("sample")) |> 
+  gp_sec("replicate", nrow = 1, labels = c("1", "2", "3")) |> 
+  gp_sec("sample", nrow = 3, ncol = 1, labels = c(paste0("standard ", 1:7), paste0("sample ", 1:12)))
 ```
 
+And now we use `gp_serve`:
+
+```{r}
+gp_serve(my_plate) |> 
+  dplyr::arrange(.row, .col) |> 
+  head(20) |> 
+  knitr::kable()
+```
+
+I don't know about you, but I think that's pretty cool.
