@@ -15,8 +15,8 @@ coordinate <- function(gp, type = c("row", "col"), margin) {
     margin_tail <- margin$top
   } else {
     dim_sec <- gp$ncol_sec
-    margin_head <- margin$right
-    margin_tail <- margin$left
+    margin_head <- margin$left
+    margin_tail <- margin$right
   }
 
   dim_unit <- purrr::pmap(list(margin_head, dim_sec, margin_tail),
