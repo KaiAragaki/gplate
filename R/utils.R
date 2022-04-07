@@ -7,7 +7,6 @@
 #'
 #' @return a `data.frame` with nrow `measure`
 non_int_replicate <- function(df, measure) {
-
   if (!is.numeric(measure)) {
     if (is.data.frame(measure)) {
       measure <- nrow(measure)
@@ -21,7 +20,6 @@ non_int_replicate <- function(df, measure) {
   replicate(len, df, simplify = FALSE) |>
     dplyr::bind_rows() |>
     dplyr::slice_head(n = measure)
-
 }
 
 #' Check if axis moves in the canonical direction

@@ -2,14 +2,14 @@
 % Please edit documentation in R/utils.R
 \name{non_int_replicate}
 \alias{non_int_replicate}
-\title{Recycle a df a non-integery number of times}
+\title{Recycle a df a non-integer number of times}
 \usage{
 non_int_replicate(df, measure)
 }
 \arguments{
 \item{df}{\code{data.frame} to be replicated}
 
-\item{measure}{Length of replication (not number of times). Can be a numeric,
+\item{measure}{Length-out of replication (not number of times). Can be a numeric,
 a vector, or a df. If a df, will use number of rows. If a vector, will use
 length.}
 }
@@ -17,5 +17,5 @@ length.}
 a \code{data.frame} with nrow \code{measure}
 }
 \description{
-Recycle a df a non-integery number of times
+Recycle a df a non-integer number of times
 }
