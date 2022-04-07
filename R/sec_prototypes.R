@@ -6,7 +6,6 @@
 #' @param wrap Logical. Should this dimension wrap around when it hits a section boundary?
 #'
 #' @return A `gp`
-#'
 unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
   non_dim <- setdiff(c("row", "col"), dim)

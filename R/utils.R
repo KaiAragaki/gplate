@@ -38,7 +38,6 @@ is_fwd <- function(gp, dim) {
          gp$start_corner %in% c("tl", "bl"))
 }
 
-
 #' Take a set of numbers and flip them around on a number line
 #'
 #' @param gp A `gp`
@@ -64,7 +63,6 @@ flip_dim <- function(gp, dim) {
 
   gp$well_data[[dim]] * -1 + 1 + n_dim
 }
-
 
 #' Performs `flip_dim` if necessary
 #'
