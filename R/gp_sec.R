@@ -99,7 +99,8 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
                     .col_sec = ifelse(is.na(.data$.sec), NA_integer_, .data$.col_sec))
   }
 
-  gp$well_data <- dplyr::mutate(gp$well_data, {{name}} := .data$.sec)
+  gp$well_data <- gp$well_data |>
+    dplyr::mutate({{ name }} := dplyr::if_else(is.na(.data$.sec_par), NA_integer_, .data$.sec))
 
   if (!is.null(labels)) {
     usr_labels_len <- length(labels)
