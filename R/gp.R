@@ -162,7 +162,6 @@ gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE
 #' Coerce object to gp
 #'
 #' @param x Object to coerce
-#'
 #' @param ... Unused
 #'
 #' @export
@@ -173,7 +172,7 @@ as_gp <- function(x, ...){
 #' @export
 #' @rdname as_gp
 as_gp.default <- function(x, ...){
-  gp(x, ...)
+  gp(rows = nrow(x), cols = ncol(x), data = x)
 }
 
 #' @export
