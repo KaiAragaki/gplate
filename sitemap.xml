@@ -19,6 +19,9 @@
     <loc>https://kaiaragaki.github.io/gp/index.html</loc>
   </url>
   <url>
+    <loc>https://kaiaragaki.github.io/gp/reference/arrange_by_dim.html</loc>
+  </url>
+  <url>
     <loc>https://kaiaragaki.github.io/gp/reference/as_gp.html</loc>
   </url>
   <url>
@@ -26,6 +29,9 @@
   </url>
   <url>
     <loc>https://kaiaragaki.github.io/gp/reference/example_plate.html</loc>
+  </url>
+  <url>
+    <loc>https://kaiaragaki.github.io/gp/reference/flip_dim.html</loc>
   </url>
   <url>
     <loc>https://kaiaragaki.github.io/gp/reference/gp.html</loc>
@@ -65,6 +71,9 @@
   </url>
   <url>
     <loc>https://kaiaragaki.github.io/gp/reference/protein_quant.html</loc>
+  </url>
+  <url>
+    <loc>https://kaiaragaki.github.io/gp/reference/rel_dim.html</loc>
   </url>
   <url>
     <loc>https://kaiaragaki.github.io/gp/reference/unroll_sec_dim_along_parent.html</loc>

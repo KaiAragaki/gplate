@@ -58,7 +58,8 @@
 <dt>cols</dt>
 <dd><p>Numeric. The number of columns the plate should have.</p></dd>
 <dt>data</dt>
-<dd><p>An optional data.frame of well data the same dimensions as the plate to be described</p></dd>
+<dd><p>An optional data.frame of well data the same dimensions as the
+plate to be described</p></dd>
 <dt>wells</dt>
 <dd><p>Numeric. The number of wells the plate has. If this is
 specified, rows and cols must be null - they are inferred from common form
@@ -74,15 +75,15 @@ factors of plates.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>A <code>gp</code> object has the following components:</p><ul><li><p><code>nrow</code>/<code>ncol</code>: Number of plate rows/cols. This is static and will not be
 changed by adding layers.</p></li>
-<li><p><code>wells</code>: Number of plate wells. Static.</p></li>
 <li><p><code>well_data</code>: Somewhat transient data used to define plotting coordinates
 for layers. See below for more information.</p></li>
 <li><p><code>nrow_sec</code>/<code>ncols_sec</code>: The number of rows/cols of the current section.
 When creating a plate, that number is the number of rows/cols of the plate
-(the plate is the section).</p></li>
+(the plate is the section). Can take on a 'mar' suffix, which specifies the
+number including margins (if any)</p></li>
 <li><p><code>nrow_sec_par</code>/<code>ncol_sec_par</code>: The number of rows/cols of the parent
 section. When creating a plate, it has no parent, so defaults to being its
-own parent.</p></li>
+own parent. Can take on a 'mar' suffix. See above.</p></li>
 </ul><p><code>well_data</code> consists of many columns. The variable names can be broken down
 as follows:</p><ul><li><p><code>row</code>/<code>col</code>: <code>row</code> is always the y axis, <code>col</code> is always the x axis. By
 convention, plates start at 1, 1 in the top left corner.</p></li>
@@ -91,25 +92,12 @@ convention, plates start at 1, 1 in the top left corner.</p></li>
 <code>row</code> or <code>col</code> (eg <code>row_sec</code>) refers to the coordinates of a given well
 relative to it's section corners, with the top left corner of a given section
 always being (1, 1).</p></li>
-<li><p><code>rel</code>: Short for 'relative'. This means that the numbering is relative to
-the <code>starting_corner</code> argument used to create the given section. For
-instance, a section created with a <code>starting_corner</code> of <code>br</code> (bottom right)
-will have a <code>row_sec_rel</code> and <code>col_sec_rel</code> of 1 in each of its bottom right
-corners. A column labelled <code>row_rel</code> in this example would refer to the
-bottom right of the <em>plate</em> as 1, but not necessarily the bottom right of
-each section.</p></li>
 <li><p><code>par</code>: Short for 'parent'. These columns are all the data from the previous
 layer.</p></li>
-<li><p><code>lane</code>: These specify (usually) multiwell strips only defined in one
-direction. <code>lane_h</code> and <code>lane_v</code> in tandem from checkerboard-like patterns,
+<li><p><code>index</code>: These specify (usually) multiwell strips only defined in one
+dimension. Together, <code>index_row</code> and <code>index_col</code> form checkerboard-like patterns,
 where each intersection is a section. This is a bit more complicated when
 <code>wrap = TRUE</code>, so the simile does not hold for all cases.</p></li>
-<li><p><code>col/row_rel_child_sec_par</code>: These are odd columns. They represent the axes
-of parental sections, but using the child's relative coordinate system. For
-example, if a parent defined sections starting in the upper left, and the
-child defined sections starting in the upper right, <code>col_rel_child_sec_par</code>
-would be a reversed <code>col_sec_par_rel</code>, while <code>row_rel_child_sec_par</code> would be
-identical to <code>row_sec_par_rel</code></p></li>
 </ul></div>
 
     <div class="section level2">
