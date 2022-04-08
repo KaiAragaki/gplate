@@ -92,7 +92,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
       dplyr::group_by(.data$.sec, .data$.sec_par) |>
       dplyr::mutate(.n = dplyr::n()) |>
       dplyr::mutate(.sec = ifelse(.data$.n < gp$nrow_sec * gp$ncol_sec | is.na(.data$.sec) | is.na(.data$.sec_par), NA_integer_, .data$.sec) |> as.factor(),
-                    .sec = as.numeric(.data$.sec)) |>  # No idea why this has to be a separate line to work, but it does
+                    .sec = as.integer(.data$.sec)) |>  # No idea why this has to be a separate line to work, but it does
       dplyr::ungroup() |>
       dplyr::mutate(.row_sec = ifelse(is.na(.data$.sec), NA_integer_, .data$.row_sec),
                     .col_sec = ifelse(is.na(.data$.sec), NA_integer_, .data$.col_sec))
