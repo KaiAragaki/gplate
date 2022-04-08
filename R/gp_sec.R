@@ -41,7 +41,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   flow <- rlang::arg_match(flow)
   start_corner <- rlang::arg_match(start_corner)
   check_has_name(name)
-  check_break_if_wrap(wrap, break_sections)
   check_if_flow_and_custom_dims(flow, nrow, ncol)
   # ----------------------------------------------------------------------------
   margin <- get_margin(margin)
