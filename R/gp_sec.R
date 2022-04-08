@@ -41,7 +41,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   flow <- rlang::arg_match(flow)
   start_corner <- rlang::arg_match(start_corner)
   check_has_name(name)
-  check_break_if_wrap(wrap, break_sections)
   check_if_flow_and_custom_dims(flow, nrow, ncol)
   # ----------------------------------------------------------------------------
   margin <- get_margin(margin)
@@ -74,7 +73,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
   if (wrap) {
     gp$well_data <- gp$well_data |>
-      dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin, NA_integer_, .data$.sec)) |>
+      dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin | is.na(.data$.sec_par), NA_integer_, .data$.sec)) |>
       dplyr::select(-dplyr::contains(".index"))
   } else {
     gp$well_data <- gp$well_data |>
@@ -84,7 +83,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
       dplyr::ungroup() |>
       dplyr::mutate(.sec = dplyr::row_number()) |>
       tidyr::unnest(.data$data) |>
-      dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin, NA_integer_, .data$.sec)) |>
+      dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin | is.na(.data$.sec_par), NA_integer_, .data$.sec)) |>
       dplyr::select(-c(".index_col", ".index_row"))
   }
 
@@ -92,7 +91,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     gp$well_data <- gp$well_data |>
       dplyr::group_by(.data$.sec, .data$.sec_par) |>
       dplyr::mutate(.n = dplyr::n()) |>
-      dplyr::mutate(.sec = ifelse(.data$.n < nrow * ncol, NA_integer_, .data$.sec) |> as.factor(),
+      dplyr::mutate(.sec = ifelse(.data$.n < gp$nrow_sec * gp$ncol_sec | is.na(.data$.sec) | is.na(.data$.sec_par), NA_integer_, .data$.sec) |> as.factor(),
                     .sec = as.numeric(.data$.sec)) |>  # No idea why this has to be a separate line to work, but it does
       dplyr::ungroup() |>
       dplyr::mutate(.row_sec = ifelse(is.na(.data$.sec), NA_integer_, .data$.row_sec),

@@ -17,8 +17,8 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 
   wd <- tidyr::expand_grid(.row = seq_len(nrow), .col = seq_len(ncol))
   wd$.sec <- wd$.sec_par <- 1L
-  wd$.row_rel <- wd$.row_sec <- wd$.row_sec_par <- wd$.row
-  wd$.col_rel <- wd$.col_sec <- wd$.col_sec_par <- wd$.col
+  wd$.row_sec <- wd$.row_sec_par <- wd$.row
+  wd$.col_sec <- wd$.col_sec_par <- wd$.col
   wd$.row_is_margin <- wd$.col_is_margin <- FALSE
 
   has_size <- nrow(data) > 0 & ncol(data) > 0
