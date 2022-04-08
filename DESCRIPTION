@@ -1,5 +1,5 @@
 Package: gp
-Title: A Grammer of Plates
+Title: A Grammar of Plates
 Version: 0.1.1
 Authors@R: 
     person(given = "Kai",
