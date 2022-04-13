@@ -14,3 +14,4 @@
 \description{
 Print a gp object
 }
+\keyword{internal}
