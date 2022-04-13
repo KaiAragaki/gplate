@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   gp_for_data: gp_for_data.html
   making-plots-with-gp: making-plots-with-gp.html
-last_built: 2022-04-13T03:15Z
+last_built: 2022-04-13T19:14Z
 urls:
   reference: https://kaiaragaki.github.io/gp/reference
   article: https://kaiaragaki.github.io/gp/articles
