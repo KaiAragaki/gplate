@@ -2,6 +2,7 @@
 #'
 #' @param x A gp object
 #' @param ... Additional parameters to pass to `print`
+#' @export
 #' @keywords internal
 print.gp <- function(x, ...) {
 
