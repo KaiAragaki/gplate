@@ -2,8 +2,6 @@
 #'
 #' @param x A gp object
 #' @param ... Additional parameters to pass to `print`
-#'
-#' @export
 print.gp <- function(x, ...) {
 
   if (x$nrow_sec > 50 | x$ncol_sec + 5 > cli::console_width()) {
