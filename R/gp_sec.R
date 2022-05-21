@@ -102,16 +102,34 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     dplyr::mutate({{ name }} := dplyr::if_else(is.na(.data$.sec_par), NA_integer_, .data$.sec))
 
   if (!is.null(labels)) {
+
     usr_labels_len <- length(labels)
+
+
+
+
+
+    if (length(nrow) > 1 | length(ncol) > 1) {
+      map_sec <- paste0(".", non_flow, "_map_sec")
+      gp$well_data <- gp$well_data |>
+        dplyr::rowwise() |>
+        dplyr::mutate(.sec = dplyr::if_else(.data$.sec > usr_labels_len | is.na(.data$.sec_par), NA_integer_, as.integer(.data[[map_sec]])))
+    } else {
+      gp$well_data <- gp$well_data |>
+        dplyr::rowwise() |>
+        dplyr::mutate(.sec = dplyr::if_else(.data$.sec > usr_labels_len | is.na(.data$.sec_par), NA_integer_, .data$.sec))
+    }
+
     gp$well_data <- gp$well_data |>
-      dplyr::rowwise() |>
-      dplyr::mutate(.sec = dplyr::if_else(.data$.sec > usr_labels_len | is.na(.data$.sec_par), NA_integer_, .data$.sec),
-                    {{ name }} := .data$.sec)
+      dplyr::mutate({{ name }} := .data$.sec)
 
     length(labels) <- length(unique(na.omit(gp$well_data$.sec)))
+
     gp$well_data <- gp$well_data |>
       dplyr::ungroup() |>
       dplyr::mutate({{ name }} := factor(.data[[name]], levels = levels(as.factor(.data[[name]])), labels = labels))
+
+
   }
 
   gp
