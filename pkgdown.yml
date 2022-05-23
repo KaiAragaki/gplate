@@ -1,10 +1,10 @@
 pandoc: 2.7.3
-pkgdown: 2.0.2
+pkgdown: 2.0.3
 pkgdown_sha: ~
 articles:
   gp_for_data: gp_for_data.html
   making-plots-with-gp: making-plots-with-gp.html
-last_built: 2022-04-13T19:14Z
+last_built: 2022-05-23T20:20Z
 urls:
   reference: https://kaiaragaki.github.io/gp/reference
   article: https://kaiaragaki.github.io/gp/articles
