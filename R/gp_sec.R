@@ -123,8 +123,7 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     gp$well_data <- gp$well_data |>
       dplyr::mutate({{ name }} := .data$.sec)
 
-    length(labels) <- length(unique(na.omit(gp$well_data$.sec)))
-
+    length(labels) <- length(unique(stats::na.omit(gp$well_data$.sec)))
     gp$well_data <- gp$well_data |>
       dplyr::ungroup() |>
       dplyr::mutate({{ name }} := factor(.data[[name]], levels = levels(as.factor(.data[[name]])), labels = labels))
