@@ -12,10 +12,7 @@
 #' @export
 gp_unserve <- function(x, row = ".row", col = ".col", nrow = NULL, ncol = NULL) {
 
-  # Check to make sure that each value is unique (no duplicate row, col coords)
-  # Warn if there are missing coordinates and fill them in
-
-  if (sum(duplicated(tibble(x[[row]], x[[col]]))) > 0) {
+  if (sum(duplicated(data.frame(x[[row]], x[[col]]))) > 0) {
     rlang::abort(c("Duplicate entries for a single well, aborting",
                    "i" = "Consider pivoting to a wider format, or using dplyr::distict()"))
   }
