@@ -17,6 +17,7 @@ Imports:
     cli,
     dplyr,
     ggplot2,
+    glue,
     methods,
     purrr,
     rlang,
