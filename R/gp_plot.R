@@ -9,7 +9,7 @@
 #' @examples
 #'
 #' gp(16, 24) |> gp_plot(.row)
-gp_plot <- function(gp, name) {
+gp_plot <- function(gp, name = .sec) {
     wd <- gp$well_data
     ggplot2::ggplot(wd, ggplot2::aes(x = .col, y = .row, color = {{ name }})) +
       ggplot2::geom_point(size = 4) +
