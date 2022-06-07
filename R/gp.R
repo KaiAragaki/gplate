@@ -117,6 +117,11 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #'
 gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE){
 
+  stopifnot(is.numeric(rows)    | is.null(rows),
+            is.numeric(cols)    | is.null(cols),
+            is.numeric(wells)   | is.null(wells),
+            is.logical(tidy))
+
   plate_formats <- gp::plate_formats
 
   if (all(is.null(wells), is.null(cols), is.null(rows))) {
@@ -139,6 +144,10 @@ gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE
 
   if (is.null(data)) {
     data <- data.frame()
+  }
+
+  if (rows < 1 || cols < 1) {
+      stop("Dimensions must be positive integers")
   }
 
   new_gp(nrow = as.integer(rows), ncol = as.integer(cols), data = data, tidy = tidy)

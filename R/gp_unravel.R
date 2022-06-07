@@ -1,6 +1,6 @@
-#' Turn data from 'plate form' to 'tidy form'
+#' Turn data from 'plate form' to 'tidy form' and back
 #'
-#' @param df The data.frame in plate-form to be tidied
+#' @param df The `data.frame` in plate-form to be tidied
 #' @param rownames Optional character. If there is a colname that specifies the
 #'   row index, it will be arranged by this column, then dropped.
 #'
@@ -29,6 +29,8 @@ gp_unravel <- function(df, rownames = NULL) {
     dplyr::mutate(.col = as.integer(.col))
 }
 
+#' @rdname gp_unravel
+#' @export
 gp_reravel <- function(df, row_name = ".row", col_name = ".col", values = "value") {
   df |>
     dplyr::select(row_name, col_name, values) |>

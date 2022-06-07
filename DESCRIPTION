@@ -26,8 +26,10 @@ Imports:
     tidyr
 Suggests: 
     rmarkdown,
-    knitr
+    knitr,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Depends: 
     R (>= 4.1.0)
 URL: https://kaiaragaki.github.io/gp/
+Config/testthat/edition: 3
