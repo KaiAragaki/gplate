@@ -15,6 +15,7 @@
 #' @param break_sections Should partial sections be allowed?
 #' @param labels Optional. What should the labels of each section be?
 #' @param wrap Should the sections that go off the edge continue on the next row/column?
+#' @param advance Should this section be a child or sibling of the one before it? If TRUE (default), it will be a child.
 #'
 #' @return a `gp`
 #' @export
@@ -23,13 +24,22 @@
 #'
 #' gp(16, 24) |> gp_sec("section 1", ncol = 3)
 #'
+#' pq <- gp(8, 12, protein_quant) |> gp_sec("has_sample", 3, 19, wrap = TRUE, labels = "sample")
+#'
+#' # Sections can be used to label things for tidying
+#' pq |> gp_serve()
+#'
+#' # They can also be used for plotting:
+#' pq |> gp_plot(has_sample)
+#'
 #' @importFrom rlang .data `:=`
 gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
                    start_corner = c("tl", "tr", "bl", "br"),
                    flow = c("row", "col"),
                    margin = 0,
                    wrap = FALSE,
-                   break_sections = TRUE) {
+                   break_sections = TRUE,
+                   advance = TRUE) {
 
   # Checks ---------------------------------------------------------------------
   stopifnot(is.numeric(nrow) | is.null(nrow),
@@ -43,8 +53,11 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   check_has_name(name)
   check_if_flow_and_custom_dims(flow, nrow, ncol)
   # ----------------------------------------------------------------------------
+
   margin <- get_margin(margin)
-  gp <- make_child_parent(gp)
+  if (advance) {
+    gp <- make_child_parent(gp)
+  }
   non_flow <- setdiff(c("row", "col"), flow)
 
   # Internalize user arguments into gp object ----------------------------------
@@ -60,6 +73,10 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   if (!is.null(ncol)) {
     gp$ncol_sec <- ncol
     gp$ncol_sec_mar <- sum(ncol + margin$left + margin$right)
+  }
+
+  if (!wrap & ((gp$nrow_sec_par < gp$nrow_sec_mar) | (gp$ncol_sec_par < gp$ncol_sec_mar))) {
+    stop("Child section exceeds dimensions of its parent, and wrap = FALSE")
   }
 
   # Make sections --------------------------------------------------------------
@@ -101,35 +118,32 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   gp$well_data <- gp$well_data |>
     dplyr::mutate({{ name }} := dplyr::if_else(is.na(.data$.sec_par), NA_integer_, .data$.sec))
 
-  if (!is.null(labels)) {
 
-    usr_labels_len <- length(labels)
-
-
-
-
-
-    if (length(nrow) > 1 | length(ncol) > 1) {
-      map_sec <- paste0(".", non_flow, "_map_sec")
-      gp$well_data <- gp$well_data |>
-        dplyr::rowwise() |>
-        dplyr::mutate(.sec = dplyr::if_else(.data$.sec > usr_labels_len | is.na(.data$.sec_par), NA_integer_, as.integer(.data[[map_sec]])))
-    } else {
-      gp$well_data <- gp$well_data |>
-        dplyr::rowwise() |>
-        dplyr::mutate(.sec = dplyr::if_else(.data$.sec > usr_labels_len | is.na(.data$.sec_par), NA_integer_, .data$.sec))
-    }
-
-    gp$well_data <- gp$well_data |>
-      dplyr::mutate({{ name }} := .data$.sec)
-
-    length(labels) <- length(unique(stats::na.omit(gp$well_data$.sec)))
-    gp$well_data <- gp$well_data |>
-      dplyr::ungroup() |>
-      dplyr::mutate({{ name }} := factor(.data[[name]], levels = levels(as.factor(.data[[name]])), labels = labels))
-
-
+  if (is.null(labels)) {
+    labels <- seq_along(unique(gp$well_data$.sec))
   }
+
+  usr_labels_len <- length(labels)
+
+  if (length(nrow) > 1 | length(ncol) > 1) {
+    map_sec <- paste0(".", non_flow, "_map_sec")
+    gp$well_data <- gp$well_data |>
+      dplyr::rowwise() |>
+      dplyr::mutate(.sec = dplyr::if_else(.data$.sec > usr_labels_len | is.na(.data$.sec_par), NA_integer_, as.integer(.data[[map_sec]])))
+  } else {
+    gp$well_data <- gp$well_data |>
+      dplyr::rowwise() |>
+      dplyr::mutate(.sec = dplyr::if_else(.data$.sec > usr_labels_len | is.na(.data$.sec_par), NA_integer_, .data$.sec))
+  }
+
+  gp$well_data <- gp$well_data |>
+    dplyr::mutate({{ name }} := .data$.sec)
+
+  length(labels) <- length(unique(stats::na.omit(gp$well_data$.sec)))
+  gp$well_data <- gp$well_data |>
+    dplyr::ungroup() |>
+    dplyr::mutate({{ name }} := factor(.data[[name]], levels = levels(as.factor(.data[[name]])), labels = labels))
+
 
   gp
 }
