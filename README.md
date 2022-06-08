@@ -1,10 +1,10 @@
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 <style type="text/css">
 span > img {
  float:left;
 }
 </style>
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # gp <a href="https://kaiaragaki.github.io/gp/"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
@@ -45,7 +45,7 @@ rectangular ‘sections’ to our plates:
 ``` r
 gp(rows = 16, cols = 24) |> 
   gp_sec("my_section", nrow = 12, ncol = 6) |> 
-  gp_plot(as.factor(my_section))
+  gp_plot(my_section)
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -57,7 +57,7 @@ These sections can have sections of their own, just by layering one
 gp(rows = 16, cols = 24) |> 
   gp_sec("my_section", nrow = 12, ncol = 6) |> 
   gp_sec("secsec", nrow = 3, ncol = 3) |> 
-  gp_plot(as.factor(secsec))
+  gp_plot(secsec)
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
@@ -68,7 +68,7 @@ sparkline-esque plates.
 ``` r
 mini_plot_cols <- gp(8, 12) |> 
   gp_sec(name = "primers", ncol = 3) |> 
-  gp_plot(as.factor(primers)) + 
+  gp_plot(primers) + 
   gp_mini_theme()
 ggplot2::ggsave(filename = "./man/figures/mini-plot_cols.png", 
                 plot = mini_plot_cols,
@@ -79,7 +79,7 @@ ggplot2::ggsave(filename = "./man/figures/mini-plot_cols.png",
 
 mini_plot_rows <- gp(8, 12) |> 
   gp_sec(name = "primers", nrow = 3) |> 
-  gp_plot(as.factor(primers)) + 
+  gp_plot(primers) + 
   gp_mini_theme()
 ggplot2::ggsave(filename = "./man/figures/mini-plot_rows.png", 
                 plot = mini_plot_rows,
