@@ -50,7 +50,7 @@ plate_formats |>
   knitr::kable()
 ```
 
-Note also that if you specify `wells = 96` and what you MEAN is a 4x24 well plate, you're going to be dissapointed. For that reason, it's usually best to be explicit about the plate dimensions.
+Note also that if you specify `wells = 96` and what you MEAN is a 4x24 well plate, you're going to be disappointed. For that reason, it's usually best to be explicit about the plate dimensions.
 
 # Plotting
 
@@ -86,13 +86,14 @@ At this point you should also note that the axes are arranged like most plates a
 
 # Adding sections to plates
 
-This package would be useless if there wasn't the ability to add patterns to your plates. gp uses the idea of 'sections' that can build ontop of one another. We'll make it more concrete with examples, but in short a plate is the biggest section, and sections can have sections. But what can sections DO for us?
+This package would be useless if there wasn't the ability to add patterns to your plates. gp uses the idea of 'sections' that can build atop one another. We'll make it more concrete with examples, but in short a plate is the biggest section, and sections can have sections. But what can sections DO for us?
 
 Simply put, sections let us make rectangular patterns on plates:
 
 ```{r fig.width=5.6, fig.height=3.25}
-my_plate |> gp_sec("condition", nrow = 16, ncol = 3) |> 
-  gp_plot(as.factor(condition)) # To make sections a bit more visible
+my_plate |> 
+  gp_sec("condition", nrow = 16, ncol = 3) |> 
+  gp_plot(condition)
 ```
 
 `gp_sec` is the workhorse of gp. Before we get in to all the other fun stuff it can do, let's go over syntax. `gp_sec` takes several arguments:
@@ -103,23 +104,29 @@ my_plate |> gp_sec("condition", nrow = 16, ncol = 3) |>
 By default, if a dimension is left blank it tries to fill up the maximum of its parent section (here the whole plate). So I could have done this:
   
 ```{r fig.width=5.6, fig.height=3.25}
-my_plate |> gp_sec("condition", ncol = 3) |> gp_plot(as.factor(condition))
+my_plate |> 
+  gp_sec("condition", ncol = 3) |> 
+  gp_plot(condition)
 ```
   
 Note that we plot using `condition`. This implies that it's part of `my_plate$well_data`, since I told you that's where `gp_plot` gets its plotting data from, right? You would be correct. When you make a section, you tack on a column named whatever you named it to `well_data`. This is fundamental to the idea of 'tidying as you plot' (which, again, is gone over in the 'Using gp to wrangle plate data' vignette).
 
-But there's so much other cools stuff you can do with `gp_sec`. Let's go over them in isolation.
+But there's so much other cool stuff you can do with `gp_sec`. Let's go over them in isolation.
 
 ## Starting corner
 
 Starting off gentle, we can describe which corner we want section one to be in by supplying a `start_corner` argument. By default, `start_corner = "tl"`. `tl` stands for top-left, so I imagine you can guess what the other three options stand for: `tr`, `bl`, `br`
 
 ```{r fig.width=5.6, fig.height=3.25}
-my_plate |> gp_sec("condition", 8, 11) |> gp_plot(as.factor(condition))
+my_plate |> 
+  gp_sec("condition", 8, 11) |> 
+  gp_plot(condition)
 ```
 
 ```{r fig.width=5.6, fig.height=3.25}
-my_plate |> gp_sec("condition", 8, 11, start_corner = "br") |> gp_plot(as.factor(condition))
+my_plate |> 
+  gp_sec("condition", 8, 11, start_corner = "br") |> 
+  gp_plot(condition)
 ``` 
 
 ## Flowing - left/right first or top/bottom first?
@@ -127,7 +134,9 @@ my_plate |> gp_sec("condition", 8, 11, start_corner = "br") |> gp_plot(as.factor
 Notice that by default our next section is to the side of the section before it. But what if we wanted our next section to be above/below? This can be done simply by setting `flow` to either `"row"` or `"col"`:
 
 ```{r fig.width=5.6, fig.height=3.25}
-my_plate |> gp_sec("condition", 8, 11, flow = "col") |> gp_plot(as.factor(condition))
+my_plate |> 
+  gp_sec("condition", 8, 11, flow = "col") |> 
+  gp_plot(condition)
 ```
 
 ## Margins
@@ -136,9 +145,11 @@ Sometimes it's nice to have a bit of space around sections. As a practical examp
 
 
 ```{r fig.width=5.6, fig.height=3.25}
-borderless <- my_plate |> gp_sec("no_border", margin = 1, 14, 22)
+borderless <-
+  my_plate |>
+  gp_sec("no_border", 14, 22, margin = 1)
 
-borderless |> gp_plot(no_border)
+gp_plot(borderless, no_border)
 ```
 
 Note that you have to specify the dimensions here. If you think you could get away with just supplying a name and `margin = 1`, you'd be unfortunately mistaken. As I mentioned previously, `ncol` and `nrow` fill up to their parent section. Then, margin gets ADDED to it. This makes it overflow its parent (ie this is MARGIN not PADDING, for the HTML/CSS inclined).
@@ -146,7 +157,9 @@ Note that you have to specify the dimensions here. If you think you could get aw
 Now I can use the fact that sections can have sections to, say, show where my primers will go:
 
 ```{r fig.width=5.6, fig.height=3.25}
-borderless |> gp_sec("primers", ncol = 3) |> gp_plot(as.factor(primers))
+borderless |> 
+  gp_sec("primers", ncol = 3) |> 
+  gp_plot(primers)
 ```
 
 Margins can also be specified to be on a particular side by supplying a vector. This works very much how CSS margin specification goes.
@@ -163,7 +176,7 @@ You'll notice in the figure above that primer 8 isn't a full section. We can omi
 ```{r fig.width=5.6, fig.height=3.25}
 borderless |> 
   gp_sec("primers", ncol = 3, break_sections = FALSE) |> 
-  gp_plot(as.factor(primers))
+  gp_plot(primers)
 ```
 
 ## Wrapping - going over the edge
@@ -172,8 +185,8 @@ Sometimes you'll want to wrap your sections so that when one clips off the edge,
 
 ```{r fig.width=5.6, fig.height=3.25}
 my_plate |> 
-  gp_sec("primers", nrow = 3, ncol = 27, wrap = TRUE) |> 
-  gp_plot(as.factor(primers))
+  gp_sec("primers", 3, 27, wrap = TRUE) |> 
+  gp_plot(primers)
 ```
 
 This makes sense in instances where the section is too big for the parent section. Without wrapping, you wouldn't be able to fit a single full section on this plate.
@@ -184,7 +197,7 @@ Labeling serves two purposes: Annotating the section numbers, and hiding section
 
 ```{r fig.width=5.4, fig.height=3.25}
 my_plate |> 
-  gp_sec("primers", ncol = 3, nrow = 7, labels = c("GBP2", "YAP1", "GAPDH")) |> 
+  gp_sec("primers", 3, 7, labels = c("GBP2", "YAP1", "GAPDH")) |> 
   gp_plot(primers)
 ```
 
@@ -196,6 +209,7 @@ You can make some wild stuff just by combining these arguments together. Like so
 gp(20, 20) |> 
   gp_sec("outer", 9, 7, margin = c(1, 0, 2, 1), start_corner = "br", wrap = TRUE, flow = "col") |> 
   gp_sec("inner", 2, 2, wrap = TRUE, start_corner = "tr", flow = "col") |> 
-  gp_plot(as.factor(inner)) + ggplot2::theme(legend.position = "none")
+  gp_plot(inner) + 
+  ggplot2::theme(legend.position = "none")
 ```
 

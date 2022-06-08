@@ -45,7 +45,7 @@ Each sample is in triplicate, and each triplicate stands next to one another mov
 ```{r fig.width=2.7, fig.height=2}
 gp(8, 12) |> 
   gp_sec("samples", nrow = 3, ncol = 1) |> 
-  gp_plot(as.factor(samples)) +
+  gp_plot(samples) +
   ggplot2::theme(legend.position = "none")
 ```
 
@@ -64,30 +64,45 @@ Now say I want to label each one as a number of a triplicate - the top sample is
 ```{r fig.width=3.7, fig.height=2}
 gp(8, 12) |> 
   gp_sec("has_sample", nrow = 3, ncol = 19, wrap = TRUE, labels = c("sample")) |> 
-  gp_sec("replicate", nrow = 1, labels = c("1", "2", "3")) |> 
+  gp_sec("replicate", nrow = 1) |> 
   gp_plot(replicate)
 ```
 
 Notice here how I didn't specify `ncol`. This is because by default, a section will take up the maximum space possible (here `19`). 
 
-Finally, I want to label each sample with a name:
+Some of these samples make up a standard curve, while others make up 'unknowns'. I'm going to label which is which:
+
+```{r fig.width=3.7, fig.height=2}
+gp(8, 12) |> 
+  gp_sec("has_sample", nrow = 3, ncol = 19, wrap = TRUE, labels = c("sample")) |> 
+  gp_sec("replicate", nrow = 1, advance = F) |>
+  gp_sec("type", nrow = 3, ncol = c(7, 12), labels = c("standard", "sample")) |>
+  gp_plot(type)
+```
+
+Note the addition of the argument `advance = F` in the previous section. This ensures that the next section - `type` - will be a _sibling_ of `replicate`, rather than its child. That is, we continue to annotate relative to `has_sample` rather than annotating relative to `replicate`.
+
+Finally, I'm going to give an index for each sample:
 
 ```{r fig.width=2.7, fig.height=2}
 gp(8, 12) |> 
   gp_sec("has_sample", nrow = 3, ncol = 19, wrap = TRUE, labels = c("sample")) |> 
-  gp_sec("replicate", nrow = 1, labels = c("1", "2", "3")) |> 
-  gp_sec("sample", nrow = 3, ncol = 1, labels = c(paste0("standard ", 1:7), paste0("sample ", 1:12))) |> 
+  gp_sec("replicate", nrow = 1, advance = F) |>
+  gp_sec("type", nrow = 3, ncol = c(7, 12), labels = c("standard", "sample")) |>
+  gp_sec("sample", ncol = 1) |> 
   gp_plot(sample) +
   ggplot2::theme(legend.position = "none") # Too many samples - clutters the plot
 ```
+
 
 Now, the fun part: Since we described our data so well, tidying it is very easy. First, we supply our data as the third argument of `gp`:
 
 ```{r}
 my_plate <- gp(8, 12, protein_quant) |> 
   gp_sec("has_sample", nrow = 3, ncol = 19, wrap = TRUE, labels = c("sample")) |> 
-  gp_sec("replicate", nrow = 1, labels = c("1", "2", "3")) |> 
-  gp_sec("sample", nrow = 3, ncol = 1, labels = c(paste0("standard ", 1:7), paste0("sample ", 1:12)))
+  gp_sec("replicate", nrow = 1, advance = F) |>
+  gp_sec("type", nrow = 3, ncol = c(7, 12), labels = c("standard", "sample")) |>
+  gp_sec("sample", ncol = 1)
 ```
 
 And now we use `gp_serve`:
