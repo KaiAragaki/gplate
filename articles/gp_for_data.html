@@ -118,7 +118,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"samples"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">samples</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">samples</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></code></pre></div>
 <p><img src="gp_for_data_files/figure-html/unnamed-chunk-4-1.png" width="259.2"></p>
 <p>However, there are some wells that have sample in them, and some that are empty. I want to specify the difference between the two:</p>
@@ -132,27 +132,38 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"has_sample"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">19</span>, wrap <span class="op">=</span> <span class="cn">TRUE</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample"</span><span class="op">)</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"replicate"</span>, nrow <span class="op">=</span> <span class="fl">1</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span><span class="op">)</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"replicate"</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">replicate</span><span class="op">)</span></code></pre></div>
 <p><img src="gp_for_data_files/figure-html/unnamed-chunk-6-1.png" width="355.2"></p>
 <p>Notice here how I didn’t specify <code>ncol</code>. This is because by default, a section will take up the maximum space possible (here <code>19</code>).</p>
-<p>Finally, I want to label each sample with a name:</p>
+<p>Some of these samples make up a standard curve, while others make up ‘unknowns’. I’m going to label which is which:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"has_sample"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">19</span>, wrap <span class="op">=</span> <span class="cn">TRUE</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample"</span><span class="op">)</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"replicate"</span>, nrow <span class="op">=</span> <span class="fl">1</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span><span class="op">)</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"sample"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">1</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"standard "</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"sample "</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"replicate"</span>, nrow <span class="op">=</span> <span class="fl">1</span>, advance <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> |&gt;
+  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"type"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">12</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"standard"</span>, <span class="st">"sample"</span><span class="op">)</span><span class="op">)</span> |&gt;
+  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span></code></pre></div>
+<p><img src="gp_for_data_files/figure-html/unnamed-chunk-7-1.png" width="355.2"></p>
+<p>Note the addition of the argument <code>advance = F</code> in the previous section. This ensures that the next section - <code>type</code> - will be a <em>sibling</em> of <code>replicate</code>, rather than its child. That is, we continue to annotate relative to <code>has_sample</code> rather than annotating relative to <code>replicate</code>.</p>
+<p>Finally, I’m going to give an index for each sample:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"has_sample"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">19</span>, wrap <span class="op">=</span> <span class="cn">TRUE</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample"</span><span class="op">)</span><span class="op">)</span> |&gt; 
+  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"replicate"</span>, nrow <span class="op">=</span> <span class="fl">1</span>, advance <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> |&gt;
+  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"type"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">12</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"standard"</span>, <span class="st">"sample"</span><span class="op">)</span><span class="op">)</span> |&gt;
+  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"sample"</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">sample</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="co"># Too many samples - clutters the plot</span></code></pre></div>
-<p><img src="gp_for_data_files/figure-html/unnamed-chunk-7-1.png" width="259.2"></p>
+<p><img src="gp_for_data_files/figure-html/unnamed-chunk-8-1.png" width="259.2"></p>
 <p>Now, the fun part: Since we described our data so well, tidying it is very easy. First, we supply our data as the third argument of <code>gp</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_plate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">12</span>, <span class="va">protein_quant</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"has_sample"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">19</span>, wrap <span class="op">=</span> <span class="cn">TRUE</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample"</span><span class="op">)</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"replicate"</span>, nrow <span class="op">=</span> <span class="fl">1</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span><span class="op">)</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"sample"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">1</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"standard "</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"sample "</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"replicate"</span>, nrow <span class="op">=</span> <span class="fl">1</span>, advance <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> |&gt;
+  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"type"</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">12</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"standard"</span>, <span class="st">"sample"</span><span class="op">)</span><span class="op">)</span> |&gt;
+  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"sample"</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>And now we use <code>gp_serve</code>:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/gp_serve.html">gp_serve</a></span><span class="op">(</span><span class="va">my_plate</span><span class="op">)</span> |&gt; 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">.row</span>, <span class="va">.col</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span> |&gt; 
@@ -164,6 +175,7 @@
 <th align="right">value</th>
 <th align="left">has_sample</th>
 <th align="left">replicate</th>
+<th align="left">type</th>
 <th align="left">sample</th>
 </tr></thead>
 <tbody>
@@ -173,7 +185,8 @@
 <td align="right">0.0691</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">standard 1</td>
+<td align="left">standard</td>
+<td align="left">1</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -181,7 +194,8 @@
 <td align="right">0.0801</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">standard 2</td>
+<td align="left">standard</td>
+<td align="left">2</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
@@ -189,7 +203,8 @@
 <td align="right">0.0978</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">standard 3</td>
+<td align="left">standard</td>
+<td align="left">3</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -197,7 +212,8 @@
 <td align="right">0.1212</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">standard 4</td>
+<td align="left">standard</td>
+<td align="left">4</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
@@ -205,7 +221,8 @@
 <td align="right">0.1731</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">standard 5</td>
+<td align="left">standard</td>
+<td align="left">5</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -213,7 +230,8 @@
 <td align="right">0.2395</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">standard 6</td>
+<td align="left">standard</td>
+<td align="left">6</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
@@ -221,7 +239,8 @@
 <td align="right">0.3812</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">standard 7</td>
+<td align="left">standard</td>
+<td align="left">7</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -229,7 +248,8 @@
 <td align="right">0.2402</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">sample 1</td>
+<td align="left">sample</td>
+<td align="left">1</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
@@ -237,7 +257,8 @@
 <td align="right">0.2593</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">sample 2</td>
+<td align="left">sample</td>
+<td align="left">2</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -245,7 +266,8 @@
 <td align="right">0.2525</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">sample 3</td>
+<td align="left">sample</td>
+<td align="left">3</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
@@ -253,7 +275,8 @@
 <td align="right">0.2371</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">sample 4</td>
+<td align="left">sample</td>
+<td align="left">4</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -261,7 +284,8 @@
 <td align="right">0.2572</td>
 <td align="left">sample</td>
 <td align="left">1</td>
-<td align="left">sample 5</td>
+<td align="left">sample</td>
+<td align="left">5</td>
 </tr>
 <tr class="odd">
 <td align="right">2</td>
@@ -269,7 +293,8 @@
 <td align="right">0.0693</td>
 <td align="left">sample</td>
 <td align="left">2</td>
-<td align="left">standard 1</td>
+<td align="left">standard</td>
+<td align="left">1</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
@@ -277,7 +302,8 @@
 <td align="right">0.0810</td>
 <td align="left">sample</td>
 <td align="left">2</td>
-<td align="left">standard 2</td>
+<td align="left">standard</td>
+<td align="left">2</td>
 </tr>
 <tr class="odd">
 <td align="right">2</td>
@@ -285,7 +311,8 @@
 <td align="right">0.0966</td>
 <td align="left">sample</td>
 <td align="left">2</td>
-<td align="left">standard 3</td>
+<td align="left">standard</td>
+<td align="left">3</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
@@ -293,7 +320,8 @@
 <td align="right">0.1247</td>
 <td align="left">sample</td>
 <td align="left">2</td>
-<td align="left">standard 4</td>
+<td align="left">standard</td>
+<td align="left">4</td>
 </tr>
 <tr class="odd">
 <td align="right">2</td>
@@ -301,7 +329,8 @@
 <td align="right">0.1732</td>
 <td align="left">sample</td>
 <td align="left">2</td>
-<td align="left">standard 5</td>
+<td align="left">standard</td>
+<td align="left">5</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
@@ -309,7 +338,8 @@
 <td align="right">0.2454</td>
 <td align="left">sample</td>
 <td align="left">2</td>
-<td align="left">standard 6</td>
+<td align="left">standard</td>
+<td align="left">6</td>
 </tr>
 <tr class="odd">
 <td align="right">2</td>
@@ -317,7 +347,8 @@
 <td align="right">0.3988</td>
 <td align="left">sample</td>
 <td align="left">2</td>
-<td align="left">standard 7</td>
+<td align="left">standard</td>
+<td align="left">7</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
@@ -325,7 +356,8 @@
 <td align="right">0.2527</td>
 <td align="left">sample</td>
 <td align="left">2</td>
-<td align="left">sample 1</td>
+<td align="left">sample</td>
+<td align="left">1</td>
 </tr>
 </tbody>
 </table>
