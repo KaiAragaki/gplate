@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "aaragak1@jhmi.edu",
            comment = c(ORCID = "0000-0002-9458-0426"))
-Description: While microwell plate are ubiquitous in the lab, they are unrecognized in the R landscape. `gp` seeks to make working with data in a plate format easier and more rigorous by implementing gp objects.
+Description: `gp` attempts to provide a succinct yet powerful grammar to describe common microwell layouts to aide in both plotting and tidying.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
