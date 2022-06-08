@@ -55,9 +55,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   # ----------------------------------------------------------------------------
 
   margin <- get_margin(margin)
-  if (advance) {
-    gp <- make_child_parent(gp)
-  }
   non_flow <- setdiff(c("row", "col"), flow)
 
   # Internalize user arguments into gp object ----------------------------------
@@ -68,14 +65,20 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   if (!is.null(nrow)) {
     gp$nrow_sec <- nrow
     gp$nrow_sec_mar <- sum(nrow + margin$top + margin$bottom) # Need sum because nrow is not necessarily a single digit
+  } else {
+    gp$nrow_sec <- gp$nrow_sec_par
+    gp$nrow_sec_mar <- sum(gp$nrow_sec + margin$top + margin$bottom)
   }
 
   if (!is.null(ncol)) {
     gp$ncol_sec <- ncol
     gp$ncol_sec_mar <- sum(ncol + margin$left + margin$right)
+  } else {
+    gp$ncol_sec <- gp$ncol_sec_par
+    gp$ncol_sec_mar <- sum(gp$ncol_sec + margin$left + margin$right)
   }
 
-  if (!wrap & ((gp$nrow_sec_par < gp$nrow_sec_mar) | (gp$ncol_sec_par < gp$ncol_sec_mar))) {
+  if (!wrap & ((min(gp$nrow_sec_par) < max(gp$nrow_sec_mar)) | (min(gp$ncol_sec_par) < max(gp$ncol_sec_mar)))) {
     stop("Child section exceeds dimensions of its parent, and wrap = FALSE")
   }
 
@@ -143,6 +146,10 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
   gp$well_data <- gp$well_data |>
     dplyr::ungroup() |>
     dplyr::mutate({{ name }} := factor(.data[[name]], levels = levels(as.factor(.data[[name]])), labels = labels))
+
+  if (advance) {
+    gp <- make_child_parent(gp)
+  }
 
   gp
 }
