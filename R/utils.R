@@ -31,7 +31,7 @@ non_int_replicate <- function(df, measure) {
 #'
 #' @return logical.
 is_fwd <- function(gp, dim) {
-  ifelse(dim == "row",
+  dplyr::if_else(dim == "row",
          gp$start_corner %in% c("tl", "tr"),
          gp$start_corner %in% c("tl", "bl"))
 }

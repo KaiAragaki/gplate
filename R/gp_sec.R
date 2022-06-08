@@ -144,7 +144,6 @@ gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
     dplyr::ungroup() |>
     dplyr::mutate({{ name }} := factor(.data[[name]], levels = levels(as.factor(.data[[name]])), labels = labels))
 
-
   gp
 }
 
