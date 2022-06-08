@@ -26,6 +26,7 @@ reference:
 - contents:
   - as_gp
   - gp_serve
+  - gp_unserve
   - gp_unravel
   - wells
 
