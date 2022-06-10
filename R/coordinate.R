@@ -9,14 +9,24 @@ coordinate <- function(gp, type = c("row", "col"), margin) {
 
   type <- rlang::arg_match(type)
 
-  if (type == "row") {
+  fwd <- is_fwd(gp, type)
+
+  if (type == "row" & fwd) {
+    dim_sec <- gp$nrow_sec
+    margin_head <- margin$top
+    margin_tail <- margin$bottom
+  } else if (type == "row") {
     dim_sec <- gp$nrow_sec
     margin_head <- margin$bottom
     margin_tail <- margin$top
-  } else {
+  } else if (type == "col" & fwd) {
     dim_sec <- gp$ncol_sec
     margin_head <- margin$left
     margin_tail <- margin$right
+  } else {
+    dim_sec <- gp$ncol_sec
+    margin_head <- margin$right
+    margin_tail <- margin$left
   }
 
   dim_unit <- purrr::pmap(list(margin_head, dim_sec, margin_tail),
