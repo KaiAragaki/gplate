@@ -1,3 +1,23 @@
+
+#' Extract well data from an object
+#'
+#' @param x An object to be passed to its respective method
+#' @param ... Additional arguments (unused)
+#'
+#' @return A `tibble` containing the well data of the object
+#' @export
+well_data <- function(x, ...) {
+  UseMethod("well_data")
+}
+
+#' @export
+#' @rdname well_data
+well_data.gp <- function(x, ...) {
+  x$well_data
+}
+
+
+
 #' Recycle a df a non-integer number of times
 #'
 #' @param df `data.frame` to be replicated
