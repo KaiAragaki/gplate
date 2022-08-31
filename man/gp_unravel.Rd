@@ -2,12 +2,15 @@
 % Please edit documentation in R/gp_unravel.R
 \name{gp_unravel}
 \alias{gp_unravel}
-\title{Turn data from 'plate form' to 'tidy form'}
+\alias{gp_reravel}
+\title{Turn data from 'plate form' to 'tidy form' and back}
 \usage{
 gp_unravel(df, rownames = NULL)
+
+gp_reravel(df, row_name = ".row", col_name = ".col", values = "value")
 }
 \arguments{
-\item{df}{The data.frame in plate-form to be tidied}
+\item{df}{The \code{data.frame} in plate-form to be tidied}
 
 \item{rownames}{Optional character. If there is a colname that specifies the
 row index, it will be arranged by this column, then dropped.}
@@ -16,7 +19,7 @@ row index, it will be arranged by this column, then dropped.}
 a tibble
 }
 \description{
-Turn data from 'plate form' to 'tidy form'
+Turn data from 'plate form' to 'tidy form' and back
 }
 \examples{
 
