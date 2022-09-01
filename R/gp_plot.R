@@ -2,6 +2,7 @@
 #'
 #' @param gp A `gp` object
 #' @param name Symbol. Name of a column in `gp$well_data` to use as a color.
+#' @param ... Additional arguments to be passed to `ggplot2::geom_point()`
 #'
 #' @return a `ggplot`
 #' @export
@@ -9,11 +10,13 @@
 #' @examples
 #'
 #' gp(16, 24) |> gp_plot(.row)
-gp_plot <- function(gp, name = .sec) {
-    wd <- gp$well_data
-    ggplot2::ggplot(wd, ggplot2::aes(x = .col, y = .row, color = {{ name }})) +
-      ggplot2::geom_point(size = 4) +
-      ggplot2::scale_y_reverse()
+gp_plot <- function(gp, name = .sec, ...) {
+  dots <- rlang::dots_list(..., size = 4, .homonyms = "first")
+
+  wd <- gp$well_data
+  ggplot2::ggplot(wd, ggplot2::aes(x = .col, y = .row, color = {{ name }})) +
+    ggplot2::geom_point(...) +
+    ggplot2::scale_y_reverse()
 }
 
 #' A theme for making little in-line plots
