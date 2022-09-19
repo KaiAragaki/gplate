@@ -2,9 +2,12 @@
 % Please edit documentation in R/gp_sec.R
 \name{gp_sec}
 \alias{gp_sec}
+\alias{gp_sec.gp}
 \title{Add a section to a \code{gp} object.}
 \usage{
-gp_sec(
+gp_sec(gp, ...)
+
+\method{gp_sec}{gp}(
   gp,
   name,
   nrow = NULL,
@@ -14,7 +17,8 @@ gp_sec(
   flow = c("row", "col"),
   margin = 0,
   wrap = FALSE,
-  break_sections = TRUE
+  break_sections = TRUE,
+  advance = TRUE
 )
 }
 \arguments{
@@ -42,6 +46,8 @@ left).}
 \item{wrap}{Should the sections that go off the edge continue on the next row/column?}
 
 \item{break_sections}{Should partial sections be allowed?}
+
+\item{advance}{Should this section be a child or sibling of the one before it? If TRUE (default), it will be a child.}
 }
 \value{
 a \code{gp}
@@ -52,5 +58,13 @@ Add a section to a \code{gp} object.
 \examples{
 
 gp(16, 24) |> gp_sec("section 1", ncol = 3)
+
+pq <- gp(8, 12, protein_quant) |> gp_sec("has_sample", 3, 19, wrap = TRUE, labels = "sample")
+
+# Sections can be used to label things for tidying
+pq |> gp_serve()
+
+# They can also be used for plotting:
+pq |> gp_plot(has_sample)
 
 }

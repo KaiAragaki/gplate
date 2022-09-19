@@ -4,7 +4,7 @@
 \alias{gp_plot}
 \title{Plot a \code{gp} object}
 \usage{
-gp_plot(gp, name)
+gp_plot(gp, name = .sec)
 }
 \arguments{
 \item{gp}{A \code{gp} object}

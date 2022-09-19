@@ -33,7 +33,13 @@
 #' pq |> gp_plot(has_sample)
 #'
 #' @importFrom rlang .data `:=`
-gp_sec <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
+gp_sec <- function(gp, ...) {
+  UseMethod("gp_sec")
+}
+
+#' @export
+#' @rdname gp_sec
+gp_sec.gp <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
                    start_corner = c("tl", "tr", "bl", "br"),
                    flow = c("row", "col"),
                    margin = 0,
