@@ -129,7 +129,8 @@ gp_sec.gp <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
 
 
   if (is.null(labels)) {
-    labels <- seq_along(unique(gp$well_data$.sec))
+    secs <- unique(gp$well_data$.sec)
+    labels <- seq_along(secs[!is.na(secs)])
   }
 
   usr_labels_len <- length(labels)
@@ -141,8 +142,10 @@ gp_sec.gp <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
       dplyr::mutate(.sec = dplyr::if_else(.data$.sec > usr_labels_len | is.na(.data$.sec_par), NA_integer_, as.integer(.data[[map_sec]])))
   } else {
     gp$well_data <- gp$well_data |>
+      dplyr::mutate(.temp = .data$.sec |> as.factor() |> as.numeric()) |>
       dplyr::rowwise() |>
-      dplyr::mutate(.sec = dplyr::if_else(.data$.sec > usr_labels_len | is.na(.data$.sec_par), NA_integer_, .data$.sec))
+      dplyr::mutate(.sec = dplyr::if_else(.data$.temp > usr_labels_len | is.na(.data$.temp), NA_real_, .data$.temp),
+                    .sec = as.factor(.data$.sec))
   }
 
   gp$well_data <- gp$well_data |>

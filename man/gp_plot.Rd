@@ -4,12 +4,18 @@
 \alias{gp_plot}
 \title{Plot a \code{gp} object}
 \usage{
+<<<<<<< HEAD
 gp_plot(gp, name = .sec)
+=======
+gp_plot(gp, name = .sec, ...)
+>>>>>>> 600860b46b55ee89c06432190ebb9f97915b0cc5
 }
 \arguments{
 \item{gp}{A \code{gp} object}
 
 \item{name}{Symbol. Name of a column in \code{gp$well_data} to use as a color.}
+
+\item{...}{Additional arguments to be passed to \code{ggplot2::geom_point()}}
 }
 \value{
 a \code{ggplot}
