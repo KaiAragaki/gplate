@@ -4,11 +4,7 @@
 \alias{gp_plot}
 \title{Plot a \code{gp} object}
 \usage{
-<<<<<<< HEAD
-gp_plot(gp, name = .sec)
-=======
 gp_plot(gp, name = .sec, ...)
->>>>>>> 600860b46b55ee89c06432190ebb9f97915b0cc5
 }
 \arguments{
 \item{gp}{A \code{gp} object}
