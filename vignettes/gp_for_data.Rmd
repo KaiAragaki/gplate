@@ -1,8 +1,8 @@
 ---
-title: "Using gp to wrangle plate data"
+title: "Using gplate to wrangle plate data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Using gp to wrangle plate data}
+  %\VignetteIndexEntry{Using gplate to wrangle plate data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(gp)
+library(gplate)
 ```
 
 # Introduction
@@ -31,7 +31,7 @@ Just looking at this sucks. You can use some `tidyverse` magic or use `plater` t
 
 # The data
 
-The data shown above represent absorbance values at 562nm. `gp` lets us plot our data quickly:
+The data shown above represent absorbance values at 562nm. `gplate` lets us plot our data quickly:
 
 ```{r fig.width=3.5, fig.height=2}
 gp(8, 12, protein_quant) |>

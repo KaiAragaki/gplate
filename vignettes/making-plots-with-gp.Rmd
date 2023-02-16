@@ -1,8 +1,8 @@
 ---
-title: "Making plots with gp"
+title: "Making plots with gplate"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Making plots with gp}
+  %\VignetteIndexEntry{Making plots with gplate}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,10 +22,10 @@ It's often useful to be able to plot a microwell plate, either to describe an ex
 # The gp
 
 ```{r setup}
-library(gp)
+library(gplate)
 ```
 
-The most basic element in gp is the gp: It's the plate itself. For instance, a 6 well plate can be created like this:
+The most basic element in gplatej is the gp: It's the plate itself. For instance, a 6 well plate can be created like this:
 
 ```{r}
 six_well <- gp(rows = 2, cols = 3)

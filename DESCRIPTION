@@ -1,4 +1,4 @@
-Package: gp
+Package: gplate
 Title: A Grammar of Plates
 Version: 0.1.1
 Authors@R: 
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "aaragak1@jhmi.edu",
            comment = c(ORCID = "0000-0002-9458-0426"))
-Description: `gp` attempts to provide a succinct yet powerful grammar to describe common microwell layouts to aide in both plotting and tidying.
+Description: `gplate` attempts to provide a succinct yet powerful grammar to describe common microwell layouts to aide in both plotting and tidying.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
