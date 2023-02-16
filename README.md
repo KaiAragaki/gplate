@@ -1,52 +1,51 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <style type="text/css">
 span > img {
- float:left;
+ align: left;
+ width: 75px;
 }
 </style>
-
-
-
-
 
 # gplate <a href="https://kaiaragaki.github.io/gp/"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
-**gplate** introduces a **g**rammar of **plate**s. 
+**gplate** introduces a **g**rammar of **plate**s.
 
-Microwell plates are usually arranged in visually meaningful ways but are not tidy data, and their manipulation to and from a tidy form is cumbersome. gplate is aimed at both developers that create packages that ingest and produce plate data as well as for interactive operating on microwell data.
+Microwell plates are usually arranged in visually meaningful ways but
+are not tidy data, and their manipulation to and from a tidy form is
+cumbersome. gplate is aimed at both developers that create packages that
+ingest and produce plate data as well as for interactive operating on
+microwell data.
 
 ## Installation
 
-You can install the development version from [GitHub](https://github.com/) with:
+You can install the development version from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("KaiAragaki/gplate")
 ```
+
 ## Creating plates with gplate
 
 Creating a plate plot is simple:
 
-
-```r
+``` r
 library(gplate)
 gp(rows = 16, cols = 24) |>
   gp_plot(as.factor(.row))
 ```
 
 <img src="man/figures/README-example-1.png" alt="plot of chunk example" width="100%" />
-We can add rectangular 'sections' to our plates:
+We can add rectangular ‘sections’ to our plates:
 
-
-```r
+``` r
 gp(rows = 16, cols = 24) |> 
   gp_sec("my_section", nrow = 12, ncol = 6) |> 
   gp_plot(my_section)
@@ -54,10 +53,10 @@ gp(rows = 16, cols = 24) |>
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2" width="100%" />
 
-These sections can have sections of their own, just by layering one `gp_sec` on the other.
+These sections can have sections of their own, just by layering one
+`gp_sec` on the other.
 
-
-```r
+``` r
 gp(rows = 16, cols = 24) |> 
   gp_sec("my_section", nrow = 12, ncol = 6) |> 
   gp_sec("secsec", nrow = 3, ncol = 3) |> 
@@ -66,10 +65,10 @@ gp(rows = 16, cols = 24) |>
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3" width="100%" />
 
-`gp` also has a theme - `gp_mini_theme` - that lets you create sparkline-esque plates.
+`gplate` also has a theme - `gp_mini_theme` - that lets you create
+sparkline-esque plates.
 
-
-```r
+``` r
 mini_plot_cols <- gp(8, 12) |> 
   gp_sec(name = "primers", ncol = 3) |> 
   gp_plot(primers) + 
@@ -95,4 +94,6 @@ ggplot2::ggsave(filename = "./man/figures/mini-plot_rows.png",
 
 For instance:
 
-> You should align your primers in columns <span>![](man/figures/mini-plot_cols.png){width=75px}</span> instead of in rows <span>![](man/figures/mini-plot_rows.png){width=75px}</span>
+> You should align your primers in columns
+> <span>![](man/figures/mini-plot_cols.png)</span> instead of in rows
+> <span>![](man/figures/mini-plot_rows.png)</span>

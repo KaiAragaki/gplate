@@ -6,7 +6,8 @@ output: github_document
 
 <style type="text/css">
 span > img {
- float:left;
+ align: left;
+ width: 75px;
 }
 </style>
 
@@ -64,7 +65,7 @@ gp(rows = 16, cols = 24) |>
   gp_plot(secsec)
 ```
 
-`gp` also has a theme - `gp_mini_theme` - that lets you create sparkline-esque plates.
+`gplate` also has a theme - `gp_mini_theme` - that lets you create sparkline-esque plates.
 
 ```{r}
 mini_plot_cols <- gp(8, 12) |> 
@@ -92,4 +93,4 @@ ggplot2::ggsave(filename = "./man/figures/mini-plot_rows.png",
 
 For instance:
 
-> You should align your primers in columns <span>![](man/figures/mini-plot_cols.png){width=75px}</span> instead of in rows <span>![](man/figures/mini-plot_rows.png){width=75px}</span>
+> You should align your primers in columns <span>![](man/figures/mini-plot_cols.png)</span> instead of in rows <span>![](man/figures/mini-plot_rows.png)</span>
