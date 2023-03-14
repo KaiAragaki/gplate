@@ -48,6 +48,6 @@ gp_unserve <- function(x, row = ".row", col = ".col", nrow = NULL, ncol = NULL) 
   data <- tidyr::expand_grid(.row = 1:nrow, .col = 1:ncol) |>
     dplyr::left_join(x, by = c(.row = row, .col = col))
 
-  gp::gp(nrow, ncol, data, tidy = TRUE)
+  gplate::gp(nrow, ncol, data, tidy = TRUE)
 
 }

@@ -122,7 +122,7 @@ gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE
             is.numeric(wells)   | is.null(wells),
             is.logical(tidy))
 
-  plate_formats <- gp::plate_formats
+  plate_formats <- gplate::plate_formats
 
   if (all(is.null(wells), is.null(cols), is.null(rows))) {
     stop("Either wells or cols + rows must be set")
