@@ -1,6 +1,5 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <style type="text/css">
 span > img {
  align: left;
@@ -12,6 +11,7 @@ span > img {
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/KaiAragaki/gplate/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/KaiAragaki/gplate/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 **gplate** introduces a **g**rammar of **plate**s.
@@ -42,8 +42,8 @@ gp(rows = 16, cols = 24) |>
   gp_plot(as.factor(.row))
 ```
 
-<img src="man/figures/README-example-1.png" alt="plot of chunk example" width="100%" />
-We can add rectangular ‘sections’ to our plates:
+<img src="man/figures/README-example-1.png" width="100%" /> We can add
+rectangular ‘sections’ to our plates:
 
 ``` r
 gp(rows = 16, cols = 24) |> 
@@ -51,7 +51,7 @@ gp(rows = 16, cols = 24) |>
   gp_plot(my_section)
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 These sections can have sections of their own, just by layering one
 `gp_sec` on the other.
@@ -63,7 +63,7 @@ gp(rows = 16, cols = 24) |>
   gp_plot(secsec)
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 `gplate` also has a theme - `gp_mini_theme` - that lets you create
 sparkline-esque plates.
@@ -95,5 +95,5 @@ ggplot2::ggsave(filename = "./man/figures/mini-plot_rows.png",
 For instance:
 
 > You should align your primers in columns
-> <span>![](man/figures/mini-plot_cols.png)</span> instead of in rows
-> <span>![](man/figures/mini-plot_rows.png)</span>
+> ![](man/figures/mini-plot_cols.png) instead of in rows
+> ![](man/figures/mini-plot_rows.png)
