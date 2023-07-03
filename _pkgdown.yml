@@ -28,6 +28,7 @@ reference:
   - gp_serve
   - gp_unserve
   - gp_unravel
+  - gp_excise
   - wells
 
 
