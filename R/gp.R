@@ -13,7 +13,11 @@
 #' new_gp(nrow = 8L, ncol = 16L)
 new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 
-  stopifnot(is.integer(nrow), is.integer(ncol), is.data.frame(data) | is.matrix(data))
+  stopifnot(
+    is.integer(nrow),
+    is.integer(ncol),
+    is.data.frame(data) | is.matrix(data)
+  )
 
   wd <- tidyr::expand_grid(.row = seq_len(nrow), .col = seq_len(ncol))
   wd$.sec <- wd$.sec_par <- 1L
@@ -95,19 +99,22 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #' layer.
 #'
 #' - `index`: These specify (usually) multiwell strips only defined in one
-#' dimension. Together, `index_row` and `index_col` form checkerboard-like patterns,
-#' where each intersection is a section. This is a bit more complicated when
-#' `wrap = TRUE`, so the simile does not hold for all cases.
+#' dimension. Together, `index_row` and `index_col` form
+#' checkerboard-like patterns, where each intersection is a section.
+#' This is a bit more complicated when `wrap = TRUE`, so the simile
+#' does not hold for all cases.
 #'
 #' @export
 #'
 #' @examples
 #'
-#' # If you specify wells, rows and columns are derived from a standard plate sizes:
+#' # If you specify wells, rows and columns are derived
+#' # from a standard plate sizes:
 #'
 #' gp(wells = 96)
 #'
-#' # As such, you cannot use the wells argument if you want to create more exotic plates:
+#' # As such, you cannot use the wells argument
+#' # if you want to create more exotic plates:
 #'
 #' try(gp(wells = 102))
 #'
@@ -115,7 +122,11 @@ new_gp <- function(nrow = 1L, ncol = 1L, data = data.frame(), tidy = FALSE){
 #'
 #' gp(rows = 6, cols = 17)
 #'
-gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE){
+gp <- function(rows = NULL,
+               cols = NULL,
+               data = NULL,
+               wells = NULL,
+               tidy = FALSE) {
 
   stopifnot(is.numeric(rows)    | is.null(rows),
             is.numeric(cols)    | is.null(cols),
@@ -150,7 +161,10 @@ gp <- function(rows = NULL, cols = NULL, data = NULL, wells = NULL, tidy = FALSE
       stop("Dimensions must be positive integers")
   }
 
-  new_gp(nrow = as.integer(rows), ncol = as.integer(cols), data = data, tidy = tidy)
+  new_gp(nrow = as.integer(rows),
+         ncol = as.integer(cols),
+         data = data,
+         tidy = tidy)
 }
 
 #' Coerce object to gp

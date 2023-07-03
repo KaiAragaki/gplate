@@ -55,18 +55,21 @@ always being (1, 1).
 \item \code{par}: Short for 'parent'. These columns are all the data from the previous
 layer.
 \item \code{index}: These specify (usually) multiwell strips only defined in one
-dimension. Together, \code{index_row} and \code{index_col} form checkerboard-like patterns,
-where each intersection is a section. This is a bit more complicated when
-\code{wrap = TRUE}, so the simile does not hold for all cases.
+dimension. Together, \code{index_row} and \code{index_col} form
+checkerboard-like patterns, where each intersection is a section.
+This is a bit more complicated when \code{wrap = TRUE}, so the simile
+does not hold for all cases.
 }
 }
 \examples{
 
-# If you specify wells, rows and columns are derived from a standard plate sizes:
+# If you specify wells, rows and columns are derived
+# from a standard plate sizes:
 
 gp(wells = 96)
 
-# As such, you cannot use the wells argument if you want to create more exotic plates:
+# As such, you cannot use the wells argument
+# if you want to create more exotic plates:
 
 try(gp(wells = 102))
 
