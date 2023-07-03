@@ -5,8 +5,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="gp">
-<title>Making plots with gp • gp</title>
+<meta name="description" content="gplate">
+<title>Making plots with gplate • gplate</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -14,11 +14,11 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Making plots with gp">
-<meta property="og:description" content="gp">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Making plots with gplate">
+<meta property="og:description" content="gplate">
 <meta property="og:image" content="https://kaiaragaki.github.io/gp/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -31,9 +31,9 @@
 
     <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
-    <a class="navbar-brand me-2" href="../index.html">gp</a>
+    <a class="navbar-brand me-2" href="../index.html">gplate</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,8 +48,8 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/gp_for_data.html">Using gp to wrangle plate data</a>
-    <a class="dropdown-item" href="../articles/making-plots-with-gp.html">Making plots with gp</a>
+    <a class="dropdown-item" href="../articles/gp_for_data.html">Using gplate to wrangle plate data</a>
+    <a class="dropdown-item" href="../articles/making-plots-with-gp.html">Making plots with gplate</a>
   </div>
 </li>
       </ul>
@@ -66,9 +66,10 @@
 
 
 
-<script src="making-plots-with-gp_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Making plots with gp</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Making plots with gplate</h1>
             
       
       
@@ -80,26 +81,35 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>It’s often useful to be able to plot a microwell plate, either to describe an experiment you performed in a visual manner, or to write documentation for a protocol. gp allows you to plot a surprisingly diverse set of layouts with fairly simple syntax. Additionally, this same process of plotting data is used to wrangle data (see the vignette ‘Using gp to wrangle plate data’). This vignette will teach you how to plot plates.</p>
+<p>It’s often useful to be able to plot a microwell plate, either to
+describe an experiment you performed in a visual manner, or to write
+documentation for a protocol. gp allows you to plot a surprisingly
+diverse set of layouts with fairly simple syntax. Additionally, this
+same process of plotting data is used to wrangle data (see the vignette
+‘Using gp to wrangle plate data’). This vignette will teach you how to
+plot plates.</p>
 </div>
 <div class="section level2">
 <h2 id="the-gp">The gp<a class="anchor" aria-label="anchor" href="#the-gp"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kaiaragaki.github.io/gp/">gp</a></span><span class="op">)</span></code></pre></div>
-<p>The most basic element in gp is the gp: It’s the plate itself. For instance, a 6 well plate can be created like this:</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kaiaragaki.github.io/gp/">gplate</a></span><span class="op">)</span></span></code></pre></div>
+<p>The most basic element in gplatej is the gp: It’s the plate itself.
+For instance, a 6 well plate can be created like this:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">six_well</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fl">2</span>, cols <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
-<p>From here on, I’m going to omit the argument names for rows and columns, like this:</p>
+<code class="sourceCode R"><span><span class="va">six_well</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fl">2</span>, cols <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<p>From here on, I’m going to omit the argument names for rows and
+columns, like this:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">six_well</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></code></pre></div>
-<p>Note that if your plate is in a standard format, you can also just specify the number of wells it has:</p>
+<code class="sourceCode R"><span><span class="va">six_well</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<p>Note that if your plate is in a standard format, you can also just
+specify the number of wells it has:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">six_well</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span>wells <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">six_well</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span>wells <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <p>This only works for standard plate layouts - listed here:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">plate_formats</span> |&gt; 
-  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">plate_formats</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">wells</th>
@@ -154,155 +164,209 @@
 </tr>
 </tbody>
 </table>
-<p>Note also that if you specify <code>wells = 96</code> and what you MEAN is a 4x24 well plate, you’re going to be disappointed. For that reason, it’s usually best to be explicit about the plate dimensions.</p>
+<p>Note also that if you specify <code>wells = 96</code> and what you
+MEAN is a 4x24 well plate, you’re going to be disappointed. For that
+reason, it’s usually best to be explicit about the plate dimensions.</p>
 </div>
 <div class="section level2">
 <h2 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a>
 </h2>
-<p>If often helps to plot your gp as you build it up, section by section (more on sections later). This is very simple:</p>
+<p>If often helps to plot your gp as you build it up, section by section
+(more on sections later). This is very simple:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_plate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">24</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">my_plate</span>, <span class="va">.sec</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_plate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">24</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">my_plate</span>, <span class="va">.sec</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-6-1.png" width="537.6"></p>
-<p><code>gp_plot</code> takes two arguments: 1. A <code>gp</code> object 2. A name of a column in <code>gp$well_data</code> that you would like to use as a color overlay on the plot</p>
+<p><code>gp_plot</code> takes two arguments: 1. A <code>gp</code> object
+2. A name of a column in <code>gp$well_data</code> that you would like
+to use as a color overlay on the plot</p>
 <p>Let’s dig into point two for a second.</p>
-<p><code>gp</code> have a list item buried within them called <code>well_data</code>:</p>
+<p><code>gp</code> have a list item buried within them called
+<code>well_data</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_plate</span><span class="op">$</span><span class="va">well_data</span> |&gt; <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span>
-<span class="co">#&gt;    .row  .col .sec_par  .sec .row_sec_par .row_sec .col_sec_par .col_sec</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1     1        1     1            1        1            1        1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1     2        1     1            1        1            2        2</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     1     3        1     1            1        1            3        3</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     1     4        1     1            1        1            4        4</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     1     5        1     1            1        1            5        5</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     1     6        1     1            1        1            6        6</span>
-<span class="co">#&gt; <span style="color: #949494;"># … with 2 more variables: .col_is_margin &lt;lgl&gt;, .row_is_margin &lt;lgl&gt;</span></span></code></pre></div>
-<p>This seems like a lot to take in, but it’s really just the data that <code>gp_plot</code> is plotting. The second argument we provide can be any one of these columns, and we will provide additional columns when we start making sections (that’s coming up soon, I promise!). (Note: if you want more information about these columns, go to <code><a href="../reference/gp.html">?gp</a></code>)</p>
+<code class="sourceCode R"><span><span class="va">my_plate</span><span class="op">$</span><span class="va">well_data</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
+<span><span class="co">#&gt;    .row  .col .sec_par  .sec .row_sec_par .row_sec .col_sec_par .col_sec</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1     1        1     1            1        1            1        1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1     2        1     1            1        1            2        2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     1     3        1     1            1        1            3        3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     1     4        1     1            1        1            4        4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     1     5        1     1            1        1            5        5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     1     6        1     1            1        1            6        6</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: .col_is_margin &lt;lgl&gt;, .row_is_margin &lt;lgl&gt;</span></span></span></code></pre></div>
+<p>This seems like a lot to take in, but it’s really just the data that
+<code>gp_plot</code> is plotting. The second argument we provide can be
+any one of these columns, and we will provide additional columns when we
+start making sections (that’s coming up soon, I promise!). (Note: if you
+want more information about these columns, go to <code><a href="../reference/gp.html">?gp</a></code>)</p>
 <p>For instance, we can plot the row number:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">my_plate</span>, <span class="va">.row</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">my_plate</span>, <span class="va">.row</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-8-1.png" width="537.6"></p>
-<p>At this point you should also note that the axes are arranged like most plates are - top left is 1, 1.</p>
+<p>At this point you should also note that the axes are arranged like
+most plates are - top left is 1, 1.</p>
 </div>
 <div class="section level2">
 <h2 id="adding-sections-to-plates">Adding sections to plates<a class="anchor" aria-label="anchor" href="#adding-sections-to-plates"></a>
 </h2>
-<p>This package would be useless if there wasn’t the ability to add patterns to your plates. gp uses the idea of ‘sections’ that can build atop one another. We’ll make it more concrete with examples, but in short a plate is the biggest section, and sections can have sections. But what can sections DO for us?</p>
+<p>This package would be useless if there wasn’t the ability to add
+patterns to your plates. gp uses the idea of ‘sections’ that can build
+atop one another. We’ll make it more concrete with examples, but in
+short a plate is the biggest section, and sections can have sections.
+But what can sections DO for us?</p>
 <p>Simply put, sections let us make rectangular patterns on plates:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_plate</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"condition"</span>, nrow <span class="op">=</span> <span class="fl">16</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_plate</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"condition"</span>, nrow <span class="op">=</span> <span class="fl">16</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-9-1.png" width="537.6"></p>
-<p><code>gp_sec</code> is the workhorse of gp. Before we get in to all the other fun stuff it can do, let’s go over syntax. <code>gp_sec</code> takes several arguments:</p>
+<p><code>gp_sec</code> is the workhorse of gp. Before we get in to all
+the other fun stuff it can do, let’s go over syntax. <code>gp_sec</code>
+takes several arguments:</p>
 <ol style="list-style-type: decimal">
-<li>A name. This is so you can refer to it later (as I did in <code>gp_plot</code> in the example above)</li>
+<li>A name. This is so you can refer to it later (as I did in
+<code>gp_plot</code> in the example above)</li>
 <li>Dimensions.</li>
 </ol>
-<p>By default, if a dimension is left blank it tries to fill up the maximum of its parent section (here the whole plate). So I could have done this:</p>
+<p>By default, if a dimension is left blank it tries to fill up the
+maximum of its parent section (here the whole plate). So I could have
+done this:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_plate</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"condition"</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_plate</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"condition"</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-10-1.png" width="537.6"></p>
-<p>Note that we plot using <code>condition</code>. This implies that it’s part of <code>my_plate$well_data</code>, since I told you that’s where <code>gp_plot</code> gets its plotting data from, right? You would be correct. When you make a section, you tack on a column named whatever you named it to <code>well_data</code>. This is fundamental to the idea of ‘tidying as you plot’ (which, again, is gone over in the ‘Using gp to wrangle plate data’ vignette).</p>
-<p>But there’s so much other cool stuff you can do with <code>gp_sec</code>. Let’s go over them in isolation.</p>
+<p>Note that we plot using <code>condition</code>. This implies that
+it’s part of <code>my_plate$well_data</code>, since I told you that’s
+where <code>gp_plot</code> gets its plotting data from, right? You would
+be correct. When you make a section, you tack on a column named whatever
+you named it to <code>well_data</code>. This is fundamental to the idea
+of ‘tidying as you plot’ (which, again, is gone over in the ‘Using gp to
+wrangle plate data’ vignette).</p>
+<p>But there’s so much other cool stuff you can do with
+<code>gp_sec</code>. Let’s go over them in isolation.</p>
 <div class="section level3">
 <h3 id="starting-corner">Starting corner<a class="anchor" aria-label="anchor" href="#starting-corner"></a>
 </h3>
-<p>Starting off gentle, we can describe which corner we want section one to be in by supplying a <code>start_corner</code> argument. By default, <code>start_corner = "tl"</code>. <code>tl</code> stands for top-left, so I imagine you can guess what the other three options stand for: <code>tr</code>, <code>bl</code>, <code>br</code></p>
+<p>Starting off gentle, we can describe which corner we want section one
+to be in by supplying a <code>start_corner</code> argument. By default,
+<code>start_corner = "tl"</code>. <code>tl</code> stands for top-left,
+so I imagine you can guess what the other three options stand for:
+<code>tr</code>, <code>bl</code>, <code>br</code></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_plate</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="fl">8</span>, <span class="fl">11</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_plate</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="fl">8</span>, <span class="fl">11</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-11-1.png" width="537.6"></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_plate</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="fl">8</span>, <span class="fl">11</span>, start_corner <span class="op">=</span> <span class="st">"br"</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_plate</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="fl">8</span>, <span class="fl">11</span>, start_corner <span class="op">=</span> <span class="st">"br"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-12-1.png" width="537.6"></p>
 </div>
 <div class="section level3">
 <h3 id="flowing---leftright-first-or-topbottom-first">Flowing - left/right first or top/bottom first?<a class="anchor" aria-label="anchor" href="#flowing---leftright-first-or-topbottom-first"></a>
 </h3>
-<p>Notice that by default our next section is to the side of the section before it. But what if we wanted our next section to be above/below? This can be done simply by setting <code>flow</code> to either <code>"row"</code> or <code>"col"</code>:</p>
+<p>Notice that by default our next section is to the side of the section
+before it. But what if we wanted our next section to be above/below?
+This can be done simply by setting <code>flow</code> to either
+<code>"row"</code> or <code>"col"</code>:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_plate</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="fl">8</span>, <span class="fl">11</span>, flow <span class="op">=</span> <span class="st">"col"</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_plate</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="fl">8</span>, <span class="fl">11</span>, flow <span class="op">=</span> <span class="st">"col"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-13-1.png" width="537.6"></p>
 </div>
 <div class="section level3">
 <h3 id="margins">Margins<a class="anchor" aria-label="anchor" href="#margins"></a>
 </h3>
-<p>Sometimes it’s nice to have a bit of space around sections. As a practical example, I leave a blank space around the edge of my PCR plate to avoid edge effects (poor seal, uneven lighting, etc). So how would we implement this?</p>
+<p>Sometimes it’s nice to have a bit of space around sections. As a
+practical example, I leave a blank space around the edge of my PCR plate
+to avoid edge effects (poor seal, uneven lighting, etc). So how would we
+implement this?</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">borderless</span> <span class="op">&lt;-</span>
-  <span class="va">my_plate</span> |&gt;
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"no_border"</span>, <span class="fl">14</span>, <span class="fl">22</span>, margin <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">borderless</span>, <span class="va">no_border</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">borderless</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">my_plate</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"no_border"</span>, <span class="fl">14</span>, <span class="fl">22</span>, margin <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">borderless</span>, <span class="va">no_border</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-14-1.png" width="537.6"></p>
-<p>Note that you have to specify the dimensions here. If you think you could get away with just supplying a name and <code>margin = 1</code>, you’d be unfortunately mistaken. As I mentioned previously, <code>ncol</code> and <code>nrow</code> fill up to their parent section. Then, margin gets ADDED to it. This makes it overflow its parent (ie this is MARGIN not PADDING, for the HTML/CSS inclined).</p>
-<p>Now I can use the fact that sections can have sections to, say, show where my primers will go:</p>
+<p>Note that you have to specify the dimensions here. If you think you
+could get away with just supplying a name and <code>margin = 1</code>,
+you’d be unfortunately mistaken. As I mentioned previously,
+<code>ncol</code> and <code>nrow</code> fill up to their parent section.
+Then, margin gets ADDED to it. This makes it overflow its parent (ie
+this is MARGIN not PADDING, for the HTML/CSS inclined).</p>
+<p>Now I can use the fact that sections can have sections to, say, show
+where my primers will go:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">borderless</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"primers"</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">borderless</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"primers"</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-15-1.png" width="537.6"></p>
-<p>Margins can also be specified to be on a particular side by supplying a vector. This works very much how CSS margin specification goes.</p>
+<p>Margins can also be specified to be on a particular side by supplying
+a vector. This works very much how CSS margin specification goes.</p>
 <ol style="list-style-type: decimal">
 <li>One number: Applies the margin to all four sides.</li>
 <li>Two numbers: First to the top and bottom, second to the sides.</li>
-<li>Three numbers: First to the top, second to the sides, third to the bottom</li>
+<li>Three numbers: First to the top, second to the sides, third to the
+bottom</li>
 <li>Four numbers: Top, right, bottom, left</li>
 </ol>
 </div>
 <div class="section level3">
 <h3 id="breaking-sections">Breaking Sections<a class="anchor" aria-label="anchor" href="#breaking-sections"></a>
 </h3>
-<p>You’ll notice in the figure above that primer 8 isn’t a full section. We can omit those that might not be a full section by setting <code>break_sections = FALSE</code>:</p>
+<p>You’ll notice in the figure above that primer 8 isn’t a full section.
+We can omit those that might not be a full section by setting
+<code>break_sections = FALSE</code>:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">borderless</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"primers"</span>, ncol <span class="op">=</span> <span class="fl">3</span>, break_sections <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">borderless</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"primers"</span>, ncol <span class="op">=</span> <span class="fl">3</span>, break_sections <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-16-1.png" width="537.6"></p>
 </div>
 <div class="section level3">
 <h3 id="wrapping---going-over-the-edge">Wrapping - going over the edge<a class="anchor" aria-label="anchor" href="#wrapping---going-over-the-edge"></a>
 </h3>
-<p>Sometimes you’ll want to wrap your sections so that when one clips off the edge, it starts right back up on the beginning of the next line. Like this:</p>
+<p>Sometimes you’ll want to wrap your sections so that when one clips
+off the edge, it starts right back up on the beginning of the next line.
+Like this:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_plate</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"primers"</span>, <span class="fl">3</span>, <span class="fl">27</span>, wrap <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_plate</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"primers"</span>, <span class="fl">3</span>, <span class="fl">27</span>, wrap <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-17-1.png" width="537.6"></p>
-<p>This makes sense in instances where the section is too big for the parent section. Without wrapping, you wouldn’t be able to fit a single full section on this plate.</p>
+<p>This makes sense in instances where the section is too big for the
+parent section. Without wrapping, you wouldn’t be able to fit a single
+full section on this plate.</p>
 </div>
 <div class="section level3">
 <h3 id="labeling">Labeling<a class="anchor" aria-label="anchor" href="#labeling"></a>
 </h3>
-<p>Labeling serves two purposes: Annotating the section numbers, and hiding sections you don’t use (it also has a third purpose, in that it helps tidying - but see the other vignette for that).</p>
+<p>Labeling serves two purposes: Annotating the section numbers, and
+hiding sections you don’t use (it also has a third purpose, in that it
+helps tidying - but see the other vignette for that).</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_plate</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"primers"</span>, <span class="fl">3</span>, <span class="fl">7</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GBP2"</span>, <span class="st">"YAP1"</span>, <span class="st">"GAPDH"</span><span class="op">)</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_plate</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"primers"</span>, <span class="fl">3</span>, <span class="fl">7</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GBP2"</span>, <span class="st">"YAP1"</span>, <span class="st">"GAPDH"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">primers</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-18-1.png" width="518.4"></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="putting-it-all-together">Putting it all together<a class="anchor" aria-label="anchor" href="#putting-it-all-together"></a>
 </h2>
-<p>You can make some wild stuff just by combining these arguments together. Like so:</p>
+<p>You can make some wild stuff just by combining these arguments
+together. Like so:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"outer"</span>, <span class="fl">9</span>, <span class="fl">7</span>, margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, start_corner <span class="op">=</span> <span class="st">"br"</span>, wrap <span class="op">=</span> <span class="cn">TRUE</span>, flow <span class="op">=</span> <span class="st">"col"</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"inner"</span>, <span class="fl">2</span>, <span class="fl">2</span>, wrap <span class="op">=</span> <span class="cn">TRUE</span>, start_corner <span class="op">=</span> <span class="st">"tr"</span>, flow <span class="op">=</span> <span class="st">"col"</span><span class="op">)</span> |&gt; 
-  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">inner</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/gp.html">gp</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"outer"</span>, <span class="fl">9</span>, <span class="fl">7</span>, margin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, start_corner <span class="op">=</span> <span class="st">"br"</span>, wrap <span class="op">=</span> <span class="cn">TRUE</span>, flow <span class="op">=</span> <span class="st">"col"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_sec.html">gp_sec</a></span><span class="op">(</span><span class="st">"inner"</span>, <span class="fl">2</span>, <span class="fl">2</span>, wrap <span class="op">=</span> <span class="cn">TRUE</span>, start_corner <span class="op">=</span> <span class="st">"tr"</span>, flow <span class="op">=</span> <span class="st">"col"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/gp_plot.html">gp_plot</a></span><span class="op">(</span><span class="va">inner</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="making-plots-with-gp_files/figure-html/unnamed-chunk-19-1.png" width="345.6"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -318,7 +382,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>

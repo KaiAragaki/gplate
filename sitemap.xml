@@ -40,6 +40,9 @@
     <loc>https://kaiaragaki.github.io/gp/reference/gp.html</loc>
   </url>
   <url>
+    <loc>https://kaiaragaki.github.io/gp/reference/gp_excise.html</loc>
+  </url>
+  <url>
     <loc>https://kaiaragaki.github.io/gp/reference/gp_mini_theme.html</loc>
   </url>
   <url>
@@ -86,6 +89,9 @@
   </url>
   <url>
     <loc>https://kaiaragaki.github.io/gp/reference/unroll_sec_dim_along_parent.html</loc>
+  </url>
+  <url>
+    <loc>https://kaiaragaki.github.io/gp/reference/well_data.html</loc>
   </url>
   <url>
     <loc>https://kaiaragaki.github.io/gp/reference/wells.html</loc>
