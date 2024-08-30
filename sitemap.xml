@@ -1,99 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/404.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/articles/gp_for_data.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/articles/making-plots-with-gp.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/arrange_by_dim.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/as_gp.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/coordinate.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/example_plate.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/flip_dim.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/gp.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/gp_excise.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/gp_mini_theme.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/gp_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/gp_sec.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/gp_serve.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/gp_unravel.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/gp_unserve.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/is_fwd.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/new_gp.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/non_int_replicate.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/pcr_plate.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/plate_formats.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/print.gp.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/protein_quant.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/rel_dim.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/unroll_sec_dim_along_parent.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/well_data.html</loc>
-  </url>
-  <url>
-    <loc>https://kaiaragaki.github.io/gp/reference/wells.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://kaiaragaki.github.io/gp/404.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/LICENSE.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/articles/gp_for_data.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/articles/index.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/articles/making-plots-with-gp.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/authors.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/index.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/arrange_by_dim.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/as_gp.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/coordinate.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/example_plate.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/flip_dim.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/gp.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/gp_excise.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/gp_mini_theme.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/gp_plot.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/gp_sec.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/gp_serve.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/gp_unravel.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/gp_unserve.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/index.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/is_fwd.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/new_gp.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/non_int_replicate.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/pcr_plate.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/plate_formats.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/print.gp.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/protein_quant.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/rel_dim.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/unroll_sec_dim_along_parent.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/well_data.html</loc></url>
+<url><loc>https://kaiaragaki.github.io/gp/reference/wells.html</loc></url>
 </urlset>
+
