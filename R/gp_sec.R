@@ -103,12 +103,12 @@ gp_sec.gp <- function(gp, name, nrow = NULL, ncol = NULL, labels = NULL,
       dplyr::select(-dplyr::contains(".index"))
   } else {
     gp$well_data <- gp$well_data |>
-      dplyr::select(-.data$.sec) |>
+      dplyr::select(-".sec") |>
       dplyr::group_by(.data$.index_row, .data$.index_col) |>
       tidyr::nest() |>
       dplyr::ungroup() |>
       dplyr::mutate(.sec = dplyr::row_number()) |>
-      tidyr::unnest(.data$data) |>
+      tidyr::unnest("data") |>
       dplyr::mutate(.sec = ifelse(.data$.row_is_margin | .data$.col_is_margin | is.na(.data$.sec_par), NA_integer_, .data$.sec)) |>
       dplyr::select(-c(".index_col", ".index_row"))
   }

@@ -50,7 +50,7 @@ unroll_sec_dim_along_parent <- function(gp, dim, wrap) {
 
     gp$well_data <- gp$well_data |>
       dplyr::mutate({{ index_name }} := (.data$temp - 1) %/% n_non_dim_sec + 1)|>
-      dplyr::select(-.data$temp)
+      dplyr::select(-"temp")
   }
 
   gp$well_data <- gp$well_data |>

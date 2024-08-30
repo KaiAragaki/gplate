@@ -35,10 +35,10 @@ coordinate <- function(gp, type = c("row", "col"), margin) {
     dplyr::bind_rows(.id = "map_sec") |> # Map sec refers to the 'section within the section' if a vector with length > 1 was supplied as an arg to nrow/ncol
     dplyr::mutate(my_data = purrr::map(.data$n, ~ tibble::tibble(sec = seq_len(.x))),
                   sec_rel = purrr::map(.data$my_data, \(x){if(is_fwd(gp, type)) x$sec else rev(x$sec)})) |>
-    tidyr::unnest(c(.data$my_data, .data$sec_rel)) |>
+    tidyr::unnest(c("my_data", "sec_rel")) |>
     dplyr::mutate(sec = ifelse(.data$is_margin, NA_integer_, .data$sec),
                   sec_rel = ifelse(.data$is_margin, NA_integer_, .data$sec_rel)) |>
-    dplyr::select(-.data$n) |>
+    dplyr::select(-"n") |>
     dplyr::rename_with(~ paste0(".", type, "_", .x))
 
   gp[[paste0(type, "_unit")]] <- dim_unit
