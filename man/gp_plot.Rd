@@ -2,14 +2,21 @@
 % Please edit documentation in R/gp_plot.R
 \name{gp_plot}
 \alias{gp_plot}
+\alias{gp_plot.gp}
+\alias{gp_plot.data.frame}
 \title{Plot a \code{gp} object}
 \usage{
-gp_plot(gp, name = .sec, ...)
+gp_plot(x, name = .sec, ...)
+
+\method{gp_plot}{gp}(x, name = .sec, ...)
+
+\method{gp_plot}{data.frame}(x, name = .sec, ...)
 }
 \arguments{
-\item{gp}{A \code{gp} object}
+\item{x}{A \code{gp} object or \code{data.frame}}
 
-\item{name}{Symbol. Name of a column in \code{gp$well_data} to use as a color.}
+\item{name}{Symbol. Name of a column in \code{gp$well_data} (or a column in the
+data.frame if data.frame was supplied) to use as a color.}
 
 \item{...}{Additional arguments to be passed to \code{ggplot2::geom_point()}}
 }

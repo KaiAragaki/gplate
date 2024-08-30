@@ -2,6 +2,8 @@
 
 S3method(as_gp,default)
 S3method(as_gp,list)
+S3method(gp_plot,data.frame)
+S3method(gp_plot,gp)
 S3method(gp_sec,gp)
 S3method(print,gp)
 S3method(well_data,gp)

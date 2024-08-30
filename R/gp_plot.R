@@ -1,7 +1,8 @@
 #' Plot a `gp` object
 #'
-#' @param gp A `gp` object
-#' @param name Symbol. Name of a column in `gp$well_data` to use as a color.
+#' @param x A `gp` object or `data.frame`
+#' @param name Symbol. Name of a column in `gp$well_data` (or a column in the
+#'   data.frame if data.frame was supplied) to use as a color.
 #' @param ... Additional arguments to be passed to `ggplot2::geom_point()`
 #'
 #' @return a `ggplot`
@@ -10,11 +11,27 @@
 #' @examples
 #'
 #' gp(16, 24) |> gp_plot(.row)
-gp_plot <- function(gp, name = .sec, ...) {
+gp_plot <- function(x, name = .sec, ...) {
+  UseMethod("gp_plot")
+}
+
+#' @rdname gp_plot
+#' @export
+gp_plot.gp <- function(x, name = .sec, ...) {
   dots <- rlang::dots_list(..., size = 4, .homonyms = "first")
 
-  wd <- gp$well_data
+  wd <- x$well_data
   ggplot2::ggplot(wd, ggplot2::aes(x = .col, y = .row, color = {{ name }})) +
+    ggplot2::geom_point(...) +
+    ggplot2::scale_y_reverse()
+}
+
+#' @rdname gp_plot
+#' @export
+gp_plot.data.frame <- function(x, name = .sec, ...) {
+  dots <- rlang::dots_list(..., size = 4, .homonyms = "first")
+
+  ggplot2::ggplot(x, ggplot2::aes(x = .col, y = .row, color = {{ name }})) +
     ggplot2::geom_point(...) +
     ggplot2::scale_y_reverse()
 }
